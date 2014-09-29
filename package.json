@@ -1,0 +1,18 @@
+{
+  "name": "squint",
+  "version": "0.0.16",
+  "main": "./src/squint",
+  "scripts": {
+    "test": "mocha -u tdd --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mucbuc/squint"
+  },
+  "dependencies": {
+    "chai": "*",
+    "mocha": "*",
+    "flukejs": "*", 
+    "expector": "*"
+  }
+}
