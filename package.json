@@ -4,7 +4,7 @@
   "scripts": {
     "test": "mocha -u tdd --recursive"
   },
-  "main": "./src/analayzer.js",
+  "main": "./src/analyzer.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/mucbuc/jargon"
