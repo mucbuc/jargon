@@ -33,8 +33,10 @@ suite( 'preprocessor', function() {
   });
   
   test( 'preprocessorMultiple', function() {
-    emitter.expect( 'preprocess' ); // consume =>, '#define A\n' );
-    emitter.expect( 'preprocess' ); // consume =>, '#define B\n' );
+    emitter
+      .expect( 'preprocess' )
+      .repeat( 1 );
+
     split( '#define A\n#define B\n' );
   });
 
