@@ -8,6 +8,8 @@ function Preprocessor( emitter ) {
 		  , code = response.rhs;
 		do {
 			var chunk = code.search( '\n' ) + 1;
+			chunk = Math.min( chunk, code.search( regexMap.commentMultiple ) ); 
+			chunk = Math.min( chunk, code.search( regexMap.commentSingle ) ); 
 			result += code.substr( 0, chunk );
 			code = code.substr( chunk, code.length );
 		}
