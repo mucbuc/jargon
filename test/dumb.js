@@ -7,27 +7,34 @@ var assert = require( 'assert' )
 
 assert( typeof Analyzer !== 'undefined' );
     
-suite( "unit", function() {
+//test.only( "unit",  function() {
 
   var emitter;
-  setup(function() {
+ // setup(function() {
     emitter = new Expector;
     emitter.setMaxListeners( 0 );
-  });
+ // });
 
-  teardown(function() {
-    emitter.check(); 
-    delete emitter;
-  }); 
 
-  test( "read test.h", function() {
+
+  //test( "read test.h", function() {
     var data = fs.readFileSync( './test/samples/test.h' )
       , analyzer = new Analyzer( emitter );
     emitter
+      .expect( 'open' )
+      .expect( 'open scope' )
+      .expect( 'define namespace', { name: 'namespace hello', code: '' } )
+      .expect( 'end' )
       .expect( 'preprocess' )
       .expect( 'declare type' )
       .expect( 'preprocess' )
       .expect( 'comment line' );
     analyzer.split( data.toString() );
-  });
-}); 
+  //});
+
+
+  //teardown(function() {
+    emitter.check(); 
+    delete emitter;
+  //}); 
+//}); 

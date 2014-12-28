@@ -14,6 +14,9 @@ function Scoper( emitter, rules ) {
   }
 
   emitter.on( 'open', function(response) {
+    
+    console.log( '***', response );  
+
     var depth = 1
       , source = response.rhs
       , content = '';

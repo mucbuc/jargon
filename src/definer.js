@@ -7,7 +7,6 @@ assert( typeof regexMap !== 'undefined' );
 function Definer(emitter) {
 
   emitter.on( 'open scope', function( source ) {
-     
     var code = source.replace( /.*?;/, '' );
 
     if (isNamespace(code))
