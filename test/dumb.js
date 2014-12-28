@@ -25,6 +25,7 @@ suite( "unit", function() {
       , analyzer = new Analyzer( emitter );
     emitter
       .expect( 'preprocess' )
+      .expect( 'declare type' )
       .expect( 'preprocess' )
       .expect( 'comment line' );
     analyzer.split( data.toString() );
