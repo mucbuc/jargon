@@ -25,6 +25,18 @@ suite( 'commenter', function() {
     split( '// hello\n' );
   });
 
+  test( 'commenterSingleLineWithoutNewLine', function(){
+    emitter.expect( 'comment line' );
+    split( '// hello' );
+  });
+
+  test( 'commenterTwoSingleLineWithoutNewLine', function(){
+    emitter
+    .expect( 'comment line' )
+    .repeat( 1 );
+    split( '// hello\n//hello' );
+  });
+
   test( 'commentBlock', function() {
     emitter.expect( 'comment block' );
     //emitter.expect( 'consume', 'hello*/' ); // not sure why this fails

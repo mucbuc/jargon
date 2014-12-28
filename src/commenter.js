@@ -3,7 +3,7 @@ var assert = require( 'assert' )
 
 function Commenter( emitter ) {
   emitter.on( 'comment line', function( response ) {
-    var comment = response.rhs.match( /.*\n/ );
+    var comment = response.rhs.match( /.*/ );
   	response.consume( comment[0].length );
   } );
 

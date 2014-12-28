@@ -22,6 +22,12 @@ suite( 'analyzer', function(){
     delete emitter;
   }); 
   
+  test( 'PreprocessFollowedByComment', function() {
+    emitter.expect( 'preprocess' );
+    emitter.expect( 'comment line' );
+    split( '#define SOB 1 \/\/ hey\n' );
+  });
+
   test( 'SingleDeclaration', function() {
     emitter.expect( 'declare type', 'struct hello' );
     split( 'struct hello;' );  
