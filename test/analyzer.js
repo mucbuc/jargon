@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var assert = require( 'chai' ).assert
+  , fs = require( 'fs' )
   , Analyzer = require( '../src/analyzer' )
   , Expector = require( 'expector' ).Expector;
 
@@ -20,6 +21,21 @@ suite( 'analyzer', function(){
     delete emitter;
   }); 
   
+  test( 'readSampleFile', function() {
+
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'declare type')
+      .expect( 'declare function' )
+      .expect( 'statement' )
+      .expect( 'define type' )
+      .expect( 'define function' )
+      .expect( 'comment block' )
+      .expect( 'preprocess' )
+      .expect( 'comment line' );
+    split( fs.readFileSync( './test/samples/test.h' ).toString() );     
+  });
+
   test( 'PreprocessFollowedByComment', function() {
     emitter.expect( 'preprocess' );
     emitter.expect( 'comment line' );

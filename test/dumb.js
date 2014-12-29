@@ -18,6 +18,9 @@ emitter
   .expect( 'declare type')
   .expect( 'declare function' )
   .expect( 'statement' )
+  .expect( 'define type' )
+  .expect( 'define function' )
+  .expect( 'comment block' )
   .expect( 'preprocess' )
   .expect( 'comment line' );
 
