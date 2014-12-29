@@ -37,8 +37,9 @@ suite( 'analyzer', function(){
   });
 
   test( 'PreprocessFollowedByComment', function() {
-    emitter.expect( 'preprocess' );
-    emitter.expect( 'comment line' );
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'comment line' );
     split( '#define SOB 1 \/\/ hey\n' );
   });
 
@@ -48,13 +49,15 @@ suite( 'analyzer', function(){
   });
 
   test( 'namespaceTree', function() {
-    emitter.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } );
-    emitter.expect( 'end' ); 
+    emitter
+      .expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } )
+      .expect( 'end' ); 
 
     emitter.once( 'define namespace', function( context ) {
       emitter.once( 'end', function() {
-        emitter.expect( 'define namespace', { name: ' namespace inside ', code: '' } ); 
-        emitter.expect( 'end' );
+        emitter
+          .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
+          .expect( 'end' );
 
         split( context.code );
       } ); 
@@ -64,8 +67,9 @@ suite( 'analyzer', function(){
   }); 
 
   test( 'namespaceDeclaration', function() {
-    emitter.expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } );
-    emitter.expect( 'end' ); 
+    emitter
+      .expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } )
+      .expect( 'end' ); 
 
     emitter.once( 'define namespace', function( context ) {
       emitter.once( 'end', function() {
@@ -78,8 +82,8 @@ suite( 'analyzer', function(){
   });
 
   test( 'NestedNamespaces', function() {
-    emitter.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } );
-    emitter.once( 'define namespace', function( context ) {
+    emitter.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
+      .once( 'define namespace', function( context ) {
       emitter.once( 'end', function() {
         emitter.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
         split( context.code );
@@ -90,8 +94,8 @@ suite( 'analyzer', function(){
   });
 
   test( 'DeclarationsAndDefinitions', function() {
-    //emitter.expect( 'statement' );
-    emitter.expect( 'declare type', 'struct hello' ); 
+    //emitter.expect( 'statement' )
+      emitter.expect( 'declare type', 'struct hello' ); 
       split( 'struct hello;' );
 
     emitter.expect( 'define type', { name: 'struct hello', code: '' } ); 
@@ -134,20 +138,23 @@ suite( 'analyzer', function(){
   }); 
 
   test( 'declareTypeAfterPreproesorDirective', function() {
-    emitter.expect( 'preprocess' );
-    emitter.expect( 'declare type', 'struct bla' );
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'declare type', 'struct bla' );
     split( '#define hello asd\nstruct bla;' );
   });
 
   test( 'declareTypeAfterPreproesorDirectives', function() {
-    emitter.expect( 'preprocess' );
-    emitter.expect( 'declare type', 'struct bla' );
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'declare type', 'struct bla' );
     split( '#define hello asd\n#define hello\\nasdfasd\nstruct bla;' );
   });
 
   test( 'defineTypeAfterDeclareType', function () {
-    emitter.expect( 'declare type', ' struct jimmy ' ); 
-    emitter.expect( 'define type', { name: ' struct hey ', code: ' joe ' } )
+    emitter
+      .expect( 'declare type', ' struct jimmy ' )  
+      .expect( 'define type', { name: ' struct hey ', code: ' joe ' } );
     split( 'struct jimmy; struct hey { joe }' );
   });
 
