@@ -6,8 +6,6 @@ var assert = require( 'chai' ).assert
 
 assert( typeof Analyzer === 'function' );
 
-console.log( Analyzer );
-
 suite( 'analyzer', function(){
 
   var emitter;

@@ -1,6 +1,5 @@
-namespace hello
-{}
-
 #define INCLUDE_GUARD
-class fwd;
+class hello;
+void hello();
+int good;
 #endif	// INCLUDE_GUARD

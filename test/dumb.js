@@ -7,34 +7,20 @@ var assert = require( 'assert' )
 
 assert( typeof Analyzer !== 'undefined' );
     
-//test.only( "unit",  function() {
+var data = fs.readFileSync( './test/samples/test.h' )
+  , emitter = new Expector()
+  , analyzer = new Analyzer( emitter );
 
-  var emitter;
- // setup(function() {
-    emitter = new Expector;
-    emitter.setMaxListeners( 0 );
- // });
+emitter.setMaxListeners( 0 );
 
+emitter
+  .expect( 'preprocess' )
+  .expect( 'declare type')
+  .expect( 'declare function' )
+  .expect( 'statement' )
+  .expect( 'preprocess' )
+  .expect( 'comment line' );
 
+analyzer.split( data.toString() );
 
-  //test( "read test.h", function() {
-    var data = fs.readFileSync( './test/samples/test.h' )
-      , analyzer = new Analyzer( emitter );
-    emitter
-      .expect( 'open' )
-      .expect( 'open scope' )
-      .expect( 'define namespace', { name: 'namespace hello', code: '' } )
-      .expect( 'end' )
-      .expect( 'preprocess' )
-      .expect( 'declare type' )
-      .expect( 'preprocess' )
-      .expect( 'comment line' );
-    analyzer.split( data.toString() );
-  //});
-
-
-  //teardown(function() {
-    emitter.check(); 
-    delete emitter;
-  //}); 
-//}); 
+emitter.check(); 
