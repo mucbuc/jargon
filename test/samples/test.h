@@ -4,12 +4,23 @@ void hello();
 int good;
 struct hello
 {
-
+	fdsa;jlsjk
+	;gdsg;lj
+	;kljasdasff
 };
 
 void hello() 
 {
 
+}
+
+#pragma lj alsdkf
+
+namespace hello 
+{
+	fdsa;jlsjk
+	;kjdsafl;lj
+	;klj
 }
 
 /*

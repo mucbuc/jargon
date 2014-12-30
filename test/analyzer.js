@@ -30,6 +30,8 @@ suite( 'analyzer', function(){
       .expect( 'statement' )
       .expect( 'define type' )
       .expect( 'define function' )
+      .expect( 'preprocess')
+      .expect( 'define namespace' )
       .expect( 'comment block' )
       .expect( 'preprocess' )
       .expect( 'comment line' );
