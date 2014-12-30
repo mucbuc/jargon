@@ -27,7 +27,6 @@ suite( 'analyzer', function(){
       .expect( 'preprocess' )
       .expect( 'declare type')
       .expect( 'declare function' )
-      .expect( 'statement' )
       .expect( 'define type' )
       .expect( 'define function' )
       .expect( 'preprocess')
@@ -96,9 +95,8 @@ suite( 'analyzer', function(){
   });
 
   test( 'DeclarationsAndDefinitions', function() {
-    //emitter.expect( 'statement' )
-      emitter.expect( 'declare type', 'struct hello' ); 
-      split( 'struct hello;' );
+    emitter.expect( 'declare type', 'struct hello' ); 
+    split( 'struct hello;' );
 
     emitter.expect( 'define type', { name: 'struct hello', code: '' } ); 
     split( 'struct hello{};' );
@@ -109,10 +107,7 @@ suite( 'analyzer', function(){
     emitter.expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } );
 
     emitter.once( 'define type', function( context ) {
-      emitter.once( 'define type', function( context ) {
-        emitter.expect( 'define type', { name: ' struct inside ', code: '' } );
-        split( context.code );
-      } ); 
+      emitter.expect( 'define type', { name: ' struct inside ', code: '' });
       split( context.code );
     } );  
 
