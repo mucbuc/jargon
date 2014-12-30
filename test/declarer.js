@@ -39,25 +39,28 @@ suite( 'declarer', function() {
   });
 
   test( 'declareNot1', function(){
-    emitter.expectNot( 'declare function' );
-    emitter.expect( 'statement' );
-    emitter.expect( 'end' );
+    emitter
+      .expectNot( 'declare function' )
+      .expect( 'statement' )
+      .expect( 'end' );
     split( 'bla bla;' );
   });
   
   test( 'declareNot2', function(){
-    emitter.expectNot( 'declare function' );
-    emitter.expect( 'statement' );
-    emitter.expect( 'end' );
+    emitter
+      .expectNot( 'declare function' )
+      .expect( 'statement' )
+      .expect( 'end' );
     split( 'bla += bla();' );
   });
 
   test( 'ignoreSubScopes', function(){
-    emitter.expectNot( 'declare type' );
-    emitter.expect( 'open' );
-    emitter.expect( 'open scope' );
-    emitter.expect( 'close scope' );
-    emitter.expect( 'end' );
+    emitter
+      .expectNot( 'declare type' )
+      .expect( 'open' )
+      .expect( 'open scope' )
+      .expect( 'close scope' )
+      .expect( 'end' );
     split( 'namespace { struct hello; }' );
   });
 
