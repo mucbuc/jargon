@@ -2,7 +2,7 @@
 
 var assert = require( 'chai' ).assert
   , Commenter = require( '../src/commenter' )
-  , Expector = require( 'expector' ).Expector
+  , Expector = require( 'expector' ).SeqExpector
   , fluke = require( 'flukejs' );
 
 assert( typeof Commenter === 'function' );
@@ -20,26 +20,31 @@ suite( 'commenter', function() {
   }); 
 
   test( 'commenterSingleLine', function(){
-    emitter.expect( 'comment line' );
-    //emitter.expect( 'consume', 'hello\n' ); // not sure why this fails
+    emitter
+      .expect( 'comment line' )
+      .expect( 'end' );
     split( '// hello\n' );
   });
 
   test( 'commenterSingleLineWithoutNewLine', function(){
-    emitter.expect( 'comment line' );
+    emitter
+      .expect( 'comment line' )
+      .expect( 'end' );
     split( '// hello' );
   });
 
   test( 'commenterTwoSingleLineWithoutNewLine', function(){
     emitter
-    .expect( 'comment line' )
-    .repeat( 1 );
+      .expect( 'comment line' )
+      .repeat( 1 )
+      .expect( 'end' );
     split( '// hello\n//hello' );
   });
 
   test( 'commentBlock', function() {
-    emitter.expect( 'comment block' );
-    //emitter.expect( 'consume', 'hello*/' ); // not sure why this fails
+    emitter
+      .expect( 'comment block' )
+      .expect( 'end' );
     split( '/*hello*/' );
   }); 
 
