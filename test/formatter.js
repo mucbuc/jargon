@@ -7,7 +7,7 @@ console.log( typeof Formatter );
 
 suite( 'formatter', function() {
 	test( 'basic', function() {
-		console.log( '****');
-		//assert( true );
+		var formatter = new Formatter();
+		formatter.split( '\t \t \n hello  ' );
 	} );
 });
