@@ -40,58 +40,33 @@ var Analyzer = function( callback ) {
     , rules );
   };
 
-  emitter.on( 'end', function(obj) {
-    callback( 'end', obj );
-  });
+  forward( 'end' );
+  forward( 'declare type' );
+  forward( 'declare function' );
+  forward( 'comment line' );
+  forward( 'comment block' );
+  forward( 'preprocess' );
+  forward( 'template parameters' );
+  forward( 'code block' );
 
-  emitter.on( 'declare type', function(obj) {
-    callback( 'declare type', obj );
-  });
+  forwardContent('define type');
+  forwardContent( 'define function' );
+  forwardContent( 'define namespace' );
 
-  emitter.on( 'declare function', function(obj) {
-    callback( 'declare function', obj );
-  });
-
-  emitter.on( 'comment line', function(obj) {
-    callback( 'comment line', obj );
-  });
-
-  emitter.on( 'comment block', function(obj) {
-    callback( 'comment block', obj );
-  });
-
-  emitter.on( 'define type', function(obj) {
-    emitter.once( 'close', function(content) {
-      obj.code = content;
-      callback( 'define type', obj );
+  function forwardContent( event ) {
+    emitter.on( event, function(obj) {
+      emitter.once( 'close', function(content) {
+        obj.code = content;
+        callback( event, obj );
+      });
     });
-  });
+  }
 
-  emitter.on( 'define function', function(obj) {
-    emitter.once( 'close', function(content) {
-      obj.code = content;
-      callback( 'define function', obj );
+  function forward( event ) {
+    emitter.on( event, function(obj) {
+      callback( event, obj );
     });
-  });
-
-  emitter.on( 'define namespace', function(obj) {
-    emitter.once( 'close', function(content) {
-      obj.code = content;
-      callback( 'define namespace', obj );
-    });
-  });
-
-  emitter.on( 'preprocess', function(obj) {
-    callback( 'preprocess', obj );
-  });
-
-  emitter.on( 'template parameters', function(obj) {
-    callback( 'template parameters', obj );
-  });
-
-  emitter.on( 'code block', function(obj) {
-    callback( 'code block', obj );
-  });
+  }
 }
 
 module.exports = Analyzer;
