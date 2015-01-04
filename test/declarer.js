@@ -42,6 +42,7 @@ suite( 'declarer', function() {
     emitter
       .expectNot( 'declare function' )
       .expect( 'statement' )
+      .expect( 'code block' )
       .expect( 'end' );
     split( 'bla bla;' );
   });
@@ -50,18 +51,9 @@ suite( 'declarer', function() {
     emitter
       .expectNot( 'declare function' )
       .expect( 'statement' )
+      .expect( 'code block' )
       .expect( 'end' );
     split( 'bla += bla();' );
-  });
-
-  test( 'ignoreSubScopes', function(){
-    emitter
-      .expectNot( 'declare type' )
-      .expect( 'open' )
-      .expect( 'open scope' )
-      .expect( 'close scope' )
-      .expect( 'end' );
-    split( 'namespace { struct hello; }' );
   });
 
   function split( code ) {

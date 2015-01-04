@@ -4,9 +4,8 @@ void hello();
 int good;
 struct hello
 {
-	fdsa;jlsjk
-	;gdsg;lj
-	;kljasdasff
+	int hello;
+	void bye();
 };
 
 void hello() 

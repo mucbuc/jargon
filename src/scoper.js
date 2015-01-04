@@ -17,7 +17,6 @@ function Scoper( emitter, rules ) {
     var depth = 1
       , source = response.rhs
       , content = '';
-    emitter.emit( 'open scope', response.lhs );
     response.resetStash(); 
     do {
       fluke.splitNext(source, function(type, inner) {
@@ -29,17 +28,12 @@ function Scoper( emitter, rules ) {
         }
         else if (type == 'close' || type == 'end') {
           if (!--depth) {
-            emitter.emit( 'close scope', content );
-            response.consume( content.length );
+            emitter.emit( type, content );
+            response.consume( (content + inner.token).length );
             response.resetStash();
           }
           else {
             content += inner.token;
-          }
-        }
-        else if (type == 'end') {
-          if (!--depth) {
-            emitter.emit( 'end', inner );
           }
         }
       }, { 

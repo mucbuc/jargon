@@ -21,7 +21,7 @@ function Template( emitter ) {
     var sub = Object.create( emitter.constructor.prototype )
       , scoper = new Scoper( sub, rules );
 
-    sub.on( 'close scope', function(code) {
+    sub.on( 'close', function(code) {
       emitter.emit( 'template parameters', code );
     } );
 

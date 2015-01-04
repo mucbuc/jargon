@@ -22,9 +22,7 @@ suite( 'scoper', function() {
   test( 'emptyScope', function() {
     emitter
       .expect( 'open' )
-      .expect( 'open scope', 'namespace bla' )
-      .expect( 'close scope', '' )
-      .expect( 'close' )
+      .expect( 'close', '' )
       .expect( 'end' );
     split( 'namespace bla {}' );
   }); 
@@ -32,9 +30,7 @@ suite( 'scoper', function() {
   test( 'statementScope', function() {
     emitter
       .expect( 'open' )
-      .expect( 'open scope', 'namespace bla' )
-      .expect( 'close scope', 'hello;' )
-      .expect( 'close' )
+      .expect( 'close', 'hello;' )
       .expect( 'end' );
 
     split( 'namespace bla { hello; }' );
@@ -43,9 +39,7 @@ suite( 'scoper', function() {
   test( 'basicScope', function() {
     emitter
       .expect( 'open' )
-      .expect( 'open scope', 'namespace bla' )
-      .expect( 'close scope', 'hello' )
-      .expect( 'close' )
+      .expect( 'close', 'hello' )
       .expect( 'end' );
     split( 'namespace bla { hello }' );
   });
@@ -53,9 +47,7 @@ suite( 'scoper', function() {
   test( 'nestedScopes', function() {
     emitter
       .expect( 'open' )
-      .expect( 'open scope', 'namespace hello' )
-      .expect( 'close scope', 'namespace world{ namespace {} }' )
-      .expect( 'close' )
+      .expect( 'close', 'namespace world{ namespace {} }' )
       .expect( 'end' );
     split( 'namespace hello{ namespace world{ namespace {} } }' );
   });
@@ -63,9 +55,7 @@ suite( 'scoper', function() {
   test( 'aggregateScopes', function() {
     emitter  
       .expect( 'open' )
-      .expect( 'open scope', 'namespace outside' )
-      .expect( 'close scope', 'namespace inside1 {} namespace inside2 {}' )
-      .expect( 'close' )
+      .expect( 'close', 'namespace inside1 {} namespace inside2 {}' )
       .expect( 'end' );
     split( 'namespace outside{ namespace inside1 {} namespace inside2 {} }' );
   });
@@ -75,9 +65,7 @@ suite( 'scoper', function() {
 
     emitter
       .expect( 'open' )
-      .expect( 'open scope', 'template' )
-      .expect( 'close scope', 'typename' )
-      .expect( 'close' )
+      .expect( 'close', 'typename' )
       .expect( 'end' );
     split( 'template< typename >', rules );
   });
@@ -87,9 +75,7 @@ suite( 'scoper', function() {
 
     emitter
       .expect( 'open' )
-      .expect( 'open scope', 'template' )
-      .expect( 'close scope', 'template< typename >' )
-      .expect( 'close' )
+      .expect( 'close', 'template< typename >' )
       .expect( 'end' );
     split( 'template< template< typename > >', rules );  
   });   

@@ -6,8 +6,8 @@ assert( typeof regexMap !== 'undefined' );
 
 function Definer(emitter) {
 
-  emitter.on( 'open scope', function( source ) {
-    var code = source.replace( /.*?;/, '' );
+  emitter.on( 'open', function( obj ) {
+    var code = obj.lhs.replace( /.*?;/, '' );
 
     if (isNamespace(code))
       initDefine( 'namespace', code );
@@ -30,19 +30,17 @@ function Definer(emitter) {
     }
 
     function initDefine( type, name, matches ) {
-      emitter.once( 'close scope', function( code ) {
-        if (matches)
-          emitter.emit( 'define ' + type, {
-            name: matches[1],
-            code: code,
-            meta: matches[2],
-          } );
-        else
-          emitter.emit( 'define ' + type, {
-            name: name,
-            code: code
-          } );
-      } );
+      if (matches) {
+        emitter.emit( 'define ' + type, {
+          name: matches[1],
+          meta: matches[2],
+        } );
+      }
+      else {
+        emitter.emit( 'define ' + type, {
+          name: name,
+        } );
+      }
     }
   } );
 }

@@ -3,7 +3,7 @@
 var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Definer = require( '../src/definer' )
-  , Expector = require( 'expector' ).Expector
+  , Expector = require( 'expector' ).SeqExpector
   , fluke = require( 'flukejs' ); 
 
 assert( typeof Definer === 'function' );
@@ -21,72 +21,155 @@ suite( 'definer', function() {
   }); 
 
   test( 'defineNamespace', function() {
-    emitter.expectNot( 'define type' );
-    emitter.expectNot( 'define function' );
+    emitter
+      .expectNot( 'define type' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define namespace', { name: 'namespace hello ' } );
 
-    emitter.expect( 'define namespace', { name: 'namespace hello ', code: ' this is it ' } );
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+
     split( 'namespace hello { this is it }' );
-
-    emitter.expect( 'define namespace', { name: 'namespace world ', code: ' wtf? ' } );
-    split( 'namespace world { wtf? }' );
-
-    emitter.expect( 'define namespace', { name: 'namespace world', code: '' } );
-    split( 'namespace world{}' );
   }); 
 
-  test( 'defineType', function() {
-    emitter.expectNot( 'define namespace' );
-    emitter.expectNot( 'define function' );
+  test( 'defineEmptyNamespace', function() {
+    emitter
+      .expectNot( 'define type' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define namespace', { name: 'namespace hello ' } );
+  
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+    
+    split( 'namespace hello {}' );
+  });
 
-    emitter.expect( 'define type', { name: 'struct hello ', code: ' unsigned world; ' } );
+  test( 'defineTypeWithStatement', function() {
+    emitter
+      .expectNot( 'define namespace' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define type', { name: 'struct hello ' } );
+
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+    
     split( 'struct hello { unsigned world; }' );
+  });
 
-    emitter.expect( 'define type', { name: 'struct cya ', code: ' yes' } );
+  test( 'defineType', function() {
+    emitter
+      .expectNot( 'define namespace' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define type', { name: 'struct cya ' } );
+
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+    
     split( 'struct cya { yes}' );
+  });
 
-    emitter.expect( 'define type', { name: ' struct cya ', code: ' yes' } );
+  test( 'defineTypeAfterStatement', function() {
+    emitter
+      .expectNot( 'define namespace' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define type', { name: ' struct cya ' } );
+
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+    
     split( 'typedef hello string; struct cya { yes}' );
   });
 
   test( 'defineSubType', function() {
-    emitter.expect( 'define type', { name: 'struct cya ', code: ' yes ', meta: ' blu ' } );
+    emitter
+      .expect( 'open' )
+      .expect( 'define type', { name: 'struct cya ', meta: ' blu ' } );
+
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+    
     split( 'struct cya : blu { yes }' );
   });
 
-  test( 'defineFunction', function(){
-    emitter.expectNot( 'define namespace' );
-    emitter.expectNot( 'define type' );
+  test( 'defineFunction', function() {
+    emitter
+      .expectNot( 'define namespace' )
+      .expectNot( 'define type' )
+      .expect( 'open' )
+      .expect( 'define function', { name: 'void foo() ' } );
 
-    emitter.expect( 'define function', { name: 'void foo() ', code: ' do something ' } );
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+
     split( 'void foo() { do something }' );
-
-    emitter.expect( 'define function', { name: 'void fool() ', code: ' do nothing ' } );
-    split( 'void fool() { do nothing }' );
-
-    emitter.expect( 'define function', {
-      name: 'hello::hello()',
-      code: 'bla bla',
-      meta: ' base() '
+  } );
+ 
+  test( 'defineMemberFunction', function() {
+    emitter
+      .expectNot( 'define namespace' )
+      .expectNot( 'define type' )
+      .expect( 'open' )
+      .expect( 'define function', {
+        name: 'hello::hello()',
+        meta: ' base() '
     } );
+
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+
     split( 'hello::hello() : base() {bla bla}' );
   });
 
+
   test( 'defineNamespaceWithWhite', function(){
-    emitter.expectNot( 'define type' );
-    emitter.expectNot( 'define function' );
+    emitter
+      .expectNot( 'define type' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define namespace', { name: ' namespace hello ' } );
 
-    emitter.expect( 'define namespace', { name: ' namespace hello ', code: ' this is it ' } );
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+
     split( ' namespace hello { this is it }' );
+  });
 
-    emitter.expect( 'define namespace', { name: '  namespace world ', code: ' wtf? ' } );
-    split( '  namespace world { wtf? }' );
 
-    emitter.expect( 'define namespace', { name: '    namespace world', code: '' } );
-    split( '    namespace world{}' );
+  test( 'defineEmptyNamespace', function(){
+    emitter
+      .expectNot( 'define type' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define namespace', { name: '  namespace world' } );
 
-    emitter.expect( 'define namespace', { name: 'namespace   world ', code: '' } );
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+
+    split( '  namespace world{}' );
+  });
+
+  test( 'defineNamespaceWithWhite', function(){
+    emitter
+      .expectNot( 'define type' )
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'define namespace', { name: 'namespace   world ' } )
+
+    expectScopeTrail( emitter )
+      .expect( 'end' );
+
     split( 'namespace   world {}' );
   });
+
+  function expectScopeTrail(emitter) {
+    return emitter
+      .expect( 'close' );
+  }
 
   function split( code ) {
     var tokenizer
@@ -96,8 +179,8 @@ suite( 'definer', function() {
           'close': '}',
       };
       
-    tokenizer = new Scoper( emitter, rules );
     definer = new Definer(emitter);
+    tokenizer = new Scoper( emitter, rules );
     fluke.splitAll( code, function( type, request ) {
         emitter.emit(type, request);
       }

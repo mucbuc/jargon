@@ -1,21 +1,21 @@
 var assert = require( 'chai' ).assert
   , fluke = require( 'flukejs' )
+  , events = require( 'events' )
   , Commenter = require( './commenter' )
   , Declarer = require( './declarer' )
   , Definer = require( './definer' )
   , Literalizer = require( './literalizer' )
   , Preprocessor = require( './preprocessor' )
-  , Scoper = require( './scoper' )
-  , events = require( 'events' );
+  , Scoper = require( './scoper' );
 
-assert( typeof Scoper === 'function' );
+assert( typeof Commenter === 'function' );
 assert( typeof Declarer === 'function' );
 assert( typeof Definer === 'function' );
-assert( typeof Preprocessor === 'function' );
 assert( typeof Literalizer === 'function' );
-assert( typeof Commenter === 'function' );
+assert( typeof Preprocessor === 'function' );
+assert( typeof Scoper === 'function' );
 
-var Analyzer = function( out ) {
+var Analyzer = function( callback ) {
   
   var rules = {
       'preprocess': '#',
@@ -23,13 +23,12 @@ var Analyzer = function( out ) {
       'comment block': '\\/\\*',
       'open literal': '([^//]"|^")',
       'statement': ';',
-      'open': '{',
-      'close': '}'
+      'open': '{'
     }
     , emitter = new events.EventEmitter()
-    , scoper = new Scoper( emitter, rules )
+    , definer = new Definer( emitter )
+    , scoper = new Scoper( emitter )
 	  , declarer = new Declarer( emitter )
-	  , definer = new Definer( emitter )
 	  , preprocessor = new Preprocessor( emitter )
     , literalizer = new Literalizer( emitter )
     , commenter = new Commenter( emitter );
@@ -42,43 +41,56 @@ var Analyzer = function( out ) {
   };
 
   emitter.on( 'end', function(obj) {
-    out.emit( 'end', obj );
+    callback( 'end', obj );
   });
 
   emitter.on( 'declare type', function(obj) {
-    out.emit( 'declare type', obj );
+    callback( 'declare type', obj );
   });
 
   emitter.on( 'declare function', function(obj) {
-    out.emit( 'declare function', obj );
+    callback( 'declare function', obj );
   });
 
   emitter.on( 'comment line', function(obj) {
-    out.emit( 'comment line', obj );
+    callback( 'comment line', obj );
   });
 
   emitter.on( 'comment block', function(obj) {
-    out.emit( 'comment block', obj );
+    callback( 'comment block', obj );
   });
 
   emitter.on( 'define type', function(obj) {
-    out.emit( 'define type', obj );
+    emitter.once( 'close', function(content) {
+      obj.code = content;
+      callback( 'define type', obj );
+    });
   });
 
   emitter.on( 'define function', function(obj) {
-    out.emit( 'define function', obj );
+    emitter.once( 'close', function(content) {
+      obj.code = content;
+      callback( 'define function', obj );
+    });
   });
 
   emitter.on( 'define namespace', function(obj) {
-    out.emit( 'define namespace', obj );
+    emitter.once( 'close', function(content) {
+      obj.code = content;
+      callback( 'define namespace', obj );
+    });
   });
 
   emitter.on( 'preprocess', function(obj) {
-    out.emit( 'preprocess', obj );
+    callback( 'preprocess', obj );
   });
 
   emitter.on( 'template parameters', function(obj) {
-    out.emit( 'template parameters', obj );
+    callback( 'template parameters', obj );
+  });
+
+  emitter.on( 'code block', function(obj) {
+    callback( 'code block', obj );
   });
 }
 
