@@ -6,19 +6,20 @@ var util = require( 'util' )
 function Formatter() {
 	
 	this.forward = function(event, info, cb) {
-		cb(event, info);
-	/*
-		var matches = info.match( /(\s*)(\w*)(\s*)/ );
-		if (matches) {
-			if (matches[1].length) {
-				cb( 'format', matches[1] );
-			}
-			cb( event, matches[2] );
-			if (matches[3].length) {
-				cb( 'format', matches[3] );
+		if (typeof info === 'string') {
+			var matches = info.match( /(\s*)(\w*)(\s*)/ );
+			if (matches) {
+				if (matches[1].length) {
+					cb( 'format', matches[1] );
+				}
+				cb( event, matches[2] );
+				if (matches[3].length) {
+					cb( 'format', matches[3] );
+				}
+				return;
 			}
 		}
-		*/
+		cb( event, info );
 	};
 };
 

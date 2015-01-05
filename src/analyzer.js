@@ -52,7 +52,7 @@ var Analyzer = function( callback ) {
   forward( 'template parameters' );
   forward( 'code block' );
 
-  forwardContent('define type');
+  forwardContent( 'define type' );
   forwardContent( 'define function' );
   forwardContent( 'define namespace' );
 
@@ -60,14 +60,15 @@ var Analyzer = function( callback ) {
     emitter.on( event, function(obj) {
       emitter.once( 'close', function(content) {
         obj.code = content;
-        callback( event, obj );
+        formatter.forward(event, obj, callback);
       });
     });
   }
 
   function forward( event ) {
     emitter.on( event, function(obj) {
-      callback( event, obj );
+      formatter.forward(event, obj, callback);
+      //callback( event, obj );
     });
   }
 }
