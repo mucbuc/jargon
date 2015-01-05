@@ -1,15 +1,27 @@
 #!/usr/bin/env node
 
-function Formatter(emitter) {
+var util = require( 'util' )
+  , events = require( 'events' );
+
+function Formatter() {
 	
-	this.split = function(name, event) {
-		var matches = name.match( /(\s*)(\w*)(\s*)/ );
+	this.forward = function(event, info, cb) {
+		cb(event, info);
+	/*
+		var matches = info.match( /(\s*)(\w*)(\s*)/ );
 		if (matches) {
-			emitter.emit( 'formatting', matches[1] );
-			emitter.emit( event, matches[2] );
-			emitter.emit( 'formatting', matches[3] );
+			if (matches[1].length) {
+				cb( 'format', matches[1] );
+			}
+			cb( event, matches[2] );
+			if (matches[3].length) {
+				cb( 'format', matches[3] );
+			}
 		}
+		*/
 	};
 };
+
+util.inherits( Formatter, events.EventEmitter );
 
 module.exports = Formatter; 

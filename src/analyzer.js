@@ -4,6 +4,7 @@ var assert = require( 'chai' ).assert
   , Commenter = require( './commenter' )
   , Declarer = require( './declarer' )
   , Definer = require( './definer' )
+  , Formatter = require( './formatter' )
   , Literalizer = require( './literalizer' )
   , Preprocessor = require( './preprocessor' )
   , Scoper = require( './scoper' );
@@ -11,6 +12,7 @@ var assert = require( 'chai' ).assert
 assert( typeof Commenter === 'function' );
 assert( typeof Declarer === 'function' );
 assert( typeof Definer === 'function' );
+assert( typeof Formatter === 'function' );
 assert( typeof Literalizer === 'function' );
 assert( typeof Preprocessor === 'function' );
 assert( typeof Scoper === 'function' );
@@ -29,6 +31,7 @@ var Analyzer = function( callback ) {
     , definer = new Definer( emitter )
     , scoper = new Scoper( emitter )
 	  , declarer = new Declarer( emitter )
+    , formatter = new Formatter()
 	  , preprocessor = new Preprocessor( emitter )
     , literalizer = new Literalizer( emitter )
     , commenter = new Commenter( emitter );

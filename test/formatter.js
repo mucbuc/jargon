@@ -1,13 +1,17 @@
+#!/usr/bin/env node
+
 var assert = require( 'assert' )
+  , events = require( 'events' )
   , Formatter = require( '../src/formatter.js' );
 
 assert( typeof Formatter === 'function' );
 
-console.log( typeof Formatter );
-
-suite( 'formatter', function() {
-	test( 'basic', function() {
+// suite( 'formatter', function() {
+// 	test( 'basic', function() {
 		var formatter = new Formatter();
-		formatter.split( '\t \t \n hello  ' );
-	} );
-});
+
+		formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
+			console.log( event, new Buffer( code ) );
+		} );
+// 	} );
+// });
