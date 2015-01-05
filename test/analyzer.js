@@ -26,6 +26,7 @@ suite( 'analyzer', function(){
     emitter
       .expect( 'preprocess' )
       .expect( 'declare type' )
+      .expect( 'format' )
       .expect( 'declare function' )
       .expect( 'code block' )
       .expect( 'define type', { 
@@ -93,6 +94,7 @@ suite( 'analyzer', function(){
     emitter.once( 'define namespace', function( context ) {
       emitter.once( 'end', function() {
         emitter
+          .expect( 'format' )
           .expect( 'declare type', 'struct hello' )
           .expect( 'code block' )
           .expect( 'end' );

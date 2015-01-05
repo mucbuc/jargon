@@ -6,8 +6,9 @@ var util = require( 'util' )
 function Formatter() {
 	
 	this.forward = function(event, info, cb) {
+
 		if (typeof info === 'string') {
-			var matches = info.match( /(\s*)(\w*)(\s*)/ );
+			var matches = info.match( /(\s*)(.*)(\s*?)/ );
 			if (matches) {
 				if (matches[1].length) {
 					cb( 'format', matches[1] );
