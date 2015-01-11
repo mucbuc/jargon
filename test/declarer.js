@@ -62,11 +62,24 @@ suite( 'declarer', function() {
         'open': '{'
       }
       , tokenizer = new Scoper( emitter, rules )
-      , definer = new Declarer(emitter);
+      , declarer = new Declarer();
       
-    fluke.splitAll( code, function( type, request ) {
-        emitter.emit(type, request);
+    fluke.splitAll( code, function( type, req ) {
+        emitter.emit( type, req );
+        if (type === 'statement') {
+          process( req );
+        }
+        else if (type === 'end') {
+          process( req );
+        }
+
+        function process( req ) { 
+          declarer.process( req, function( type, val ) {
+            emitter.emit( type, val );
+          });
+        }
       }
       , rules ); 
-  }
+    }
 });
+

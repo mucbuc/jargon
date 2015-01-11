@@ -49,14 +49,26 @@ suite( 'commenter', function() {
   }); 
 
   function split( code ) {
-    var commenter = new Commenter( emitter )
+    var commenter = new Commenter()
       , rules = {
           'comment line': '\\/\\/',
           'comment block': '\\/\\*',
       }; 
 
     fluke.splitAll( code, function( type, request ) {
-        emitter.emit(type, request);
+        if (type === 'comment line') {
+          commenter.processLine( request, function(val) {
+            emitter.emit( 'comment line', val );
+          } );
+        }
+        else if (type === 'comment block') {
+          commenter.processBlock( request, function(val) {
+            emitter.emit( 'comment block', val );
+          } );
+        }
+        else {
+          emitter.emit( type, request );
+        }
       }
       , rules ); 
   }

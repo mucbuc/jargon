@@ -1,7 +1,7 @@
 var assert = require( 'assert' )
   , fluke = require( 'flukejs' );
 
-function Scoper( emitter, rules ) {
+function Scoper( rules ) {
 
   var instance = this
     , depth = 0;
@@ -13,11 +13,12 @@ function Scoper( emitter, rules ) {
       };
   }
 
-  emitter.on( 'open', function(response) {
+  this.process = function(req, cb) {
+
     var depth = 1
-      , source = response.rhs
+      , source = req.rhs
       , content = '';
-    response.resetStash(); 
+    req.resetStash(); 
     do {
       fluke.splitNext(source, function(type, inner) {
         source = inner.rhs;
@@ -28,9 +29,9 @@ function Scoper( emitter, rules ) {
         }
         else if (type == 'close' || type == 'end') {
           if (!--depth) {
-            emitter.emit( type, content );
-            response.consume( (content + inner.token).length );
-            response.resetStash();
+            cb( type, content );
+            req.consume( (content + inner.token).length );
+            req.resetStash();
           }
           else {
             content += inner.token;
@@ -42,7 +43,7 @@ function Scoper( emitter, rules ) {
       } );
     } 
     while(depth); 
-  } );
+  };
 }
 
 module.exports = Scoper;

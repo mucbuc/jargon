@@ -19,7 +19,13 @@ function Template( emitter ) {
 
   function parse( response ) {
     var sub = Object.create( emitter.constructor.prototype )
-      , scoper = new Scoper( sub, rules );
+      , scoper = new Scoper( rules );
+
+    sub.on( 'open', function( req ) {
+      scoper.process( req, function(type, content) {
+        sub.emit( type, content );
+      });
+    } );
 
     sub.on( 'close', function(code) {
       emitter.emit( 'template parameters', code );

@@ -179,10 +179,15 @@ suite( 'definer', function() {
           'close': '}',
       };
       
-    definer = new Definer(emitter);
-    tokenizer = new Scoper( emitter, rules );
+    definer = new Definer();
+    tokenizer = new Scoper( rules );
     fluke.splitAll( code, function( type, request ) {
         emitter.emit(type, request);
+        if (type == 'open') {
+          definer.process( request, function(type, content) {
+            emitter.emit( type, content );
+          });
+        }
       }
       , rules ); 
   }

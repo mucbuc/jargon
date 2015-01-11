@@ -82,15 +82,20 @@ suite( 'scoper', function() {
 
   function split( code, rules ) {
   
-    var tokenizer; 
+    var scoper; 
 
     if (typeof rules === 'undefined') {
       rules = { 'open': '{', 'close': '}' };
     }
 
-    tokenizer = new Scoper( emitter, rules );
+    scoper = new Scoper( rules );
     fluke.splitAll( code, function( type, request ) {
         emitter.emit(type, request);
+        if (type == 'open' || type == 'close') {
+          scoper.process( request, function(type, content) {
+            emitter.emit( type, content );
+          });
+        }
       }
       , rules ); 
   }

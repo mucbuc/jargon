@@ -1,17 +1,21 @@
 var assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap;
 
-function Preprocessor( emitter ) {
+function Preprocessor() {
 
-  emitter.on( 'preprocess', function( response ) {
+  this.preprocess = function( req, cb ) {
 		var result = ''
-		  , code = response.rhs;
+		  , code = req.rhs;
 		do {
-			var chunk = code.search( '\n' ) + 1
+			var chunk = code.length
+        , newLine = code.search( '\n' ) 
 			  , commentMultiple = code.search( regexMap.commentMultiple )
 			  , commentSingle = code.search( regexMap.commentSingle );
 
-			if (commentMultiple != -1) {
+      if (newLine != -1) {
+        chunk = newLine + 1;
+      }
+      if (commentMultiple != -1) {
 				chunk = Math.min( chunk, commentMultiple );
 			}
 			if (commentSingle != -1) {
@@ -21,8 +25,11 @@ function Preprocessor( emitter ) {
 			code = code.substr( chunk, code.length );
 		}
 		while (result[result.length - 2] === '\\' );
-		response.consume( result.length );
-	} );
+  	req.consume( result.length );
+    if (typeof cb !== 'undefined') {
+      cb( result );
+    }
+  };
 }
 
 module.exports = Preprocessor;

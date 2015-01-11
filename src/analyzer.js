@@ -28,27 +28,55 @@ var Analyzer = function( callback ) {
       'open': '{'
     }
     , emitter = new events.EventEmitter()
-    , definer = new Definer( emitter )
-    , scoper = new Scoper( emitter )
-	  , declarer = new Declarer( emitter )
+    , definer = new Definer()
+    , scoper = new Scoper()
+	  , declarer = new Declarer()
     , formatter = new Formatter()
-	  , preprocessor = new Preprocessor( emitter )
-    , literalizer = new Literalizer( emitter )
-    , commenter = new Commenter( emitter );
+	  , preprocessor = new Preprocessor() 
+    , literalizer = new Literalizer()
+    , commenter = new Commenter();
 
   this.split = function( code ) {
     fluke.splitAll( code, function( type, request ) {
-        emitter.emit(type, request);
+      switch(type) {
+        case 'open': {
+          definer.process( request, function( type, content ) {
+            emitter.emit( type, content );
+          });
+          scoper.process(request, function(type, content) {
+            emitter.emit( type, content );
+          });
+          break;
+        }
+        case 'statement': {
+          declare( request );
+          break;
+        }
+        case 'end': {
+          declare( request );
+          break;
+        }
+        case 'preprocess': {
+          preprocessor.preprocess( request, function( val ) {
+            callback( 'preprocess', val );
+          });
+          break;
+        }
+      };
+      emitter.emit(type, request);
+
+      function declare( req ) {
+        declarer.process( req, function( event, obj ) {
+          formatter.forward(event, obj, callback);
+        });
+      }
     }
     , rules );
   };
 
   forward( 'end' );
-  forward( 'declare type' );
-  forward( 'declare function' );
   forward( 'comment line' );
   forward( 'comment block' );
-  forward( 'preprocess' );
   forward( 'template parameters' );
   forward( 'code block' );
 
@@ -68,7 +96,6 @@ var Analyzer = function( callback ) {
   function forward( event ) {
     emitter.on( event, function(obj) {
       formatter.forward(event, obj, callback);
-      //callback( event, obj );
     });
   }
 }

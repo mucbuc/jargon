@@ -2,34 +2,29 @@ var assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap
   , fluke = require( 'flukejs' );
 
-function Declarer(emitter) {
+function Declarer() {
 
-  emitter.on( 'statement', function( response ) { 
-    declare( response.lhs );
-  } ); 
+  this.process = function(req, cb) {
+    var code = req.lhs
+      , rules = { 'statement': ';' };
 
-  emitter.on( 'end', function( response ) {
-    declare( response.lhs );
-  } );
-
-  function declare(code) {
-    var rules = { 'statement': ';' };
-
-    fluke.splitAll( code, function(type, response) {
-        if (isType(response.lhs)) {
-          emitter.emit( 'declare type', response.lhs );
+    fluke.splitAll( code, function(type, req) {
+        if (isType(req.lhs)) {
+          cb( 'declare type', req.lhs );
         }
-        else if (isFunctionDeclaration(response.lhs)) {
-          emitter.emit( 'declare function', response.lhs );
+        else if (isFunctionDeclaration(req.lhs)) {
+          cb( 'declare function', req.lhs );
         }
-        else if (response.lhs.length || response.stash.length) {
+        else if (req.lhs.length || req.stash.length) {
           var block = 
-            response.lhs 
-          + response.token 
-          + response.stash === 'undefined' ? '' : response.stash;
+            req.lhs 
+          + req.token 
+          + req.stash === 'undefined' ? '' : req.stash;
            
-          emitter.emit( 'code block', block );
+          cb( 'code block', block );
         }
+
+        //cb( type, req );
 
         function isFunctionDeclaration(code) {
           return code.search( regexMap.functionDeclare ) == 0;
@@ -41,7 +36,7 @@ function Declarer(emitter) {
       }, 
       rules 
     );
-  }
+  };
 }
 
 module.exports = Declarer;

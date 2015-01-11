@@ -4,9 +4,9 @@ var assert = require( 'assert' )
 
 assert( typeof regexMap !== 'undefined' );
 
-function Definer(emitter) {
+function Definer() {
 
-  emitter.on( 'open', function( obj ) {
+  this.process = function( obj, cb ) {
     var code = obj.lhs.replace( /.*?;/, '' );
 
     if (isNamespace(code))
@@ -31,18 +31,18 @@ function Definer(emitter) {
 
     function initDefine( type, name, matches ) {
       if (matches) {
-        emitter.emit( 'define ' + type, {
+        cb( 'define ' + type, {
           name: matches[1],
           meta: matches[2],
         } );
       }
       else {
-        emitter.emit( 'define ' + type, {
+        cb( 'define ' + type, {
           name: name,
         } );
       }
     }
-  } );
+  };
 }
 
 module.exports = Definer;

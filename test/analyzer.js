@@ -20,9 +20,8 @@ suite( 'analyzer', function(){
     emitter.check(); 
     delete emitter;
   }); 
-
+/*
   test( 'readSampleFile', function() {
-
     emitter
       .expect( 'preprocess' )
       .expect( 'declare type' )
@@ -49,7 +48,7 @@ suite( 'analyzer', function(){
 
     split( fs.readFileSync( './test/samples/test.h' ).toString() );     
   });
-
+*/
   test( 'PreprocessFollowedByComment', function() {
     emitter
       .expect( 'preprocess' )

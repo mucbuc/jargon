@@ -50,11 +50,14 @@ suite( 'preprocessor', function() {
     split( '#define hello hello\\\nhello\nbla' );
   });
 
-  function split( code ) {
-    var commenter = new Preprocessor( emitter )
+  function split( code, cb ) {
+    var preprocessor = new Preprocessor()
       , rules = { 'preprocess': '#' };
 
     fluke.splitAll( code, function( type, request ) {
+        if (type === 'preprocess') {  
+          preprocessor.preprocess( request, function() {});
+        }
         emitter.emit(type, request);
       }
       , rules ); 

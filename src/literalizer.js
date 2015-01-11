@@ -1,5 +1,5 @@
 
-function Literalizer( emitter ) {
+function Literalizer() {
 
 }
 

@@ -1,16 +1,19 @@
 var assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap;
 
-function Commenter( emitter ) {
-  emitter.on( 'comment line', function( response ) {
-    var comment = response.rhs.match( /.*/ );
-  	response.consume( comment[0].length );
-  } );
+function Commenter() {
+  
+  this.processLine = function(req, cb) {
+    var comment = req.rhs.match( /.*/ );
+    req.consume( comment[0].length );
+    cb( comment[0] ); 
+  };
 
-  emitter.on( 'comment block', function( response ) {
-    var comment = response.rhs.match( /.*\*\// );
-    response.consume( comment[0].length );
-  } );
+  this.processBlock = function(req, cb) {
+    var comment = req.rhs.match( /.*\*\// );
+    req.consume( comment[0].length );
+    cb( comment[0] );    
+  };
 }
 
 module.exports = Commenter;
