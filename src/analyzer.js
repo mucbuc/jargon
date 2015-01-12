@@ -40,7 +40,7 @@ var Analyzer = function( callback ) {
     fluke.splitAll( code, function( type, request ) {
       emitter.emit( type, request );
     }
-  , rules );
+    , rules );
   };
   
   emitter.on( 'open', function( request ) {
