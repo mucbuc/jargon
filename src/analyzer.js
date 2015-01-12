@@ -20,13 +20,13 @@ assert( typeof Scoper === 'function' );
 var Analyzer = function( callback ) {
   
   var rules = {
-      'preprocess': '#',
-      'comment line': '\\/\\/',
-      'comment block': '\\/\\*',
-      'open literal': '([^//]"|^")',
-      'statement': ';',
-      'open': '{'
-    }
+        'preprocess': '#',
+        'comment line': '\\/\\/',
+        'comment block': '\\/\\*',
+        'open literal': '([^//]"|^")',
+        'statement': ';',
+        'open': '{'
+      }
     , emitter = new events.EventEmitter()
     , definer = new Definer()
     , scoper = new Scoper()
@@ -38,41 +38,33 @@ var Analyzer = function( callback ) {
 
   this.split = function( code ) {
     fluke.splitAll( code, function( type, request ) {
-      switch(type) {
-        case 'open': {
-          definer.process( request, function( type, content ) {
-            emitter.emit( type, content );
-          });
-          scoper.process(request, function(type, content) {
-            emitter.emit( type, content );
-          });
-          break;
-        }
-        case 'statement': {
-          declare( request );
-          break;
-        }
-        case 'end': {
-          declare( request );
-          break;
-        }
-        case 'preprocess': {
-          preprocessor.preprocess( request, function( val ) {
-            callback( 'preprocess', val );
-          });
-          break;
-        }
-      };
-      emitter.emit(type, request);
-
-      function declare( req ) {
-        declarer.process( req, function( event, obj ) {
-          formatter.forward(event, obj, callback);
-        });
-      }
+      emitter.emit( type, request );
     }
     , rules );
   };
+  
+  emitter.on( 'open', function( request ) {
+    definer.process( request, function( type, content ) {
+      emitter.emit( type, content );
+    });
+    scoper.process(request, function(type, content) {
+      emitter.emit( type, content );
+    });    
+  });
+
+  emitter.on( 'statement', function( request ) {
+    declare( request );
+  });  
+
+  emitter.on( 'end', function( request ) {
+    declare( request );
+  });
+
+  emitter.on( 'preprocess', function( request ) {
+    preprocessor.preprocess( request, function( val ) {
+      callback( 'preprocess', val );
+    });
+  });
 
   forward( 'end' );
   forward( 'comment line' );
@@ -84,20 +76,30 @@ var Analyzer = function( callback ) {
   forwardContent( 'define function' );
   forwardContent( 'define namespace' );
 
+  function format(event, obj) {
+    formatter.forward(event, obj, callback);
+  }
+
+  function declare( req ) {
+    declarer.process( req, function( event, obj ) {
+      format(event, obj);
+    });
+  }
+
   function forwardContent( event ) {
     emitter.on( event, function(obj) {
       emitter.once( 'close', function(content) {
         obj.code = content;
-        formatter.forward(event, obj, callback);
+        format(event, obj);
       });
     });
   }
 
   function forward( event ) {
     emitter.on( event, function(obj) {
-      formatter.forward(event, obj, callback);
+      format(event, obj);
     });
   }
-}
+};
 
 module.exports = Analyzer;

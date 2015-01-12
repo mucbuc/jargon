@@ -33,6 +33,9 @@ fs.readFile( input, function(err, content){
 			case 'define namespace':
 				output.write( obj.name + '{' + obj.code + '};\n' );
 				break;
+			case 'preprocess':
+				output.write( '#' + obj );
+				break;
 		}
 	}); 
 

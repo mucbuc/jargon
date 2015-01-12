@@ -17,14 +17,12 @@ function Declarer() {
         }
         else if (req.lhs.length || req.stash.length) {
           var block = 
-            req.lhs 
-          + req.token 
-          + req.stash === 'undefined' ? '' : req.stash;
-           
+                req.lhs 
+              + req.token 
+              + req.stash === 'undefined' ? '' : req.stash;
+          
           cb( 'code block', block );
         }
-
-        //cb( type, req );
 
         function isFunctionDeclaration(code) {
           return code.search( regexMap.functionDeclare ) == 0;

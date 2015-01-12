@@ -20,7 +20,7 @@ suite( 'analyzer', function(){
     emitter.check(); 
     delete emitter;
   }); 
-/*
+
   test( 'readSampleFile', function() {
     emitter
       .expect( 'preprocess' )
@@ -44,11 +44,12 @@ suite( 'analyzer', function(){
       .expect( 'comment block' )
       .expect( 'preprocess' )
       .expect( 'comment line' )
+      .expect( 'code block' /* this one doesn't make any sense*/ )
       .expect( 'end' );
 
     split( fs.readFileSync( './test/samples/test.h' ).toString() );     
   });
-*/
+
   test( 'PreprocessFollowedByComment', function() {
     emitter
       .expect( 'preprocess' )
