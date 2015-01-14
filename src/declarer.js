@@ -4,8 +4,8 @@ var assert = require( 'assert' )
 
 function Declarer() {
 
-  this.process = function(req, cb) {
-    var code = req.lhs
+  this.process = function(request, cb) {
+    var code = request.lhs
       , rules = { 'statement': ';' };
 
     fluke.splitAll( code, function(type, req) {
@@ -18,9 +18,8 @@ function Declarer() {
         else if (req.lhs.length || req.stash.length) {
           var block = 
                 req.lhs 
-              + req.token 
-              + req.stash === 'undefined' ? '' : req.stash;
-          
+              + request.token 
+              + (req.stash === 'undefined' ? '' : req.stash);
           cb( 'code block', block );
         }
 

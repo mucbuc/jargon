@@ -31,6 +31,7 @@ fs.readFile( input, function(err, content){
 			}
 			case 'define type':
 			case 'define namespace':
+			case 'define function':
 				output.write( obj.name + '{' + obj.code + '};\n' );
 				break;
 			case 'preprocess':
@@ -41,6 +42,9 @@ fs.readFile( input, function(err, content){
 				break;
 			case 'comment block': 
 				output.write( '/*' + obj.rhs + '*/' );
+				break;
+			case 'code block':
+				output.write( obj );
 				break;
 		}
 	}); 
