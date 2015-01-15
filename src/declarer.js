@@ -16,10 +16,7 @@ function Declarer() {
           cb( 'declare function', req.lhs );
         }
         else if (req.lhs.length || req.stash.length) {
-          var block = 
-                req.lhs 
-              + ';' // token ??? 
-              + (typeof req.stash === 'undefined' ? '' : req.stash);
+          var block = (typeof req.stash === 'undefined' ? '' : req.stash);
           
           assert( typeof(block) !== 'undefined' );
           cb( 'code block', block );

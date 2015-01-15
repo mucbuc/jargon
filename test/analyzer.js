@@ -159,16 +159,7 @@ suite( 'analyzer', function(){
     emitter
       .expect( 'define type', { name: ' struct inside ', code: '' })
       .expect( 'end' )
-      //.expect( 'format' )
-      //.expect( 'code block' )
-      ;
-
-      // .expect( 'end' )
-      // .expect( 'format' );
-
-      // .expect( 'end' );
-      // .expect( 'code block');
-      //.expect( 'end' );
+      .expect( 'format' );
     split( ' struct inside {}; ' );
   });
 
