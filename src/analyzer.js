@@ -42,6 +42,15 @@ var Analyzer = function( callback ) {
     }
     , rules );
   };
+
+  forward( 'end' );
+  forward( 'comment line' );
+  forward( 'comment block' );
+  forward( 'template parameters' );
+  forward( 'code block' );
+  forwardContent( 'define type' );
+  forwardContent( 'define function' );
+  forwardContent( 'define namespace' );
   
   emitter.on( 'open', function( request ) {
     definer.process( request, function( type, content ) {
@@ -65,16 +74,6 @@ var Analyzer = function( callback ) {
       callback( 'preprocess', val );
     });
   });
-
-  forward( 'end' );
-  forward( 'comment line' );
-  forward( 'comment block' );
-  forward( 'template parameters' );
-  forward( 'code block' );
-
-  forwardContent( 'define type' );
-  forwardContent( 'define function' );
-  forwardContent( 'define namespace' );
 
   function format(event, obj) {
     formatter.forward(event, obj, callback);
