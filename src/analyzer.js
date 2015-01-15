@@ -79,6 +79,10 @@ var Analyzer = function( callback ) {
     commenter.processLine( request, function() {});
   }); 
 
+  emitter.on( 'comment block', function( request ) {
+    commenter.processBlock( request, function() {});
+  });
+
   function format(event, obj) {
     formatter.forward(event, obj, callback);
   }

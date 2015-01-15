@@ -50,14 +50,21 @@ suite( 'analyzer', function(){
   //   split( fs.readFileSync( './test/samples/test.h' ).toString() );     
   // });
 
-  // test( 'PreprocessFollowedByComment', function() {
-  //   emitter
-  //     .expect( 'preprocess' )
-  //     .expect( 'comment line' )
-  //     .expect( 'code block' )
-  //     .expect( 'end' );
-  //   split( '#define SOB 1 \/\/ hey\n' );
-  // });
+  test( 'PreprocessFollowedByBlockComment', function() {
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'comment block' )
+      .expect( 'end' );
+    split( '#define SOB 1 \/* hey *\/' );
+  });
+
+  test( 'PreprocessFollowedByLineComment', function() {
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'comment line' )
+      .expect( 'end' );
+    split( '#define SOB 1 \/\/ hey\n' );
+  });
 
   test( 'SingleDeclaration', function() {
     emitter
