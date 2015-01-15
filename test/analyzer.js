@@ -66,6 +66,14 @@ suite( 'analyzer', function(){
     split( '#define SOB 1 \/\/ hey\n' );
   });
 
+  test( 'PreprocessFollowedByLineCommentWithoutNewLine', function() {
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'comment line' )
+      .expect( 'end' );
+    split( '#define SOB 1 \/\/ hey' );
+  });
+
   test( 'SingleDeclaration', function() {
     emitter
       .expect( 'declare type', 'struct hello' )
