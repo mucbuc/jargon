@@ -101,24 +101,24 @@ suite( 'analyzer', function(){
   //   split( 'namespace outside{ namespace inside {} }' );
   // }); 
 
-  // test( 'namespaceDeclaration', function() {
-  //   emitter
-  //     .expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } )
-  //     .expect( 'end' ); 
+  test( 'namespaceDeclaration', function() {
+    emitter
+      .expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } )
+      .expect( 'end' ); 
 
-  //   emitter.once( 'define namespace', function( context ) {
-  //     emitter.once( 'end', function() {
-  //       emitter
-  //         .expect( 'format' )
-  //         .expect( 'declare type', 'struct hello' )
-  //         .expect( 'code block' )
-  //         .expect( 'end' );
-  //       split( context.code );
-  //     } ); 
-  //   } ); 
+    emitter.once( 'define namespace', function( context ) {
+      emitter.once( 'end', function() {
+        emitter
+          .expect( 'format' )
+          .expect( 'declare type', 'struct hello' )
+          .expect( 'code block' )
+          .expect( 'end' );
+        split( context.code );
+      } ); 
+    } ); 
 
-  //   split( 'namespace outside{ struct hello; }' );
-  // });
+    split( 'namespace outside{ struct hello; }' );
+  });
 
   // test( 'NestedNamespaces', function() {
   //   emitter
