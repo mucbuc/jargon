@@ -121,21 +121,21 @@ suite( 'analyzer', function(){
     split( 'namespace outside{ struct hello; }' );
   });
 
-  // test( 'NestedNamespaces', function() {
-  //   emitter
-  //     .expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
-  //     .once( 'define namespace', function( context ) {
-  //       emitter.once( 'end', function() {
-  //         emitter.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
-  //         emitter.expect( 'code block' );
-  //         emitter.expect( 'end' );
-  //         split( context.code );
-  //       } ); 
-  //     } )
-  //     .expect( 'end' ); 
+  test( 'NestedNamespaces', function() {
+    emitter
+      .expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
+      .once( 'define namespace', function( context ) {
+        emitter.once( 'end', function() {
+          emitter.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
+          emitter.expect( 'code block' );
+          emitter.expect( 'end' );
+          split( context.code );
+        } ); 
+      } )
+      .expect( 'end' ); 
     
-  //   split( 'namespace outside { namespace inside {} }' );  
-  // });
+    split( 'namespace outside { namespace inside {} }' );  
+  });
 
   test( 'DeclarationsAndDefinitions', function() {
     emitter
