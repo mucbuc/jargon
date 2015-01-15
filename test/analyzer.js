@@ -111,8 +111,9 @@ suite( 'analyzer', function(){
         emitter
           .expect( 'format' )
           .expect( 'declare type', 'struct hello' )
-          .expect( 'code block' )
-          .expect( 'end' );
+          .expect( 'end' )
+          .expect( 'format' );
+
         split( context.code );
       } ); 
     } ); 
