@@ -82,24 +82,24 @@ suite( 'analyzer', function(){
     split( 'struct hello;' );  
   });
 
-  // test( 'namespaceTree', function() {
-  //   emitter
-  //     .expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } )
-  //     .expect( 'end' ); 
+  test( 'namespaceTree', function() {
+    emitter
+      .expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } )
+      .expect( 'end' ); 
 
-  //   emitter.once( 'define namespace', function( context ) {
-  //     emitter.once( 'end', function() {
-  //       emitter
-  //         .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
-  //         .expect( 'code block' )
-  //         .expect( 'end' );
+    emitter.once( 'define namespace', function( context ) {
+      emitter.once( 'end', function() {
+        emitter
+          .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
+          .expect( 'end' )
+          .expect( 'format' );
 
-  //       split( context.code );
-  //     } ); 
-  //   } );
+        split( context.code );
+      } ); 
+    } );
 
-  //   split( 'namespace outside{ namespace inside {} }' );
-  // }); 
+    split( 'namespace outside{ namespace inside {} }' );
+  }); 
 
   test( 'namespaceDeclaration', function() {
     emitter
