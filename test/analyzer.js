@@ -149,19 +149,19 @@ suite( 'analyzer', function(){
   });
 
   test( 'NestedTypes', function() {
-    
     emitter
       .expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } )
       .expect( 'end' );  
     split( 'struct outside { struct inside {}; };');
   } ); 
 
-  test( 'NestedTypesWithFormat', function() {
+  test( 'TypeWithFormat', function() {
     emitter
       .expect( 'define type', { name: ' struct inside ', code: '' })
       .expect( 'end' )
-      .expect( 'format' )
-      .expect( 'code block' );
+      //.expect( 'format' )
+      //.expect( 'code block' )
+      ;
 
       // .expect( 'end' )
       // .expect( 'format' );
