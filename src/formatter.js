@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-var util = require( 'util' )
+var assert = require( 'assert' )
+  , util = require( 'util' )
   , events = require( 'events' );
 
 function Formatter() {
@@ -8,7 +9,26 @@ function Formatter() {
   this.forward = function(event, info, cb) {
 
     if (typeof info === 'string') {
-      var matches = info.match( /(\s*)(.*)(\s*?)/ );
+      if (match( info )) {
+        return;
+      }
+    }
+    cb( event, info );
+    
+    // else if (info.hasOwnProperty( 'name'))
+    // {
+    //   if (match(info.name)) {
+    //     return;
+    //   }
+    //   cb( event, info.name );
+    //   return;
+    // }
+    //
+
+    function match( content ) {
+      assert(typeof content === 'string');
+    
+      var matches = content.match( /(\s*)(.*)(\s*?)/ );
       if (matches) {
         if (matches[1].length) {
           cb( 'format', matches[1] );
@@ -17,10 +37,11 @@ function Formatter() {
         if (matches[3].length) {
           cb( 'format', matches[3] );
         }
-        return;
+        return true;
       }
+      return false;
     }
-    cb( event, info );
+
   };
 };
 

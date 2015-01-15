@@ -54,6 +54,8 @@ var Analyzer = function( callback ) {
   
   emitter.on( 'open', function( request ) {
     definer.process( request, function( type, content ) {
+      //format( type, content );
+
       emitter.emit( type, content );
     });
     scoper.process(request, function(type, content) {

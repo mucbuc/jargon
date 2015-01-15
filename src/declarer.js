@@ -18,8 +18,10 @@ function Declarer() {
         else if (req.lhs.length || req.stash.length) {
           var block = 
                 req.lhs 
-              + request.token 
-              + (req.stash === 'undefined' ? '' : req.stash);
+              + ';' // token ??? 
+              + (typeof req.stash === 'undefined' ? '' : req.stash);
+          
+          assert( typeof(block) !== 'undefined' );
           cb( 'code block', block );
         }
 

@@ -148,19 +148,29 @@ suite( 'analyzer', function(){
     split( 'struct hello{};' );
   });
 
-  // test( 'NestedTypes', function() {
+  test( 'NestedTypes', function() {
     
-  //   emitter
-  //     .expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } )
-  //     .expect( 'end' );  
-  //   split( 'struct outside { struct inside {}; };');
-  
-  //   emitter
-  //     .expect( 'define type', { name: ' struct inside ', code: '' })
-  //     .expect( 'code block' )
-  //     .expect( 'end' );
-  //   split( ' struct inside {}; ' );
-  // });
+    emitter
+      .expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } )
+      .expect( 'end' );  
+    split( 'struct outside { struct inside {}; };');
+  } ); 
+
+  test( 'NestedTypesWithFormat', function() {
+    emitter
+      .expect( 'define type', { name: ' struct inside ', code: '' })
+      .expect( 'end' )
+      .expect( 'format' )
+      .expect( 'code block' );
+
+      // .expect( 'end' )
+      // .expect( 'format' );
+
+      // .expect( 'end' );
+      // .expect( 'code block');
+      //.expect( 'end' );
+    split( ' struct inside {}; ' );
+  });
 
   test( 'MemberFunctionDeclare', function() {
     emitter
@@ -181,7 +191,7 @@ suite( 'analyzer', function(){
     split( 'void foo();' );
   });
 
-  test( 'FunctonDefine', function() {
+  test( 'FunctionDefine', function() {
     emitter
       .expect( 'define function', { name: 'void foo() ', code: ' hello ' } )
       .expect( 'end' );
