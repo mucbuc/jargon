@@ -75,6 +75,10 @@ var Analyzer = function( callback ) {
     });
   });
 
+  emitter.on( 'comment line', function( request ) {
+    commenter.processLine( request, function() {});
+  }); 
+
   function format(event, obj) {
     formatter.forward(event, obj, callback);
   }

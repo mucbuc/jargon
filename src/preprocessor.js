@@ -25,6 +25,7 @@ function Preprocessor() {
       code = code.substr( chunk, code.length );
     }
     while (result[result.length - 2] === '\\' );
+    
     req.consume( result.length );
     if (typeof cb !== 'undefined') {
       cb( result );

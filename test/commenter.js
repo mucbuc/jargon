@@ -46,7 +46,7 @@ suite( 'commenter', function() {
       .expect( 'comment block' )
       .expect( 'end' );
     split( '/*hello*/' );
-  }); 
+  });
 
   function split( code ) {
     var commenter = new Commenter()
