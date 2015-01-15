@@ -127,8 +127,8 @@ suite( 'analyzer', function(){
       .once( 'define namespace', function( context ) {
         emitter.once( 'end', function() {
           emitter.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
-          emitter.expect( 'code block' );
-          emitter.expect( 'end' );
+          emitter.expect( 'end' )
+          emitter.expect( 'format' );
           split( context.code );
         } ); 
       } )
