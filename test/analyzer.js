@@ -30,15 +30,15 @@ suite( 'analyzer', function(){
     split( '/**/#endif' );
   });
 
-  // test( 'commentBlockFormatPreprocessor', function() {
-  //   emitter
-  //     .expect( 'comment block' )
-  //     .expect( 'format' )
-  //     .expect( 'preprocess' )
-  //     .expect( 'end' );
+  test( 'commentBlockFormatPreprocessor', function() {
+    emitter
+      .expect( 'comment block', '/**/' )
+      // .expect( 'format' )
+      // .expect( 'preprocess' )
+      .expect( 'end' );
 
-  //   split( '/**/ #endif' );
-  // });
+    split( '/**/ #endif' );
+  });
 
   test( 'readSampleFile', function() {
     emitter
