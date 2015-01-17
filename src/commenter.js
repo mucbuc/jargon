@@ -5,13 +5,13 @@ function Commenter() {
   
   this.processLine = function(req, cb) {
     var comment = req.rhs.match( /.*/ );
-    req.consume( comment[0].length + 1 );
+    req.consume( comment[0].length );
     cb( comment[0] ); 
   };
 
   this.processBlock = function(req, cb) {
     var comment = req.rhs.match( /.*\*\// );
-    req.consume( comment[0].length + 1 );
+    req.consume( comment[0].length );
     cb( comment[0] );    
   };
 }

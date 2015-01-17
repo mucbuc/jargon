@@ -21,13 +21,32 @@ suite( 'analyzer', function(){
     delete emitter;
   }); 
 
+  test( 'commentBlockPreprocessor', function() {
+    emitter
+      .expect( 'comment block' )
+      .expect( 'preprocess' )
+      .expect( 'end' );
+
+    split( '/**/#endif' );
+  });
+
+  // test( 'commentBlockFormatPreprocessor', function() {
+  //   emitter
+  //     .expect( 'comment block' )
+  //     .expect( 'format' )
+  //     .expect( 'preprocess' )
+  //     .expect( 'end' );
+
+  //   split( '/**/ #endif' );
+  // });
+
   test( 'readSampleFile', function() {
     emitter
       .expect( 'preprocess' )
       .expect( 'declare type' )
       .expect( 'format' )
       .expect( 'declare function' )
-      .expect( 'format' )
+      .expect( 'code block' )
       .expect( 'define type', { 
         name: '\nstruct hello\n', 
         code: '\n\tint hello;\n\tvoid bye();\n' 
@@ -61,7 +80,8 @@ suite( 'analyzer', function(){
     emitter
       .expect( 'preprocess' )
       .expect( 'comment line' )
-      .expect( 'end' );
+      .expect( 'end' )
+      .expect( 'format' );
     split( '#define SOB 1 \/\/ hey\n' );
   });
 
