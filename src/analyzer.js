@@ -44,8 +44,6 @@ var Analyzer = function( callback ) {
   };
 
   forward( 'end' );
-  forward( 'comment line' );
-  forward( 'comment block' );
   forward( 'template parameters' );
   
   forwardContent( 'define type' );
@@ -83,11 +81,15 @@ var Analyzer = function( callback ) {
   });
 
   emitter.on( 'comment line', function( request ) {
-    commenter.processLine( request, function() {});
+    commenter.processLine( request, function(comment) {
+      callback( 'comment line', comment );
+    });
   }); 
 
   emitter.on( 'comment block', function( request ) {
-    commenter.processBlock( request, function() {});
+    commenter.processBlock( request, function(comment) {
+      callback( 'comment block', comment );
+    });
   });
 
   function format(event, obj) {

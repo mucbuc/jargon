@@ -19,7 +19,7 @@ suite( 'analyzer', function(){
   teardown(function() {
     emitter.check(); 
     delete emitter;
-  }); 
+  });
 
   test( 'commentBlockPreprocessor', function() {
     emitter

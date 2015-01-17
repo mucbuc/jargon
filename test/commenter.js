@@ -41,6 +41,14 @@ suite( 'commenter', function() {
     split( '// hello\n//hello' );
   });
 
+  test( 'commentBlockWithCommentLine', function() {
+    emitter
+      .expect( 'comment block', 'hello*/' )
+      .expect( 'comment line' )
+      .expect( 'end' );
+    split( '/*hello*/a//b' );
+  });
+
   test( 'commentBlock', function() {
     emitter
       .expect( 'comment block' )

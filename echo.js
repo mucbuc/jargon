@@ -40,10 +40,10 @@ fs.readFile( input, function(err, content){
 				output.write( '#' + obj );
 				break;
 			case 'comment line':
-				output.write( '//' + obj.rhs + '\n' );
+				output.write( '//' + obj + '\n' );
 				break;
 			case 'comment block': 
-				output.write( '/*' + obj.rhs + '*/' );
+				output.write( '/*' + obj );
 				break;
 			case 'code block':
 				output.write( obj + ';' );
