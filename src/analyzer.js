@@ -95,7 +95,6 @@ var Analyzer = function( callback ) {
       default:
         formatter.forward(event, obj, callback);
       break;
-
     }
   }
 

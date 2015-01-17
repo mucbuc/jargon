@@ -44,7 +44,7 @@ fs.readFile( input, function(err, content){
 				output.write( '/*' + obj.rhs + '*/' );
 				break;
 			case 'code block':
-				output.write( obj );
+				output.write( obj + ';' );
 				break;
 		}
 	}); 

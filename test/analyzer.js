@@ -188,6 +188,7 @@ suite( 'analyzer', function(){
       .expect( 'end' );
     split( 'void foo() { hello }' );
   });
+  
   test( 'declareTypeAfterPreproesorDirective', function() {
     emitter
       .expect( 'preprocess' )
