@@ -32,9 +32,9 @@ suite( 'analyzer', function(){
 
   test( 'commentBlockFormatPreprocessor', function() {
     emitter
-      .expect( 'comment block', '/**/' )
-      // .expect( 'format' )
-      // .expect( 'preprocess' )
+      .expect( 'comment block' )
+      .expect( 'format' )
+      .expect( 'preprocess' )
       .expect( 'end' );
 
     split( '/**/ #endif' );
@@ -55,6 +55,7 @@ suite( 'analyzer', function(){
         name: '\n\nvoid hello() \n', 
         code: '\n\n'
       })
+      .expect( 'format' )
       .expect( 'preprocess' )
       .expect( 'define namespace', {
         name: '\nnamespace hello \n', 

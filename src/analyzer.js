@@ -71,6 +71,12 @@ var Analyzer = function( callback ) {
   });
 
   emitter.on( 'preprocess', function( request ) {
+    
+    if (request.lhs.length && !request.lhs.match( /\S/ ))
+    {
+      callback( 'format', request.lhs );
+    }
+    
     preprocessor.preprocess( request, function( val ) {
       callback( 'preprocess', val );
     });
