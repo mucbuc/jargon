@@ -21,34 +21,33 @@ suite( 'analyzer', function(){
     delete emitter;
   }); 
 
-  // test( 'readSampleFile', function() {
-  //   emitter
-  //     .expect( 'preprocess' )
-  //     .expect( 'declare type' )
-  //     .expect( 'format' )
-  //     .expect( 'declare function' )
-  //     .expect( 'code block' )
-  //     .expect( 'define type', { 
-  //       name: '\nstruct hello\n', 
-  //       code: '\n\tint hello;\n\tvoid bye();\n' 
-  //     })
-  //     .expect( 'define function', {
-  //       name: '\n\nvoid hello() \n', 
-  //       code: '\n\n'
-  //     })
-  //     .expect( 'preprocess' )
-  //     .expect( 'define namespace', {
-  //       name: '\nnamespace hello \n', 
-  //       code: '\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n'
-  //     } )
-  //     .expect( 'comment block' )
-  //     .expect( 'preprocess' )
-  //     .expect( 'comment line' )
-  //     .expect( 'code block' /* this one doesn't make any sense*/ )
-  //     .expect( 'end' );
+  test( 'readSampleFile', function() {
+    emitter
+      .expect( 'preprocess' )
+      .expect( 'declare type' )
+      .expect( 'format' )
+      .expect( 'declare function' )
+      .expect( 'format' )
+      .expect( 'define type', { 
+        name: '\nstruct hello\n', 
+        code: '\n\tint hello;\n\tvoid bye();\n' 
+      })
+      .expect( 'define function', {
+        name: '\n\nvoid hello() \n', 
+        code: '\n\n'
+      })
+      .expect( 'preprocess' )
+      .expect( 'define namespace', {
+        name: '\nnamespace hello \n', 
+        code: '\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n'
+      } )
+      .expect( 'comment block' )
+      .expect( 'preprocess' )
+      .expect( 'comment line' )
+      .expect( 'end' );
 
-  //   split( fs.readFileSync( './test/samples/test.h' ).toString() );     
-  // });
+    split( fs.readFileSync( './test/samples/test.h' ).toString() );     
+  });
 
   test( 'PreprocessFollowedByBlockComment', function() {
     emitter
