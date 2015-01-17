@@ -30,9 +30,11 @@ fs.readFile( input, function(err, content){
 				break;
 			}
 			case 'define type':
+				output.write( obj.name + '{' + obj.code + '};\n' );
+				break;
 			case 'define namespace':
 			case 'define function':
-				output.write( obj.name + '{' + obj.code + '};\n' );
+				output.write( obj.name + '{' + obj.code + '}\n' );
 				break;
 			case 'preprocess':
 				output.write( '#' + obj );
