@@ -26,7 +26,7 @@ fs.readFile( input, function(err, content){
 		switch(event) {
 			case 'declare type':
 			case 'declare function': {
-				output.write( obj + ';\n' );
+				output.write( obj + ';' );
 				break;
 			}
 			case 'define type':
@@ -45,6 +45,9 @@ fs.readFile( input, function(err, content){
 				break;
 			case 'code block':
 				output.write( obj + ';' );
+				break;
+			case 'format': 
+				output.write( obj );
 				break;
 		}
 	}); 
