@@ -16,7 +16,6 @@ function Definer() {
       initDefine( 'type', code, code.match( regexMap.typeDefinitionSplitter, '' ) );
     }
     else if (isFunction(code)) {
-      console.log( code );
       initDefine( 'function', code, code.match( regexMap.constructorSplitter, '' ) );
     }
 
