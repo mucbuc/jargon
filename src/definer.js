@@ -25,7 +25,6 @@ function Definer() {
       if (t.search( /(if|switch|for|while)\s*\(/ )==0) { 
         return false;
       }
-      // same for switch, .. 
       return t[t.length - 1] == ')';
     }
 
