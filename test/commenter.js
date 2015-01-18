@@ -56,6 +56,13 @@ suite( 'commenter', function() {
     split( '/*hello*/' );
   });
 
+  test( 'commentBlockWithNewLine', function() {
+    emitter
+      .expect( 'comment block', '\n*/' )
+      .expect( 'end' );
+    split( '/*\n*/' );
+  });
+
   function split( code ) {
     var commenter = new Commenter()
       , rules = {
