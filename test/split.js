@@ -60,6 +60,7 @@ suite( 'split', function(){
         code: '\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n'
       } )
       .expect( 'comment' )
+      .expect( 'format' )
       .expect( 'preprocess' )
       .expect( 'comment' );
 

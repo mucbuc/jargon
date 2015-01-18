@@ -76,7 +76,7 @@ function split( code, callback ) {
 
   emitter.on( 'comment block', function( request ) {
     commenter.processBlock( request, function(comment) {
-      callback( 'comment','/*' +  comment );
+      callback( 'comment', '/*' + comment );
     });
   });
 
