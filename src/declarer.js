@@ -19,7 +19,7 @@ function Declarer() {
         else if (req.lhs.length || req.stash.length) {
           var block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
           assert( typeof(block) !== 'undefined' );
-          cb( 'code block', block );
+          cb( 'code line', block );
         }
 
         function isFunctionDeclaration(code) {

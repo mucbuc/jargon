@@ -39,7 +39,7 @@ fs.readFile( input, function(err, content){
 			case 'preprocess':
 				output.write( '#' + obj );
 				break;
-			case 'code block':
+			case 'code line':
 			case 'format': 
 			case 'comment':
 				output.write( obj );

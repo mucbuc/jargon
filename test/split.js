@@ -44,7 +44,7 @@ suite( 'split', function(){
       .expect( 'declare type' )
       .expect( 'format' )
       .expect( 'declare function' )
-      .expect( 'code block' )
+      .expect( 'code line' )
       .expect( 'define type', { 
         name: '\nstruct hello\n', 
         code: '\n\tint hello;\n\tvoid bye();\n' 

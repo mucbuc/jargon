@@ -88,12 +88,12 @@ function split( code, callback ) {
   function format(event, obj) {
 
     switch (event) {
-      case 'code block':
+      case 'code line':
         if (!obj.match( /\S/ )) {
           callback( 'format', obj );
         }
         else {
-          callback( 'code block', obj + ';' );
+          callback( 'code line', obj + ';' );
         }
         break;
       default:
