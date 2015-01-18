@@ -2,12 +2,12 @@
 
 var assert = require( 'chai' ).assert
   , fs = require( 'fs' )
-  , Analyzer = require( '../src/analyzer' )
+  , jargonSplit = require( '../src/split' )
   , Expector = require( 'expector' ).SeqExpector;
 
-assert( typeof Analyzer === 'function' );
+assert( typeof jargonSplit === 'function' );
 
-suite( 'analyzer', function(){
+suite( 'split', function(){
 
   var emitter;
 
@@ -204,9 +204,8 @@ suite( 'analyzer', function(){
   });
 
   function split( code ) {
-    var analyzer = new Analyzer( function( event, obj ) { 
-          emitter.emit(event, obj);
-        });
-    analyzer.split( code ); 
+    jargonSplit( code, function( event, obj ) { 
+        emitter.emit(event, obj);
+      } ); 
   }
 });

@@ -17,8 +17,8 @@ assert( typeof Literalizer === 'function' );
 assert( typeof Preprocessor === 'function' );
 assert( typeof Scoper === 'function' );
 
-var Analyzer = function( callback ) {
-  
+function split( code, callback ) {
+
   var rules = {
         'preprocess': '#',
         'comment line': '\\/\\/',
@@ -35,13 +35,6 @@ var Analyzer = function( callback ) {
 	  , preprocessor = new Preprocessor() 
     , literalizer = new Literalizer()
     , commenter = new Commenter();
-
-  this.split = function( code ) {
-    fluke.splitAll( code, function( type, request ) {
-      emitter.emit( type, request );
-    }
-    , rules );
-  };
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );
@@ -65,7 +58,6 @@ var Analyzer = function( callback ) {
   });
 
   emitter.on( 'preprocess', function( request ) {
-    
     if (request.lhs.length && !request.lhs.match( /\S/ ))
     {
       callback( 'format', request.lhs );
@@ -88,6 +80,11 @@ var Analyzer = function( callback ) {
     });
   });
 
+  fluke.splitAll( code, function( type, request ) {
+      emitter.emit( type, request );
+    }
+  , rules );
+  
   function format(event, obj) {
 
     switch (event) {
@@ -116,4 +113,4 @@ var Analyzer = function( callback ) {
   }
 }
 
-module.exports = Analyzer;
+module.exports = split;

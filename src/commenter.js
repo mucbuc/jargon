@@ -11,7 +11,6 @@ function Commenter() {
 
   this.processBlock = function(req, cb) {
     var comment = req.rhs.match( /.*\*\// );
-    //console.log( req, comment );
     req.consume( comment[0].length );
     cb( comment[0] );    
   };

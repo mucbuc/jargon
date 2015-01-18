@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var Analyzer = require( './src/analyzer' )
+var split = require( './src/split' )
   , events = require( 'events' )
   , input = ''
   , output = process.stdout
@@ -22,7 +22,7 @@ switch(process.argv.length) {
 
 fs.readFile( input, function(err, content){
 	if (err) throw err;
-	var analyzer = new Analyzer( function( event, obj ) { 
+	split(content.toString(), function( event, obj ) { 
 		switch(event) {
 			case 'declare type':
 			case 'declare function': {
@@ -53,6 +53,4 @@ fs.readFile( input, function(err, content){
 				break;
 		}
 	}); 
-
-	analyzer.split(content.toString());
 });
