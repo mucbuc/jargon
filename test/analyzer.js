@@ -236,9 +236,9 @@ suite( 'analyzer', function(){
   });
 
   function split( code ) {
-      var analyzer = new Analyzer( function( event, obj ) { 
-            emitter.emit(event, obj);
-          });
-      analyzer.split( code ); 
+    var analyzer = new Analyzer( function( event, obj ) { 
+          emitter.emit(event, obj);
+        });
+    analyzer.split( code ); 
   }
 });
