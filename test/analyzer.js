@@ -23,7 +23,7 @@ suite( 'analyzer', function(){
 
   test( 'commentBlockPreprocessor', function() {
     emitter
-      .expect( 'comment block' )
+      .expect( 'comment' )
       .expect( 'preprocess' )
       .expect( 'end' );
 
@@ -32,7 +32,7 @@ suite( 'analyzer', function(){
 
   test( 'commentBlockFormatPreprocessor', function() {
     emitter
-      .expect( 'comment block' )
+      .expect( 'comment' )
       .expect( 'format' )
       .expect( 'preprocess' )
       .expect( 'end' );
@@ -61,9 +61,9 @@ suite( 'analyzer', function(){
         name: '\nnamespace hello \n', 
         code: '\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n'
       } )
-      .expect( 'comment block' )
+      .expect( 'comment' )
       .expect( 'preprocess' )
-      .expect( 'comment line' )
+      .expect( 'comment' )
       .expect( 'end' );
 
     split( fs.readFileSync( './test/samples/test.h' ).toString() );     
@@ -72,7 +72,7 @@ suite( 'analyzer', function(){
   test( 'PreprocessFollowedByBlockComment', function() {
     emitter
       .expect( 'preprocess' )
-      .expect( 'comment block' )
+      .expect( 'comment' )
       .expect( 'end' );
     split( '#define SOB 1 \/* hey *\/' );
   });
@@ -80,7 +80,7 @@ suite( 'analyzer', function(){
   test( 'PreprocessFollowedByLineComment', function() {
     emitter
       .expect( 'preprocess' )
-      .expect( 'comment line' )
+      .expect( 'comment' )
       .expect( 'end' )
       .expect( 'format' );
     split( '#define SOB 1 \/\/ hey\n' );
@@ -89,7 +89,7 @@ suite( 'analyzer', function(){
   test( 'PreprocessFollowedByLineCommentWithoutNewLine', function() {
     emitter
       .expect( 'preprocess' )
-      .expect( 'comment line' )
+      .expect( 'comment' )
       .expect( 'end' );
     split( '#define SOB 1 \/\/ hey' );
   });

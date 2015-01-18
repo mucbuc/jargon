@@ -82,13 +82,13 @@ var Analyzer = function( callback ) {
 
   emitter.on( 'comment line', function( request ) {
     commenter.processLine( request, function(comment) {
-      callback( 'comment line', comment );
+      callback( 'comment', comment );
     });
   }); 
 
   emitter.on( 'comment block', function( request ) {
     commenter.processBlock( request, function(comment) {
-      callback( 'comment block', comment );
+      callback( 'comment', comment );
     });
   });
 
@@ -98,8 +98,6 @@ var Analyzer = function( callback ) {
       case 'code block':
         callback( !obj.match( /\S/ ) ? 'format' : 'code block', obj );
         break;
-      case 'comment block':
-      case 'comment line':
       default:
         formatter.forward(event, obj, callback);
       break;
