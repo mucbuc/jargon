@@ -70,13 +70,13 @@ function split( code, callback ) {
 
   emitter.on( 'comment line', function( request ) {
     commenter.processLine( request, function(comment) {
-      callback( 'comment', comment );
+      callback( 'comment', '\/\/' + comment + '\n' );
     });
   }); 
 
   emitter.on( 'comment block', function( request ) {
     commenter.processBlock( request, function(comment) {
-      callback( 'comment', comment );
+      callback( 'comment','/*' +  comment );
     });
   });
 
@@ -89,7 +89,12 @@ function split( code, callback ) {
 
     switch (event) {
       case 'code block':
-        callback( !obj.match( /\S/ ) ? 'format' : 'code block', obj );
+        if (!obj.match( /\S/ )) {
+          callback( 'format', obj );
+        }
+        else {
+          callback( 'code block', obj + ';' );
+        }
         break;
       default:
         formatter.forward(event, obj, callback);
@@ -99,7 +104,7 @@ function split( code, callback ) {
 
   function declare( req ) {
     declarer.process( req, function( event, obj ) {
-      format(event, obj);
+      format(event, obj );
     });
   }
 
