@@ -21,7 +21,7 @@ function Definer() {
 
     function isFunction( code ) {
       var t = code.trim();
-      if (t.search( /(if|switch|for|while)\s*\(/ )==0) { 
+      if (t.search( /(if|switch|for|while|do)\s*\(/ )==0) { 
         return false;
       }
       return t[t.length - 1] == ')';

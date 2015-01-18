@@ -142,6 +142,16 @@ suite( 'definer', function() {
     split( 'while(hello, bye){case "what":}' );
   });
 
+  test ( 'dontDefineFunctionOnDo', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'do(hello, bye){case "what":}' );
+  });
+
   test( 'defineMemberFunction', function() {
     emitter
       .expectNot( 'define namespace' )
