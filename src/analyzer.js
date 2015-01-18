@@ -43,16 +43,12 @@ var Analyzer = function( callback ) {
     , rules );
   };
 
-  forward( 'end' );
-  forward( 'template parameters' );
-  
   forwardContent( 'define type' );
   forwardContent( 'define function' );
   forwardContent( 'define namespace' );
 
   emitter.on( 'open', function( request ) {
     definer.process( request, function( type, content ) {
-      //format( type, content );
       emitter.emit( type, content );
     });
     scoper.process(request, function(type, content) {
@@ -118,12 +114,6 @@ var Analyzer = function( callback ) {
       });
     });
   }
-
-  function forward( event ) {
-    emitter.on( event, function(obj) {
-      format(event, obj);
-    });
-  }
-};
+}
 
 module.exports = Analyzer;
