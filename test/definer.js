@@ -102,6 +102,46 @@ suite( 'definer', function() {
     split( 'void foo() { do something }' );
   } );
  
+  test ( 'dontDefineFunctionOnIf', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'if(hello){what up now;}' );
+  }); 
+
+  test ( 'dontDefineFunctionOnSwitch', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'switch(hello){case "what":}' );
+  });
+
+  test ( 'dontDefineFunctionOnFor', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'for(hello, bye){case "what":}' );
+  });
+
+  test ( 'dontDefineFunctionOnWhile', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'while(hello, bye){case "what":}' );
+  });
+
   test( 'defineMemberFunction', function() {
     emitter
       .expectNot( 'define namespace' )
