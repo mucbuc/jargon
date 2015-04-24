@@ -44,6 +44,9 @@ fs.readFile( input, function(err, content){
 			case 'comment':
 				output.write( obj );
 				break;
+			case 'preprocess':
+				output.write( '#' + obj );
+				break;
 		}
 	}); 
 });
