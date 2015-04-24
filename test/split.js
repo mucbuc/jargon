@@ -116,11 +116,22 @@ suite( 'split', function(){
       .expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
 
     emitter.once( 'define namespace', function( context ) {
-      emitter
-        .expect( 'format' )
-        .expect( 'declare type', 'struct hello' )
-        .expect( 'format' );
-      split( context.code );
+// <<<<<<< HEAD:test/split.js
+//       emitter
+//         .expect( 'format' )
+//         .expect( 'declare type', 'struct hello' )
+//         .expect( 'format' );
+//       split( context.code );
+// =======
+      emitter.once( 'end', function() {
+        emitter
+          .expect( 'format' )
+          .expect( 'declare type', 'struct hello' )
+          .expect( 'code block' )
+          .expect( 'end' );
+        split( context.code );
+      } ); 
+//>>>>>>> origin/formatter:test/analyzer.js
     } ); 
     split( 'namespace outside{ struct hello; }' );
   });
