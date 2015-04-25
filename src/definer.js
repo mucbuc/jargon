@@ -9,15 +9,21 @@ function Definer() {
   this.process = function( obj, cb ) {
     var code = obj.lhs.replace( /.*?;/, '' );
 
-    if (isNamespace(code))
+    if (isNamespace(code)) {
       initDefine( 'namespace', code );
-    else if (isType(code))
+    }
+    else if (isType(code)) {
       initDefine( 'type', code, code.match( regexMap.typeDefinitionSplitter, '' ) );
-    else if (isFunction(code))
+    }
+    else if (isFunction(code)) {
       initDefine( 'function', code, code.match( regexMap.constructorSplitter, '' ) );
+    }
 
     function isFunction( code ) {
       var t = code.trim();
+      if (t.search( /(if|switch|for|while|do)\s*\(/ )==0) { 
+        return false;
+      }
       return t[t.length - 1] == ')';
     }
 

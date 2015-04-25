@@ -41,11 +41,33 @@ suite( 'commenter', function() {
     split( '// hello\n//hello' );
   });
 
+  test( 'commentBlockWithCommentLine', function() {
+    emitter
+      .expect( 'comment block', 'hello*/' )
+      .expect( 'comment line' )
+      .expect( 'end' );
+    split( '/*hello*/a//b' );
+  });
+
   test( 'commentBlock', function() {
     emitter
       .expect( 'comment block' )
       .expect( 'end' );
     split( '/*hello*/' );
+  });
+
+  test( 'commentBlockWithNewLine', function() {
+    emitter
+      .expect( 'comment block', '\n*/' )
+      .expect( 'end' );
+    split( '/*\n*/' );
+  });
+
+  test( 'commentBlockWithConent', function() {
+    emitter
+      .expect( 'comment block', 'hello*/' )
+      .expect( 'end' );
+    split( '/*\nhello*/' );
   });
 
   function split( code ) {

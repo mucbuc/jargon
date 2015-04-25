@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var Analyzer = require( './src/analyzer' )
+var split = require( './src/split' )
   , events = require( 'events' )
   , input = ''
   , output = process.stdout
@@ -22,32 +22,31 @@ switch(process.argv.length) {
 
 fs.readFile( input, function(err, content){
 	if (err) throw err;
-	var analyzer = new Analyzer( function( event, obj ) { 
+	split(content.toString(), function( event, obj ) { 
 		switch(event) {
 			case 'declare type':
 			case 'declare function': {
-				output.write( obj + ';\n' );
+				output.write( obj + ';' );
 				break;
 			}
 			case 'define type':
+				output.write( obj.name + '{' + obj.code + '};\n' );
+				break;
 			case 'define namespace':
 			case 'define function':
-				output.write( obj.name + '{' + obj.code + '};\n' );
+				output.write( obj.name + '{' + obj.code + '}\n' );
 				break;
 			case 'preprocess':
 				output.write( '#' + obj );
 				break;
-			case 'comment line':
-				output.write( '//' + obj.rhs + '\n' );
-				break;
-			case 'comment block': 
-				output.write( '/*' + obj.rhs + '*/' );
-				break;
-			case 'code block':
+			case 'code line':
+			case 'format': 
+			case 'comment':
 				output.write( obj );
+				break;
+			case 'preprocess':
+				output.write( '#' + obj );
 				break;
 		}
 	}); 
-
-	analyzer.split(content.toString());
 });

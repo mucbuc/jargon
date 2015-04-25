@@ -17,8 +17,8 @@ assert( typeof Literalizer === 'function' );
 assert( typeof Preprocessor === 'function' );
 assert( typeof Scoper === 'function' );
 
-var Analyzer = function( callback ) {
-  
+function split( code, callback ) {
+
   var rules = {
         'preprocess': '#',
         'comment line': '\\/\\/',
@@ -36,25 +36,12 @@ var Analyzer = function( callback ) {
     , literalizer = new Literalizer()
     , commenter = new Commenter();
 
-  this.split = function( code ) {
-    fluke.splitAll( code, function( type, request ) {
-      emitter.emit( type, request );
-    }
-    , rules );
-  };
-
-  forward( 'end' );
-  forward( 'comment line' );
-  forward( 'comment block' );
-  forward( 'template parameters' );
-  
   forwardContent( 'define type' );
   forwardContent( 'define function' );
   forwardContent( 'define namespace' );
 
   emitter.on( 'open', function( request ) {
     definer.process( request, function( type, content ) {
-      //format( type, content );
       emitter.emit( type, content );
     });
     scoper.process(request, function(type, content) {
@@ -71,37 +58,53 @@ var Analyzer = function( callback ) {
   });
 
   emitter.on( 'preprocess', function( request ) {
+    if (request.lhs.length && !request.lhs.match( /\S/ ))
+    {
+      callback( 'format', request.lhs );
+    }
+    
     preprocessor.preprocess( request, function( val ) {
       callback( 'preprocess', val );
     });
   });
 
   emitter.on( 'comment line', function( request ) {
-    commenter.processLine( request, function() {});
+    commenter.processLine( request, function(comment) {
+      callback( 'comment', '\/\/' + comment + '\n' );
+    });
   }); 
 
   emitter.on( 'comment block', function( request ) {
-    commenter.processBlock( request, function() {});
+    commenter.processBlock( request, function(comment) {
+      callback( 'comment', '/*' + comment );
+    });
   });
 
+  fluke.splitAll( code, function( type, request ) {
+      emitter.emit( type, request );
+    }
+  , rules );
+  
   function format(event, obj) {
 
     switch (event) {
-      case 'code block':
-        callback( !obj.match( /\S/ ) ? 'format' : 'code block', obj );
+      case 'code line':
+        if (!obj.match( /\S/ )) {
+          callback( 'format', obj );
+        }
+        else {
+          callback( 'code line', obj + ';' );
+        }
         break;
-      case 'comment block':
-      case 'comment line':
       default:
         formatter.forward(event, obj, callback);
       break;
-
     }
   }
 
   function declare( req ) {
     declarer.process( req, function( event, obj ) {
-      format(event, obj);
+      format(event, obj );
     });
   }
 
@@ -113,12 +116,6 @@ var Analyzer = function( callback ) {
       });
     });
   }
+}
 
-  function forward( event ) {
-    emitter.on( event, function(obj) {
-      format(event, obj);
-    });
-  }
-};
-
-module.exports = Analyzer;
+module.exports = split;

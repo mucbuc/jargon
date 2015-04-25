@@ -7,6 +7,35 @@ var assert = require( 'assert' )
 assert( typeof Formatter === 'function' );
 
 suite( 'formatter', function() {
+
+  test( 'headingSpaces', function() {
+    var formatter = new Formatter()
+      , controller = new Expector();
+
+    controller
+      .expect( 'format', '\t \t \n ' )
+      .expect( 'ere', 'hello' )
+      .expect( 'end' );
+
+    formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
+      controller.emit( event, code ); 
+    } );
+  } );
+
+  test( 'trailingSpaces', function() {
+    var formatter = new Formatter()
+      , controller = new Expector();
+
+    controller
+      .expect( 'ere', 'hello' )
+      .expect( 'format', '\t \t \n ' )
+      .expect( 'end' );
+      
+    formatter.forward( 'ere', 'hello\t \t', function(event, code) {
+      controller.emit( event, code ); 
+    } );
+  });
+/*
 	test( 'headingSpaces', function() {
 		var formatter = new Formatter()
 		  , controller = new Expector();
@@ -34,4 +63,5 @@ suite( 'formatter', function() {
 			controller.emit( event, code );	
 		} );
 	});
+*/
 });

@@ -27,8 +27,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define namespace', { name: 'namespace hello ' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
 
     split( 'namespace hello { this is it }' );
   }); 
@@ -40,8 +39,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define namespace', { name: 'namespace hello ' } );
   
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
     
     split( 'namespace hello {}' );
   });
@@ -53,8 +51,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define type', { name: 'struct hello ' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
     
     split( 'struct hello { unsigned world; }' );
   });
@@ -66,8 +63,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define type', { name: 'struct cya ' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
     
     split( 'struct cya { yes}' );
   });
@@ -79,8 +75,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define type', { name: ' struct cya ' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
     
     split( 'typedef hello string; struct cya { yes}' );
   });
@@ -90,8 +85,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define type', { name: 'struct cya ', meta: ' blu ' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
     
     split( 'struct cya : blu { yes }' );
   });
@@ -103,12 +97,61 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define function', { name: 'void foo() ' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
 
     split( 'void foo() { do something }' );
   } );
  
+  test ( 'dontDefineFunctionOnIf', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'if(hello){what up now;}' );
+  }); 
+
+  test ( 'dontDefineFunctionOnSwitch', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'switch(hello){case "what":}' );
+  });
+
+  test ( 'dontDefineFunctionOnFor', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'for(hello, bye){case "what":}' );
+  });
+
+  test ( 'dontDefineFunctionOnWhile', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'while(hello, bye){case "what":}' );
+  });
+
+  test ( 'dontDefineFunctionOnDo', function() {
+    emitter
+      .expectNot( 'define function' )
+      .expect( 'open' )
+      .expect( 'close' )
+      .expect( 'end' );
+
+    split( 'do(hello, bye){case "what":}' );
+  });
+
   test( 'defineMemberFunction', function() {
     emitter
       .expectNot( 'define namespace' )
@@ -119,8 +162,7 @@ suite( 'definer', function() {
         meta: ' base() '
     } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
 
     split( 'hello::hello() : base() {bla bla}' );
   });
@@ -133,8 +175,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define namespace', { name: ' namespace hello ' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
 
     split( ' namespace hello { this is it }' );
   });
@@ -147,8 +188,7 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define namespace', { name: '  namespace world' } );
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
 
     split( '  namespace world{}' );
   });
@@ -160,15 +200,15 @@ suite( 'definer', function() {
       .expect( 'open' )
       .expect( 'define namespace', { name: 'namespace   world ' } )
 
-    expectScopeTrail( emitter )
-      .expect( 'end' );
+    expectScopeTrail( emitter );
 
     split( 'namespace   world {}' );
   });
 
   function expectScopeTrail(emitter) {
     return emitter
-      .expect( 'close' );
+      .expect( 'close' )
+      .expect( 'end' );
   }
 
   function split( code ) {

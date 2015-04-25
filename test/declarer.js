@@ -42,7 +42,7 @@ suite( 'declarer', function() {
     emitter
       .expectNot( 'declare function' )
       .expect( 'statement' )
-      .expect( 'code block' )
+      .expect( 'code line' )
       .expect( 'end' );
     split( 'bla bla;' );
   });
@@ -51,7 +51,7 @@ suite( 'declarer', function() {
     emitter
       .expectNot( 'declare function' )
       .expect( 'statement' )
-      .expect( 'code block' )
+      .expect( 'code line' )
       .expect( 'end' );
     split( 'bla += bla();' );
   });
