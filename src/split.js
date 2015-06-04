@@ -28,11 +28,6 @@ function split( code, callback ) {
         'open': '{'
       }
     , emitter = new events.EventEmitter()
-    , definer = new Definer()
-    , scoper = new Scoper()
-	  , declarer = new Declarer()
-    , formatter = new Formatter()
-	  , preprocessor = new Preprocessor() 
     , literalizer = new Literalizer()
     , commenter = new Commenter();
 
@@ -41,6 +36,8 @@ function split( code, callback ) {
   forwardContent( 'define namespace' );
 
   emitter.on( 'open', function( request ) {
+    var definer = new Definer()
+      , scoper = new Scoper();
     definer.process( request, function( type, content ) {
       emitter.emit( type, content );
     });
@@ -58,6 +55,8 @@ function split( code, callback ) {
   });
 
   emitter.on( 'preprocess', function( request ) {
+    var preprocessor = new Preprocessor(); 
+
     if (request.lhs.length && !request.lhs.match( /\S/ ))
     {
       callback( 'format', request.lhs );
@@ -97,12 +96,14 @@ function split( code, callback ) {
         }
         break;
       default:
+        var formatter = new Formatter();
         formatter.forward(event, obj, callback);
       break;
     }
   }
 
   function declare( req ) {
+    var declarer = new Declarer();
     declarer.process( req, function( event, obj ) {
       format(event, obj );
     });
