@@ -4,64 +4,50 @@ var assert = require( 'chai' ).assert
   , events = require( 'events' )
   , Scoper = require( '../src/scoper' )
   , Preprocessor = require( '../src/preprocessor' )
-  , Expector = require( 'expector' ).SeqExpector
-  , fluke = require( 'flukejs' );
+  , fluke = require( 'flukejs' )
+  , test = require( './base.js' );
 
 assert( typeof Preprocessor !== 'undefined' );
 
-suite( 'preprocessor', function() {
+test( 'preprocessorSingleLine', function(emitter) {
+  emitter
+    .expect( 'preprocess' )
+    .expect( 'end' );
+  split( '#define hello hello\nasdfaasdf\nbla', emitter);
+});
 
-  var emitter;
-  setup(function() {
-    emitter = new Expector;
-  });
-  
-  teardown(function() {
-    emitter.check(); 
-    delete emitter;
-  }); 
+test( 'preprocessorAfterComment', function(emitter) {
+  emitter
+    .expect( 'preprocess' )
+    .expect( 'end' );
+  split( '/*yo*/ #define BLA\n', emitter);
+});
 
-  test( 'preprocessorSingleLine', function() {
-    emitter
-      .expect( 'preprocess' )
-      .expect( 'end' );
-    split( '#define hello hello\nasdfaasdf\nbla' );
-  });
+test( 'preprocessorMultiple', function(emitter) {
+  emitter
+    .expect( 'preprocess' )
+    .repeat( 1 )
+    .expect( 'end' );
+  split( '#define A\n#define B\n', emitter);
+});
 
-  test( 'preprocessorAfterComment', function() {
-    emitter
-      .expect( 'preprocess' )
-      .expect( 'end' );
-    split( '/*yo*/ #define BLA\n');
-  });
-  
-  test( 'preprocessorMultiple', function() {
-    emitter
-      .expect( 'preprocess' )
-      .repeat( 1 )
-      .expect( 'end' );
-    split( '#define A\n#define B\n' );
-  });
+test( 'preprocessorMultiLine', function(emitter) {
+  emitter
+    .expect( 'preprocess' )
+    .expect( 'end' );
+  split( '#define hello hello\\\nhello\nbla', emitter);
+});
 
-  test( 'preprocessorMultiLine', function() {
-    emitter
-      .expect( 'preprocess' )
-      .expect( 'end' );
-    split( '#define hello hello\\\nhello\nbla' );
-  });
+function split( code, emitter ) {
+  var preprocessor = new Preprocessor()
+    , rules = { 'preprocess': '#' };
 
-  function split( code, cb ) {
-    var preprocessor = new Preprocessor()
-      , rules = { 'preprocess': '#' };
-
-    fluke.splitAll( code, function( type, request ) {
-        if (type === 'preprocess') {  
-          preprocessor.preprocess( request, function() {});
-        }
-        emitter.emit(type, request);
+  fluke.splitAll( code, function( type, request ) {
+      if (type === 'preprocess') {  
+        preprocessor.preprocess( request, function() {});
       }
-      , rules ); 
-  }
-}); 
-
+      emitter.emit(type, request);
+    }
+    , rules ); 
+}
 
