@@ -2,49 +2,29 @@
 
 var assert = require( 'chai' ).assert
   , Commenter = require( '../src/commenter' )
-  , Expector = require( 'expector' ).SeqExpector
   , fluke = require( 'flukejs' )
-  , tapeTest = require( 'tape' );
+  , base = require( './base.js' )
+  , test = base.test
+  , emitter = base.emitter;
 
 assert( typeof Commenter === 'function' );
 
-var emitter;
-
-function setup() {
-  emitter = new Expector;
-}
-
-function teardown(t) {
-  emitter.check(); 
-  delete emitter;
-  t.pass();
-  t.end();
-} 
-
-function test(name, foo) {
-  setup();
-  tapeTest(name, function(t) {
-    foo();
-    teardown(t); 
-  });
-}
-
 test( 'commenterSingleLine', function(){
-  emitter
+  emitter()
     .expect( 'comment line' )
     .expect( 'end' );
   split( '// hello\n' );
 });
 
 test( 'commenterSingleLineWithoutNewLine', function(){
-  emitter
+  emitter()
     .expect( 'comment line' )
     .expect( 'end' );
   split( '// hello' );
 });
 
 test( 'commenterTwoSingleLineWithoutNewLine', function(){
-  emitter
+  emitter()
     .expect( 'comment line' )
     .repeat( 1 )
     .expect( 'end' );
@@ -52,7 +32,7 @@ test( 'commenterTwoSingleLineWithoutNewLine', function(){
 });
 
 test( 'commentBlockWithCommentLine', function() {
-  emitter
+  emitter()
     .expect( 'comment block', 'hello*/' )
     .expect( 'comment line' )
     .expect( 'end' );
@@ -60,21 +40,21 @@ test( 'commentBlockWithCommentLine', function() {
 });
 
 test( 'commentBlock', function() {
-  emitter
+  emitter()
     .expect( 'comment block' )
     .expect( 'end' );
   split( '/*hello*/' );
 });
 
 test( 'commentBlockWithNewLine', function() {
-  emitter
+  emitter()
     .expect( 'comment block', '\n*/' )
     .expect( 'end' );
   split( '/*\n*/' );
 });
 
 test( 'commentBlockWithConent', function() {
-  emitter
+  emitter()
     .expect( 'comment block', 'hello*/' )
     .expect( 'end' );
   split( '/*\nhello*/' );
@@ -90,16 +70,16 @@ function split( code ) {
   fluke.splitAll( code, function( type, request ) {
       if (type === 'comment line') {
         commenter.processLine( request, function(val) {
-          emitter.emit( 'comment line', val );
+          emitter().emit( 'comment line', val );
         } );
       }
       else if (type === 'comment block') {
         commenter.processBlock( request, function(val) {
-          emitter.emit( 'comment block', val );
+          emitter().emit( 'comment block', val );
         } );
       }
       else {
-        emitter.emit( type, request );
+        emitter().emit( type, request );
       }
     }
     , rules ); 
