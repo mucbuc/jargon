@@ -3,7 +3,6 @@
 var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Declarer = require( '../src/declarer' )
-  , Expector = require( 'expector' ).SeqExpector
   , fluke = require( 'flukejs' )
   , test = require( './base.js' ); 
 
