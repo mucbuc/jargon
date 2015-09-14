@@ -3,64 +3,62 @@
 var assert = require( 'chai' ).assert
   , Commenter = require( '../src/commenter' )
   , fluke = require( 'flukejs' )
-  , base = require( './base.js' )
-  , test = base.test
-  , emitter = base.emitter;
+  , test = require( './base.js' );
 
 assert( typeof Commenter === 'function' );
 
-test( 'commenterSingleLine', function(){
-  emitter()
+test( 'commenterSingleLine', function(emitter){
+  emitter
     .expect( 'comment line' )
     .expect( 'end' );
-  split( '// hello\n' );
+  split( '// hello\n', emitter );
 });
 
-test( 'commenterSingleLineWithoutNewLine', function(){
-  emitter()
+test( 'commenterSingleLineWithoutNewLine', function(emitter){
+  emitter
     .expect( 'comment line' )
     .expect( 'end' );
-  split( '// hello' );
+  split( '// hello', emitter );
 });
 
-test( 'commenterTwoSingleLineWithoutNewLine', function(){
-  emitter()
+test( 'commenterTwoSingleLineWithoutNewLine', function(emitter){
+  emitter
     .expect( 'comment line' )
     .repeat( 1 )
     .expect( 'end' );
-  split( '// hello\n//hello' );
+  split( '// hello\n//hello', emitter );
 });
 
-test( 'commentBlockWithCommentLine', function() {
-  emitter()
+test( 'commentBlockWithCommentLine', function(emitter) {
+  emitter
     .expect( 'comment block', 'hello*/' )
     .expect( 'comment line' )
     .expect( 'end' );
-  split( '/*hello*/a//b' );
+  split( '/*hello*/a//b', emitter );
 });
 
-test( 'commentBlock', function() {
-  emitter()
+test( 'commentBlock', function(emitter) {
+  emitter
     .expect( 'comment block' )
     .expect( 'end' );
-  split( '/*hello*/' );
+  split( '/*hello*/', emitter );
 });
 
-test( 'commentBlockWithNewLine', function() {
-  emitter()
+test( 'commentBlockWithNewLine', function(emitter) {
+  emitter
     .expect( 'comment block', '\n*/' )
     .expect( 'end' );
-  split( '/*\n*/' );
+  split( '/*\n*/', emitter );
 });
 
-test( 'commentBlockWithConent', function() {
-  emitter()
+test( 'commentBlockWithConent', function(emitter) {
+  emitter
     .expect( 'comment block', 'hello*/' )
     .expect( 'end' );
-  split( '/*\nhello*/' );
+  split( '/*\nhello*/', emitter );
 });
 
-function split( code ) {
+function split( code, emitter ) {
   var commenter = new Commenter()
     , rules = {
         'comment line': '\\/\\/',
@@ -70,16 +68,16 @@ function split( code ) {
   fluke.splitAll( code, function( type, request ) {
       if (type === 'comment line') {
         commenter.processLine( request, function(val) {
-          emitter().emit( 'comment line', val );
+          emitter.emit( 'comment line', val );
         } );
       }
       else if (type === 'comment block') {
         commenter.processBlock( request, function(val) {
-          emitter().emit( 'comment block', val );
+          emitter.emit( 'comment block', val );
         } );
       }
       else {
-        emitter().emit( type, request );
+        emitter.emit( type, request );
       }
     }
     , rules ); 
