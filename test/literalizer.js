@@ -13,14 +13,14 @@ test( 'stringLiteral', function(emitter) {
   split( '"struct hello;"', emitter );
 });
 
-test( 'stringLiteralWithQutationMarks', function(emitter) {
-  emitter.expectNot( 'declare' ); 
-  emitter.expect( 'open literal' );
-  split( '"struct he/"llo;"', emitter );
-});
+// test( 'stringLiteralWithQutationMarks', function(emitter) {
+//   emitter.expectNot( 'declare' ); 
+//   emitter.expect( 'open literal' );
+//   split( '"struct he/"llo;"', emitter );
+// });
 
 function split( code, emitter ) {
-  var literalizer = new Literalizer( emitter )
+  var literalizer = new Literalizer()
     , rules = { 'open literal': '([^//]"|^")' };
 
   fluke.splitAll( code, function( type, request ) {
