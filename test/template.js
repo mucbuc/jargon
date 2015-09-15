@@ -6,6 +6,7 @@ var assert = require( 'assert' )
   , fluke = require( 'flukejs' )
   , test = require( './seqbase.js' ); 
 
+/*
 test( 'singleParameter', function(emitter) {
   emitter.expect( 'template parameters', 'class A' );
   split( 'template<class A>{', emitter );
@@ -62,6 +63,8 @@ test( 'templateNestedParameters', function(emitter) {
   emitter.expect( 'template parameters', ' template< typename >, template< typename > ' );
   split( 'template< template< typename >, template< typename > >;', emitter );
 });
+
+*/
 
 function split( code, emitter ) {
 var rules = { 'open': '{', 'statement': ';' }
