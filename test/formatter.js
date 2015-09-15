@@ -2,7 +2,7 @@
 
 var assert = require( 'assert' )
   , Formatter = require( '../src/formatter.js' )
-  , test = require( './base.js' );
+  , test = require( './seqbase.js' );
 
 assert( typeof Formatter === 'function' );
 
@@ -15,7 +15,7 @@ test( 'headingSpaces', function(emitter) {
     .expect( 'end' );
 
   formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
-    console.log( event, code );
+    console.log( 'forwarded', event, code );
     emitter.emit( event, code ); 
   } );
 } );

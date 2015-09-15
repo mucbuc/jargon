@@ -3,7 +3,7 @@
 var assert = require( 'chai' ).assert
   , Commenter = require( '../src/commenter' )
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' );
+  , test = require( './seqbase.js' );
 
 assert( typeof Commenter === 'function' );
 

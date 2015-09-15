@@ -4,7 +4,7 @@ var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Template = require( '../src/template' )
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' ); 
+  , test = require( './seqbase.js' ); 
 
 test( 'singleParameter', function(emitter) {
   emitter.expect( 'template parameters', 'class A' );

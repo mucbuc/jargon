@@ -1,5 +1,5 @@
 var assert = require( 'chai' ).assert
-  , Expector = require( 'expector' ).Expector
+  , Expector = require( 'expector' ).SeqExpector
   , tapeTest = require( 'tape' );
 
 function test(name, foo) {
