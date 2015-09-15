@@ -6,19 +6,19 @@ var assert = require( 'assert' )
 
 assert( typeof Formatter === 'function' );
 
-test( 'headingSpaces', function(emitter) {
-  var formatter = new Formatter();
+// test( 'headingSpaces', function(emitter) {
+//   var formatter = new Formatter();
 
-  emitter
-    .expect( 'format', '\t \t \n ' )
-    .expect( 'ere', 'hello' );
-    //.expect( 'end' );
+//   emitter
+//     .expect( 'format', '\t \t \n ' )
+//     .expect( 'ere', 'hello' );
+//     //.expect( 'end' );
 
-  formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
-    console.log( 'forwarded', event, code );
-    emitter.emit( event, code ); 
-  } );
-} );
+//   formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
+//     console.log( 'forwarded', event, code );
+//     emitter.emit( event, code ); 
+//   } );
+// } );
 
 test( 'trailingSpaces', function(emitter) {
   var formatter = new Formatter();

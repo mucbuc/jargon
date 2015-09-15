@@ -122,7 +122,7 @@ test( 'namespaceDeclaration', function(emitter) {
   split( 'namespace outside{ struct hello; }', emitter );
 });
 
-test( 'NestedNamespaces', function() {
+test( 'NestedNamespaces', function(emitter) {
   emitter
     .expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
     .once( 'define namespace', function( context ) {
