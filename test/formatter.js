@@ -11,8 +11,8 @@ test( 'headingSpaces', function(emitter) {
 
   emitter
     .expect( 'format', '\t \t \n ' )
-    .expect( 'ere', 'hello' )
-    .expect( 'end' );
+    .expect( 'ere', 'hello' );
+    //.expect( 'end' );
 
   formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
     console.log( 'forwarded', event, code );
@@ -25,39 +25,10 @@ test( 'trailingSpaces', function(emitter) {
 
   emitter
     .expect( 'ere', 'hello' )
-    .expect( 'format', '\t \t \n ' )
-    .expect( 'end' );
+    .expect( 'format', '\t \t' );
+    //.expect( 'end' );
     
   formatter.forward( 'ere', 'hello\t \t', function(event, code) {
     emitter.emit( event, code ); 
   } );
 });
-/*
-test( 'headingSpaces', function() {
-	var formatter = new Formatter()
-	  , emitter = new Expector();
-
-	emitter
-		.expect( 'format', '\t \t \n ' )
-		.expect( 'ere', 'hello' )
-		.expect( 'end' );
-
-	formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
-		emitter.emit( event, code );	
-	} );
-} );
-
-test( 'trailingSpaces', function() {
-	var formatter = new Formatter()
-	  , emitter = new Expector();
-
-	emitter
-		.expect( 'ere', 'hello' )
-		.expect( 'format', '\t \t \n ' )
-		.expect( 'end' );
-		
-	formatter.forward( 'ere', 'hello\t \t', function(event, code) {
-		emitter.emit( event, code );	
-	} );
-});
-*/

@@ -28,7 +28,7 @@ function Formatter() {
     function match( content ) {
       assert(typeof content === 'string');
     
-      var matches = content.match( /(\s*)(.*)(\s*?)/ );
+      var matches = content.match( /(\s*)(\S*)(\s*)/ );
       if (matches) {
         if (matches[1].length) {
           cb( 'format', matches[1] );
