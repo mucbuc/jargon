@@ -15,20 +15,19 @@ test( 'headingSpaces', function(emitter) {
     //.expect( 'end' );
 
   formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
-    console.log( 'forwarded', event, code );
     emitter.emit( event, code ); 
   } );
 } );
 
-// test( 'trailingSpaces', function(emitter) {
-//   var formatter = new Formatter();
+test( 'trailingSpaces', function(emitter) {
+  var formatter = new Formatter();
 
-//   emitter
-//     .expect( 'ere', 'hello' )
-//     .expect( 'format', '\t \t' );
-//     //.expect( 'end' );
+  emitter
+    .expect( 'ere', 'hello' )
+    .expect( 'format', '\t \t' );
+    //.expect( 'end' );
     
-//   formatter.forward( 'ere', 'hello\t \t', function(event, code) {
-//     emitter.emit( event, code ); 
-//   } );
-// });
+  formatter.forward( 'ere', 'hello\t \t', function(event, code) {
+    emitter.emit( event, code ); 
+  } );
+});
