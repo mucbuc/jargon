@@ -28,15 +28,14 @@ function Formatter() {
     function match( content ) {
       assert(typeof content === 'string');
     
-      var matches = content.match( /(\s*)(.*)(\s*?)/ );
+      var matches = content.match( /^(\s*)(.*?)(\s*)$/m );
       if (matches) {
-      
         if (matches[1].length) {
           cb( 'format', matches[1] );
         }
         cb( event, matches[2] );
         if (matches[3].length) {
-          cb( 'format', matches[3] );
+          cb( 'format', matches[3] ); 
         }
         return true;
       }
