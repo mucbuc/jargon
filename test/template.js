@@ -3,86 +3,73 @@
 var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Template = require( '../src/template' )
-  , Expector = require( 'expector' ).Expector
-  , fluke = require( 'flukejs' ); 
+  , fluke = require( 'flukejs' )
+  , test = require( './base.js' ); 
 
-suite( 'template', function(){
-  var emitter;
-  setup(function() {
-    emitter = new Expector;
-    emitter.setMaxListeners( 0 );
-  });
+test( 'singleParameter', function(emitter) {
+  emitter.expect( 'template parameters', 'class A' );
+  split( 'template<class A>{', emitter );
 
-  teardown(function() {
-    emitter.check(); 
-    delete emitter;
-  }); 
+  emitter.expect( 'template parameters', 'class A' );
+  split( 'template<class A>;', emitter );
 
-  test( 'singleParameter', function() {
-    emitter.expect( 'template parameters', 'class A' );
-    split( 'template<class A>{' );
+  emitter.expect( 'template parameters', 'class A' );
+  split( 'template<class A> text text {', emitter );
 
-    emitter.expect( 'template parameters', 'class A' );
-    split( 'template<class A>;' );
+  emitter.expect( 'template parameters', 'class A' );
+  split( 'template<class A> text text;', emitter );
 
-    emitter.expect( 'template parameters', 'class A' );
-    split( 'template<class A> text text {' );
+  emitter.expect( 'template parameters', 'class A' );
+  split( 'template<class A> void text( A a ) {', emitter );
 
-    emitter.expect( 'template parameters', 'class A' );
-    split( 'template<class A> text text;' );
+  emitter.expect( 'template parameters', 'class A' );
+  split( 'template<class A> void text( A a );', emitter );
+});
 
-    emitter.expect( 'template parameters', 'class A' );
-    split( 'template<class A> void text( A a ) {' );
-
-    emitter.expect( 'template parameters', 'class A' );
-    split( 'template<class A> void text( A a );' );
-  });
-
-  test( 'multipleParameters', function() {
-    
-    emitter.expect( 'template parameters', 'class A, class B' );
-    split( 'template< class A, class B>;' );
-
-    emitter.expect( 'template parameters', 'class A, class B' );
-    split( 'template< class A, class B>{' );
-
-    emitter.expect( 'template parameters', 'class A, class B' );
-    split( 'template< class A, class B> text;' );
-
-    emitter.expect( 'template parameters', 'class A, class B' );
-    split( 'template< class A, class B> text{' );
-
-    emitter.expect( 'template parameters', 'class A, class B' );
-    split( 'template< class A, class B> void text( A a );' );
-
-    emitter.expect( 'template parameters', 'class A, class B' );
-    split( 'template< class A, class B> void text( A a ) {' );
-  });
-
-  test( 'macroParameters', function() {
-    emitter.expect( 'template parameters', 'MACRO(), MACRO' );
-    split( 'template< MACRO(), MACRO >;' );
-
-    emitter.expect( 'template parameters', 'MACRO(ARG), MACRO()' );
-    split( 'template< MACRO(ARG), MACRO() >;' );
-
-    emitter.expect( 'template parameters', 'MACRO(), MACRO' );
-    split( 'template< MACRO(), MACRO >;' );
-  });
+test( 'multipleParameters', function(emitter) {
   
-  test( 'templateNestedParameters', function() {
-    emitter.expect( 'template parameters', ' template< typename >, template< typename > ' );
-    split( 'template< template< typename >, template< typename > >;' );
-  });
+  emitter.expect( 'template parameters', 'class A, class B' );
+  split( 'template< class A, class B>;', emitter );
 
-  function split( code ) {
+  emitter.expect( 'template parameters', 'class A, class B' );
+  split( 'template< class A, class B>{', emitter );
+
+  emitter.expect( 'template parameters', 'class A, class B' );
+  split( 'template< class A, class B> text;', emitter );
+
+  emitter.expect( 'template parameters', 'class A, class B' );
+  split( 'template< class A, class B> text{', emitter );
+
+  emitter.expect( 'template parameters', 'class A, class B' );
+  split( 'template< class A, class B> void text( A a );', emitter );
+
+  emitter.expect( 'template parameters', 'class A, class B' );
+  split( 'template< class A, class B> void text( A a ) {', emitter );
+});
+
+test( 'macroParameters', function(emitter) {
+  emitter.expect( 'template parameters', 'MACRO(), MACRO' );
+  split( 'template< MACRO(), MACRO >;', emitter );
+
+  emitter.expect( 'template parameters', 'MACRO(ARG), MACRO()' );
+  split( 'template< MACRO(ARG), MACRO() >;', emitter );
+
+  emitter.expect( 'template parameters', 'MACRO(), MACRO' );
+  split( 'template< MACRO(), MACRO >;', emitter );
+});
+
+test( 'templateNestedParameters', function(emitter) {
+  emitter.expect( 'template parameters', ' template< typename >, template< typename > ' );
+  split( 'template< template< typename >, template< typename > >;', emitter );
+});
+
+function split( code, emitter ) {
   var rules = { 'open': '{', 'statement': ';' }
     , tokenizer = new Scoper( emitter, rules )
     , templater = new Template( emitter );
-    
-    fluke.splitAll( code, function( type, request ) {
-        emitter.emit(type, request);
-      }
-      , rules ); 
-  }
-});
+  
+  fluke.splitAll( code, function( type, request ) {
+      emitter.emit(type, request);
+    }
+    , rules ); 
+}

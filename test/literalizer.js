@@ -2,42 +2,31 @@
 
 var assert = require( 'assert' )
   , Literalizer = require( '../src/literalizer.js')
-  , Expector = require( 'expector' ).Expector
-  , fluke = require( 'flukejs' ); 
+  , fluke = require( 'flukejs' )
+  , test = require( './base.js' );
 
 assert( typeof Literalizer === 'function' );
 
-suite( 'literalizer', function() {
-
-  var emitter;
-  setup(function() {
-    emitter = new Expector;
-  });
-  
-  teardown(function() {
-    emitter.check(); 
-    delete emitter;
-  }); 
-
-  test( 'stringLiteral', function() {
-    emitter.expectNot( 'declare' ); 
-    emitter.expect( 'open literal' );
-    split( '"struct hello;"' );
-  });
-
-  test( 'stringLiteralWithQutationMarks', function() {
-    emitter.expectNot( 'declare' ); 
-    emitter.expect( 'open literal' );
-    split( '"struct he/"llo;"' );
-  });
-
-  function split( code ) {
-    var literalizer = new Literalizer( emitter )
-      , rules = { 'open literal': '([^//]"|^")' };
-
-    fluke.splitAll( code, function( type, request ) {
-        emitter.emit(type, request);
-      }
-      , rules ); 
-  }
+test( 'stringLiteral', function(emitter) {
+  emitter.expectNot( 'declare' ); 
+  emitter.expect( 'open literal' );
+  split( '"struct hello;"', emitter );
 });
+
+test( 'stringLiteralWithQutationMarks', function(emitter) {
+  emitter.expectNot( 'declare' ); 
+  emitter.expect( 'open literal' );
+  split( '"struct he/"llo;"', emitter );
+});
+
+function split( code, emitter ) {
+  var literalizer = new Literalizer()
+    , rules = { 'open literal': '([^//]"|^")' };
+
+  fluke.splitAll( code, function( type, request ) {
+      console.log( 'emit', type, request );
+      emitter.emit(type, request);
+    }
+    , rules ); 
+}
+

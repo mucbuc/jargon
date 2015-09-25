@@ -2,102 +2,88 @@
 
 var assert = require( 'assert' )
   , Scoper = require( '../src/scoper')
-  , Expector = require( 'expector' ).SeqExpector
-  , fluke = require( 'flukejs' ); 
+  , fluke = require( 'flukejs' )
+  , test = require( './seqbase.js' );
 
 assert( typeof Scoper === 'function' );
 
-suite( 'scoper', function() {
-  
-  var emitter;
-  setup(function() {
-    emitter = new Expector;
-  });
+test( 'emptyScope', function(emitter) {
+  emitter
+    .expect( 'open' )
+    .expect( 'close', '' )
+    .expect( 'end' );
+  split( 'namespace bla {}', emitter );
+}); 
 
-  teardown(function() {
-    emitter.check(); 
-    delete emitter;
-  }); 
+test( 'statementScope', function(emitter) {
+  emitter
+    .expect( 'open' )
+    .expect( 'close', 'hello;' )
+    .expect( 'end' );
 
-  test( 'emptyScope', function() {
-    emitter
-      .expect( 'open' )
-      .expect( 'close', '' )
-      .expect( 'end' );
-    split( 'namespace bla {}' );
-  }); 
+  split( 'namespace bla { hello; }', emitter );
+});
 
-  test( 'statementScope', function() {
-    emitter
-      .expect( 'open' )
-      .expect( 'close', 'hello;' )
-      .expect( 'end' );
+test( 'basicScope', function(emitter) {
+  emitter
+    .expect( 'open' )
+    .expect( 'close', 'hello' )
+    .expect( 'end' );
+  split( 'namespace bla { hello }', emitter );
+});
 
-    split( 'namespace bla { hello; }' );
-  });
+test( 'nestedScopes', function(emitter) {
+  emitter
+    .expect( 'open' )
+    .expect( 'close', 'namespace world{ namespace {} }' )
+    .expect( 'end' );
+  split( 'namespace hello{ namespace world{ namespace {} } }', emitter );
+});
 
-  test( 'basicScope', function() {
-    emitter
-      .expect( 'open' )
-      .expect( 'close', 'hello' )
-      .expect( 'end' );
-    split( 'namespace bla { hello }' );
-  });
+test( 'aggregateScopes', function(emitter) {
+  emitter  
+    .expect( 'open' )
+    .expect( 'close', 'namespace inside1 {} namespace inside2 {}' )
+    .expect( 'end' );
+  split( 'namespace outside{ namespace inside1 {} namespace inside2 {} }', emitter );
+});
 
-  test( 'nestedScopes', function() {
-    emitter
-      .expect( 'open' )
-      .expect( 'close', 'namespace world{ namespace {} }' )
-      .expect( 'end' );
-    split( 'namespace hello{ namespace world{ namespace {} } }' );
-  });
+test( 'alternativeScopeTag', function(emitter) {
+  var rules = { 'open': '<', 'close': '>' };
 
-  test( 'aggregateScopes', function() {
-    emitter  
-      .expect( 'open' )
-      .expect( 'close', 'namespace inside1 {} namespace inside2 {}' )
-      .expect( 'end' );
-    split( 'namespace outside{ namespace inside1 {} namespace inside2 {} }' );
-  });
+  emitter
+    .expect( 'open' )
+    .expect( 'close', 'typename' )
+    .expect( 'end' );
+  split( 'template< typename >', emitter, rules );
+});
 
-  test( 'alternativeScopeTag', function() {
-    var rules = { 'open': '<', 'close': '>' };
+test( 'alternativeScopeTagNested', function(emitter) {
+  var rules = { 'open': '<', 'close': '>' };
 
-    emitter
-      .expect( 'open' )
-      .expect( 'close', 'typename' )
-      .expect( 'end' );
-    split( 'template< typename >', rules );
-  });
+  emitter
+    .expect( 'open' )
+    .expect( 'close', 'template< typename >' )
+    .expect( 'end' );
+  split( 'template< template< typename > >', emitter, rules );  
+});   
 
-  test( 'alternativeScopeTagNested', function() {
-    var rules = { 'open': '<', 'close': '>' };
+function split( code, emitter, rules ) {
 
-    emitter
-      .expect( 'open' )
-      .expect( 'close', 'template< typename >' )
-      .expect( 'end' );
-    split( 'template< template< typename > >', rules );  
-  });   
+  var scoper; 
 
-  function split( code, rules ) {
-  
-    var scoper; 
-
-    if (typeof rules === 'undefined') {
-      rules = { 'open': '{', 'close': '}' };
-    }
-
-    scoper = new Scoper( rules );
-    fluke.splitAll( code, function( type, request ) {
-        emitter.emit(type, request);
-        if (type == 'open' || type == 'close') {
-          scoper.process( request, function(type, content) {
-            emitter.emit( type, content );
-          });
-        }
-      }
-      , rules ); 
+  if (typeof rules === 'undefined') {
+    rules = { 'open': '{', 'close': '}' };
   }
 
-});
+  scoper = new Scoper( rules );
+  fluke.splitAll( code, function( type, request ) {
+      emitter.emit(type, request);
+      if (type == 'open' || type == 'close') {
+        scoper.process( request, function(type, content) {
+          emitter.emit( type, content );
+        });
+      }
+    }
+    , rules ); 
+}
