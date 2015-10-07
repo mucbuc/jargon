@@ -3,7 +3,7 @@
 var assert = require( 'assert' )
   , Literalizer = require( '../src/literalizer.js')
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' );
+  , test = require( './base.js' ).test;
 
 assert( typeof Literalizer === 'function' );
 

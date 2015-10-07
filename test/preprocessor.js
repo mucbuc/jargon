@@ -5,7 +5,7 @@ var assert = require( 'chai' ).assert
   , Scoper = require( '../src/scoper' )
   , Preprocessor = require( '../src/preprocessor' )
   , fluke = require( 'flukejs' )
-  , test = require( './seqbase.js' );
+  , test = require( './base.js' ).testSequence;
 
 assert( typeof Preprocessor !== 'undefined' );
 

@@ -3,7 +3,7 @@
 var assert = require( 'assert' )
   , Scoper = require( '../src/scoper')
   , fluke = require( 'flukejs' )
-  , test = require( './seqbase.js' );
+  , test = require( './base.js' ).testSequence;
 
 assert( typeof Scoper === 'function' );
 

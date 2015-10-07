@@ -2,7 +2,7 @@
 
 var assert = require( 'assert' )
   , Formatter = require( '../src/formatter.js' )
-  , test = require( './seqbase.js' );
+  , test = require( './base.js' ).testSequence;
 
 assert( typeof Formatter === 'function' );
 

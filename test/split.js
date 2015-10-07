@@ -3,7 +3,7 @@
 var assert = require( 'chai' ).assert
   , fs = require( 'fs' )
   , jargonSplit = require( '../src/split' )
-  , test = require( './base.js' );
+  , test = require( './base.js' ).test;
 
 assert( typeof jargonSplit === 'function' );
 

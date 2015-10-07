@@ -4,7 +4,7 @@ var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Declarer = require( '../src/declarer' )
   , fluke = require( 'flukejs' )
-  , test = require( './seqbase.js' ); 
+  , test = require( './base.js' ).testSequence; 
 
 assert( typeof Declarer === 'function' );
 
