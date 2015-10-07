@@ -4,12 +4,10 @@ var assert = require( 'chai' ).assert
 
 function test(name, foo) {
   tapeTest(name, function(t) {
-    var emitter = new Expector;
+    var emitter = new Expector(t);
     foo(emitter);
     emitter.check();
     delete emitter;
-    t.pass();
-    t.end();
   });
 }
 
