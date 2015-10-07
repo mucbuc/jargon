@@ -4,18 +4,16 @@ var assert = require( 'chai' ).assert
   , tapeTest = require( 'tape' );
 
 function test(name, foo) {
-  tapeTest(name, function(t) {
-    var emitter = new Expector(t);
-    foo(emitter);
-    emitter.check();
-    delete emitter;
-    t.end();
-  });
+  makeTester(name, foo, Expector);
 }
 
 function testSequence(name, foo) {
+  makeTester(name, foo, SeqExpector);
+}
+
+function makeTester(name, foo, Type) {
   tapeTest(name, function(t) {
-    var emitter = new SeqExpector(t);
+    var emitter = new Type(t);
     foo(emitter);
     emitter.check();
     delete emitter;
