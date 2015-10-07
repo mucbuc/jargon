@@ -9,6 +9,7 @@ function test(name, foo) {
     foo(emitter);
     emitter.check();
     delete emitter;
+    t.end();
   });
 }
 
@@ -18,6 +19,7 @@ function testSequence(name, foo) {
     foo(emitter);
     emitter.check();
     delete emitter;
+    t.end();
   });
 }
 
