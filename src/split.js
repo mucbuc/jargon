@@ -7,7 +7,8 @@ var assert = require( 'chai' ).assert
   , Formatter = require( './formatter' )
   , Literalizer = require( './literalizer' )
   , Preprocessor = require( './preprocessor' )
-  , Scoper = require( './scoper' );
+  , Scoper = require( './scoper' )
+  , Template = require( './template');
 
 assert( typeof Commenter === 'function' );
 assert( typeof Declarer === 'function' );
@@ -16,6 +17,7 @@ assert( typeof Formatter === 'function' );
 assert( typeof Literalizer === 'function' );
 assert( typeof Preprocessor === 'function' );
 assert( typeof Scoper === 'function' );
+assert( typeof Template === 'function' );
 
 function split( code, callback ) {
 
@@ -24,6 +26,7 @@ function split( code, callback ) {
         'comment line': '\\/\\/',
         'comment block': '\\/\\*',
         'open literal': '([^//]"|^")',
+        //'open template': '<',
         'statement': ';',
         'open': '{'
       }
