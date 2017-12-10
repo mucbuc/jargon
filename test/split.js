@@ -6,18 +6,12 @@ var assert = require( 'chai' ).assert
   , fs = require( 'fs' )
   , path = require( 'path' )
   , jargonSplit = require( '../src/split' )
-  , Expector = require( 'expector' ).SeqExpector
-  , test = require( 'tape' );
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test;
 
 assert( typeof jargonSplit === 'function' );
-
-function setUp(t) {
-  return new Expector(t); 
-}
-
-function tearDown(fixture) {
-  fixture.check(fixture);
-}
 
 test( 'commentBlockPreprocessor', (t) => {
   let e = setUp( t );
