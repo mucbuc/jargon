@@ -4,6 +4,7 @@
 
 var assert = require( 'chai' ).assert
   , fs = require( 'fs' )
+  , path = require( 'path' )
   , jargonSplit = require( '../src/split' )
   , Expector = require( 'expector' ).SeqExpector
   , test = require( 'tape' );
@@ -37,11 +38,11 @@ test.skip( 'readSampleFileTemplate', (t) => {
   
   e.expect( 'comment' );
 
-  split( fs.readFileSync( './test/samples/template.h' ).toString(), e );
+  split( readSamplesFile( 'template.h' ), e );
   e.check();
 });
 
-test.skip( 'readSampleFile', (t) => {
+test( 'readSampleFile', (t) => {
   let e = new Expector( t );
   
   e.expect( 'preprocess' )
@@ -68,7 +69,7 @@ test.skip( 'readSampleFile', (t) => {
     .expect( 'preprocess' )
     .expect( 'comment' );
 
-  split( fs.readFileSync( './test/samples/test.h' ).toString(), e );
+  split( readSamplesFile( 'test.h' ), e );
   e.check();
 });
 
@@ -251,6 +252,10 @@ test( 'defineTypeAfterDeclareType', (t) => {
   split( 'struct jimmy; struct hey { joe }', e );
   e.check();
 });
+
+function readSamplesFile( name ) {
+  return fs.readFileSync( path.join( __dirname, 'samples', name ), 'utf8' );
+}
 
 function split( code, emitter ) {
   jargonSplit( code, function( event, obj ) { 
