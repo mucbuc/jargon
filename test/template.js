@@ -4,9 +4,14 @@ var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Template = require( '../src/template' )
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' ).test; 
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUpU = tapeWrapper.setUpU
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test; 
 
-test( 'singleParameter', function(emitter) {
+test( 'singleParameter', function(t) {
+
+  let emitter = setUpU(t);
   emitter.expect( 'template parameters', 'class A' );
   split( 'template<class A>{', emitter );
 
@@ -24,9 +29,13 @@ test( 'singleParameter', function(emitter) {
 
   emitter.expect( 'template parameters', 'class A' );
   split( 'template<class A> void text( A a );', emitter );
+
+  tearDown(emitter);
 });
 
-test( 'multipleParameters', function(emitter) {
+test( 'multipleParameters', function(t) {
+
+  let emitter = setUpU(t);
   
   emitter.expect( 'template parameters', 'class A, class B' );
   split( 'template< class A, class B>;', emitter );
@@ -45,9 +54,13 @@ test( 'multipleParameters', function(emitter) {
 
   emitter.expect( 'template parameters', 'class A, class B' );
   split( 'template< class A, class B> void text( A a ) {', emitter );
+
+  tearDown(emitter);
 });
 
-test( 'macroParameters', function(emitter) {
+test( 'macroParameters', function(t) {
+
+  let emitter = setUpU(t);
   emitter.expect( 'template parameters', 'MACRO(), MACRO' );
   split( 'template< MACRO(), MACRO >;', emitter );
 
@@ -56,11 +69,17 @@ test( 'macroParameters', function(emitter) {
 
   emitter.expect( 'template parameters', 'MACRO(), MACRO' );
   split( 'template< MACRO(), MACRO >;', emitter );
+
+  tearDown(emitter);
 });
 
-test( 'templateNestedParameters', function(emitter) {
+test( 'templateNestedParameters', function(t) {
+
+  let emitter = setUpU(t);
   emitter.expect( 'template parameters', ' template< typename >, template< typename > ' );
   split( 'template< template< typename >, template< typename > >;', emitter );
+
+  tearDown(emitter);
 });
 
 function split( code, emitter ) {

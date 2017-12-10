@@ -4,25 +4,26 @@ var assert = require( 'assert' )
   , Literalizer = require( '../src/literalizer.js')
   , fluke = require( 'flukejs' )
   , tapeWrapper = require( './tape-wrapper' )
-  , Expector = require( 'expector' ).Expector
+  , setUpU = tapeWrapper.setUpU
+  , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test;
 
 assert( typeof Literalizer === 'function' );
 
 test( 'stringLiteral', function(t) {
-  let emitter = new Expector(t);
+  let emitter = setUpU(t);
   emitter.expectNot( 'declare' ); 
   emitter.expect( 'open literal' );
   split( '"struct hello;"', emitter );
-  emitter.check();
+  tearDown(emitter);
 });
 
 test( 'stringLiteralWithQutationMarks', function(t) {
-  let emitter = new Expector(t);
+  let emitter = setUpU(t);
   emitter.expectNot( 'declare' ); 
   emitter.expect( 'open literal' );
   split( '"struct he/"llo;"', emitter );
-  emitter.check();
+  tearDown(emitter);
 });
 
 function split( code, emitter ) {
