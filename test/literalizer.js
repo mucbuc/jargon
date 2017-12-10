@@ -31,7 +31,6 @@ function split( code, emitter ) {
     , rules = { 'open literal': '([^//]"|^")' };
 
   fluke.splitAll( code, function( type, request ) {
-      console.log( 'emit', type, request );
       emitter.emit(type, request);
     }
     , rules ); 
