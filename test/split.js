@@ -13,8 +13,9 @@ assert( typeof jargonSplit === 'function' );
 test( 'commentBlockPreprocessor', (t) => {
   let e = new Expector( t );
   
-  e.expect( 'comment' )
-    .expect( 'preprocess' );
+  e
+  .expect( 'comment' )
+  .expect( 'preprocess' );
 
   split( '/**/#endif', e );
 });
@@ -37,7 +38,7 @@ test.skip( 'readSampleFileTemplate', (t) => {
   split( fs.readFileSync( './test/samples/template.h' ).toString(), e );     
 });
 
-test( 'readSampleFile', (t) => {
+test.skip( 'readSampleFile', (t) => {
   let e = new Expector( t );
   
   e.expect( 'preprocess' )
@@ -105,8 +106,8 @@ test( 'namespaceTree', (t) => {
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
 
-  emitter.once( 'define namespace', function( context ) {
-    emitter
+  e.once( 'define namespace', function( context ) {
+    e
       .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
       .expect( 'format' );
 
@@ -121,7 +122,7 @@ test( 'namespaceDeclaration', (t) => {
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
 
-  emitter.once( 'define namespace', function( context ) {
+  e.once( 'define namespace', function( context ) {
 // <<<<<<< HEAD:test/split.js
 //       emitter
 //         .expect( 'format' )
@@ -129,8 +130,8 @@ test( 'namespaceDeclaration', (t) => {
 //         .expect( 'format' );
 //       split( context.code );
 // =======
-    emitter.once( 'end', function() {
-      emitter
+    e.once( 'end', function() {
+      e
         .expect( 'format' )
         .expect( 'declare type', 'struct hello' )
         .expect( 'code block' )
@@ -147,8 +148,8 @@ test( 'NestedNamespaces', (t) => {
   
   e.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
     .once( 'define namespace', function( context ) {
-      emitter.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
-      emitter.expect( 'format' );
+      e.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
+      e.expect( 'format' );
       split( context.code, e );
     } ); 
   
@@ -170,7 +171,7 @@ test( 'NestedTypes', (t) => {
   let e = new Expector( t );
   
   e.expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } );  
-  split( 'struct outside { struct inside {}; };', emitter);
+  split( 'struct outside { struct inside {}; };', e);
 } ); 
 
 test( 'TypeWithFormat', (t) => {
@@ -234,5 +235,6 @@ test( 'defineTypeAfterDeclareType', (t) => {
 function split( code, emitter ) {
   jargonSplit( code, function( event, obj ) { 
       emitter.emit(event, obj);
-  }); 
+  });
+  emitter.check();
 }
