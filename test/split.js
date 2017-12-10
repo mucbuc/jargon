@@ -35,10 +35,11 @@ test( 'commentBlockFormatPreprocessor', (t) => {
   tearDown(e);
 });
 
-test.skip( 'readSampleFileTemplate', (t) => {
+test( 'readSampleFileTemplate', (t) => {
   let e = setUp( t );
   
-  e.expect( 'comment' );
+  e.expect( 'template parameters' )
+    .expect( 'declare function' );
 
   split( readSamplesFile( 'template.h' ), e );
   tearDown(e);
@@ -261,6 +262,6 @@ function readSamplesFile( name ) {
 
 function split( code, emitter ) {
   jargonSplit( code, function( event, obj ) { 
-      emitter.emit(event, obj);
+    emitter.emit(event, obj);
   });
 }

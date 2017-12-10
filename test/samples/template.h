@@ -1,2 +1,1 @@
-template<class T> 
-void foo(T); 
+template<class T>void foo(T);
