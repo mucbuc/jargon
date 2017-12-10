@@ -18,6 +18,7 @@ test( 'commentBlockPreprocessor', (t) => {
   .expect( 'preprocess' );
 
   split( '/**/#endif', e );
+  e.check();
 });
 
 test( 'commentBlockFormatPreprocessor', (t) => {
@@ -28,6 +29,7 @@ test( 'commentBlockFormatPreprocessor', (t) => {
     .expect( 'preprocess' );
 
   split( '/**/ #endif', e );
+  e.check();
 });
 
 test.skip( 'readSampleFileTemplate', (t) => {
@@ -35,7 +37,8 @@ test.skip( 'readSampleFileTemplate', (t) => {
   
   e.expect( 'comment' );
 
-  split( fs.readFileSync( './test/samples/template.h' ).toString(), e );     
+  split( fs.readFileSync( './test/samples/template.h' ).toString(), e );
+  e.check();
 });
 
 test.skip( 'readSampleFile', (t) => {
@@ -65,7 +68,8 @@ test.skip( 'readSampleFile', (t) => {
     .expect( 'preprocess' )
     .expect( 'comment' );
 
-  split( fs.readFileSync( './test/samples/test.h' ).toString(), e );     
+  split( fs.readFileSync( './test/samples/test.h' ).toString(), e );
+  e.check();
 });
 
 test( 'PreprocessFollowedByBlockComment', (t) => {
@@ -74,6 +78,7 @@ test( 'PreprocessFollowedByBlockComment', (t) => {
   e.expect( 'preprocess' )
     .expect( 'comment' );
   split( '#define SOB 1 \/* hey *\/', e );
+  e.check();
 });
 
 test( 'PreprocessFollowedByLineComment', (t) => {
@@ -83,6 +88,7 @@ test( 'PreprocessFollowedByLineComment', (t) => {
     .expect( 'comment' )
     .expect( 'format' );
   split( '#define SOB 1 \/\/ hey\n', e );
+  e.check();
 });
 
 test( 'PreprocessFollowedByLineCommentWithoutNewLine', (t) => {
@@ -91,6 +97,7 @@ test( 'PreprocessFollowedByLineCommentWithoutNewLine', (t) => {
   e.expect( 'preprocess' )
     .expect( 'comment' );
   split( '#define SOB 1 \/\/ hey', e );
+  e.check();
 });
 
 test( 'SingleDeclaration', (t) => {
@@ -99,6 +106,7 @@ test( 'SingleDeclaration', (t) => {
   e.expect( 'declare type', 'struct hello' );
 
   split( 'struct hello;', e );  
+  e.check();
 });
 
 test( 'namespaceTree', (t) => {
@@ -115,6 +123,7 @@ test( 'namespaceTree', (t) => {
   } );
 
   split( 'namespace outside{ namespace inside {} }', e );
+  e.check();
 }); 
 
 test( 'namespaceDeclaration', (t) => {
@@ -141,6 +150,7 @@ test( 'namespaceDeclaration', (t) => {
 //>>>>>>> origin/formatter:test/analyzer.js
   } ); 
   split( 'namespace outside{ struct hello; }', e );
+  e.check();
 });
 
 test( 'NestedNamespaces', (t) => {
@@ -153,7 +163,8 @@ test( 'NestedNamespaces', (t) => {
       split( context.code, e );
     } ); 
   
-  split( 'namespace outside { namespace inside {} }', e );  
+  split( 'namespace outside { namespace inside {} }', e ); 
+  e.check();
 });
 
 test( 'DeclarationsAndDefinitions', (t) => {
@@ -165,6 +176,7 @@ test( 'DeclarationsAndDefinitions', (t) => {
   
   e.expect( 'define type', { name: 'struct hello', code: '' } );
   split( 'struct hello{};', e );
+  e.check();
 });
 
 test( 'NestedTypes', (t) => {
@@ -172,6 +184,7 @@ test( 'NestedTypes', (t) => {
   
   e.expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } );  
   split( 'struct outside { struct inside {}; };', e);
+  e.check();
 } ); 
 
 test( 'TypeWithFormat', (t) => {
@@ -180,6 +193,7 @@ test( 'TypeWithFormat', (t) => {
   e.expect( 'define type', { name: ' struct inside ', code: '' })
     .expect( 'format' );
   split( ' struct inside {}; ', e );
+  e.check();
 });
 
 test( 'MemberFunctionDeclare', (t) => {
@@ -190,7 +204,8 @@ test( 'MemberFunctionDeclare', (t) => {
 
   
   e.expect( 'declare function', 'void member()' ); 
-  split('void member();', e ); 
+  split('void member();', e );
+  e.check();
 }); 
 
 test( 'FunctionDeclare', (t) => {
@@ -198,6 +213,7 @@ test( 'FunctionDeclare', (t) => {
   
   e.expect( 'declare function', 'void foo()' );
   split( 'void foo();', e );
+  e.check();
 });
 
 test( 'FunctionDefine', (t) => {
@@ -205,6 +221,7 @@ test( 'FunctionDefine', (t) => {
   
   e.expect( 'define function', { name: 'void foo() ', code: ' hello ' } );
   split( 'void foo() { hello }', e );
+  e.check();
 });
 
 test( 'declareTypeAfterPreproesorDirective', (t) => {
@@ -213,6 +230,7 @@ test( 'declareTypeAfterPreproesorDirective', (t) => {
   e.expect( 'preprocess' )
     .expect( 'declare type', 'struct bla' );
   split( '#define hello asd\nstruct bla;', e );
+  e.check();
 });
 
 test( 'declareTypeAfterPreproesorDirectives', (t) => {
@@ -222,6 +240,7 @@ test( 'declareTypeAfterPreproesorDirectives', (t) => {
     .repeat( 1 )
     .expect( 'declare type', 'struct bla' );
   split( '#define hello asd\n#define hello\\nasdfasd\nstruct bla;', e );
+  e.check();
 });
 
 test( 'defineTypeAfterDeclareType', (t) => {
@@ -230,11 +249,11 @@ test( 'defineTypeAfterDeclareType', (t) => {
   e.expect( 'declare type', ' struct jimmy ' )  
     .expect( 'define type', { name: ' struct hey ', code: ' joe ' } );
   split( 'struct jimmy; struct hey { joe }', e );
+  e.check();
 });
 
 function split( code, emitter ) {
   jargonSplit( code, function( event, obj ) { 
       emitter.emit(event, obj);
   });
-  emitter.check();
 }
