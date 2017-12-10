@@ -2,11 +2,17 @@
 
 var assert = require( 'assert' )
   , Formatter = require( '../src/formatter.js' )
-  , test = require( './base.js' ).testSequence;
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test;
 
 assert( typeof Formatter === 'function' );
 
-test( 'headingSpaces', function(emitter) {
+test( 'headingSpaces', function(t) {
+    
+  let emitter = setUp( t );
+
   var formatter = new Formatter();
 
   emitter
@@ -17,9 +23,13 @@ test( 'headingSpaces', function(emitter) {
   formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
     emitter.emit( event, code ); 
   } );
+
+  tearDown( emitter );
 } );
 
-test( 'trailingSpaces', function(emitter) {
+test( 'trailingSpaces', function(t) {
+
+  let emitter = setUp( t );
   var formatter = new Formatter();
 
   emitter
@@ -30,4 +40,6 @@ test( 'trailingSpaces', function(emitter) {
   formatter.forward( 'ere', 'hello\t \t', function(event, code) {
     emitter.emit( event, code ); 
   } );
+
+  tearDown( emitter );
 });
