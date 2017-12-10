@@ -3,59 +3,76 @@
 var assert = require( 'chai' ).assert
   , Commenter = require( '../src/commenter' )
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' ).testSequence;
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test;
 
 assert( typeof Commenter === 'function' );
 
-test( 'commenterSingleLine', function(emitter){
+test( 'commenterSingleLine', function(t){
+  let emitter = setUp(t);
   emitter
     .expect( 'comment line' )
     .expect( 'end' );
   split( '// hello\n', emitter );
+  tearDown(emitter);
 });
 
-test( 'commenterSingleLineWithoutNewLine', function(emitter){
+test( 'commenterSingleLineWithoutNewLine', function(t){
+  let emitter = setUp(t);
   emitter
     .expect( 'comment line' )
     .expect( 'end' );
   split( '// hello', emitter );
+  tearDown(emitter);
 });
 
-test( 'commenterTwoSingleLineWithoutNewLine', function(emitter){
+test( 'commenterTwoSingleLineWithoutNewLine', function(t){
+  let emitter = setUp(t);
   emitter
     .expect( 'comment line' )
     .repeat( 1 )
     .expect( 'end' );
   split( '// hello\n//hello', emitter );
+  tearDown(emitter);
 });
 
-test( 'commentBlockWithCommentLine', function(emitter) {
+test( 'commentBlockWithCommentLine', function(t) {
+  let emitter = setUp(t);
   emitter
     .expect( 'comment block', 'hello*/' )
     .expect( 'comment line' )
     .expect( 'end' );
   split( '/*hello*/a//b', emitter );
+  tearDown(emitter);
 });
 
-test( 'commentBlock', function(emitter) {
+test( 'commentBlock', function(t) {
+  let emitter = setUp(t);
   emitter
     .expect( 'comment block' )
     .expect( 'end' );
   split( '/*hello*/', emitter );
+  tearDown(emitter);
 });
 
-test( 'commentBlockWithNewLine', function(emitter) {
+test( 'commentBlockWithNewLine', function(t) {
+  let emitter = setUp(t);
   emitter
     .expect( 'comment block', '\n*/' )
     .expect( 'end' );
   split( '/*\n*/', emitter );
+  tearDown(emitter);
 });
 
-test( 'commentBlockWithConent', function(emitter) {
+test( 'commentBlockWithConent', function(t) {
+  let emitter = setUp(t);
   emitter
     .expect( 'comment block', 'hello*/' )
     .expect( 'end' );
   split( '/*\nhello*/', emitter );
+  tearDown(emitter);
 });
 
 function split( code, emitter ) {

@@ -6,44 +6,46 @@ var assert = require( 'chai' ).assert
   , fs = require( 'fs' )
   , path = require( 'path' )
   , jargonSplit = require( '../src/split' )
-  , Expector = require( 'expector' ).SeqExpector
-  , test = require( 'tape' );
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test;
 
 assert( typeof jargonSplit === 'function' );
 
 test( 'commentBlockPreprocessor', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e
   .expect( 'comment' )
   .expect( 'preprocess' );
 
   split( '/**/#endif', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'commentBlockFormatPreprocessor', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'comment' )
     .expect( 'format' )
     .expect( 'preprocess' );
 
   split( '/**/ #endif', e );
-  e.check();
+  tearDown(e);
 });
 
 test.skip( 'readSampleFileTemplate', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'comment' );
 
   split( readSamplesFile( 'template.h' ), e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'readSampleFile', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'preprocess' )
     .expect( 'declare type' )
@@ -70,48 +72,48 @@ test( 'readSampleFile', (t) => {
     .expect( 'comment' );
 
   split( readSamplesFile( 'test.h' ), e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'PreprocessFollowedByBlockComment', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'preprocess' )
     .expect( 'comment' );
   split( '#define SOB 1 \/* hey *\/', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'PreprocessFollowedByLineComment', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'preprocess' )
     .expect( 'comment' )
     .expect( 'format' );
   split( '#define SOB 1 \/\/ hey\n', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'PreprocessFollowedByLineCommentWithoutNewLine', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'preprocess' )
     .expect( 'comment' );
   split( '#define SOB 1 \/\/ hey', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'SingleDeclaration', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'declare type', 'struct hello' );
 
   split( 'struct hello;', e );  
-  e.check();
+  tearDown(e);
 });
 
 test( 'namespaceTree', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
 
@@ -124,11 +126,11 @@ test( 'namespaceTree', (t) => {
   } );
 
   split( 'namespace outside{ namespace inside {} }', e );
-  e.check();
+  tearDown(e);
 }); 
 
 test( 'namespaceDeclaration', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
 
@@ -151,11 +153,11 @@ test( 'namespaceDeclaration', (t) => {
 //>>>>>>> origin/formatter:test/analyzer.js
   } ); 
   split( 'namespace outside{ struct hello; }', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'NestedNamespaces', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
     .once( 'define namespace', function( context ) {
@@ -165,11 +167,11 @@ test( 'NestedNamespaces', (t) => {
     } ); 
   
   split( 'namespace outside { namespace inside {} }', e ); 
-  e.check();
+  tearDown(e);
 });
 
 test( 'DeclarationsAndDefinitions', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'declare type', 'struct hello' ); 
   split( 'struct hello;', e );
@@ -177,28 +179,28 @@ test( 'DeclarationsAndDefinitions', (t) => {
   
   e.expect( 'define type', { name: 'struct hello', code: '' } );
   split( 'struct hello{};', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'NestedTypes', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } );  
   split( 'struct outside { struct inside {}; };', e);
-  e.check();
+  tearDown(e);
 } ); 
 
 test( 'TypeWithFormat', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'define type', { name: ' struct inside ', code: '' })
     .expect( 'format' );
   split( ' struct inside {}; ', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'MemberFunctionDeclare', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'define type' ); 
   split( 'struct text{void member();};', e );
@@ -206,51 +208,51 @@ test( 'MemberFunctionDeclare', (t) => {
   
   e.expect( 'declare function', 'void member()' ); 
   split('void member();', e );
-  e.check();
+  tearDown(e);
 }); 
 
 test( 'FunctionDeclare', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'declare function', 'void foo()' );
   split( 'void foo();', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'FunctionDefine', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'define function', { name: 'void foo() ', code: ' hello ' } );
   split( 'void foo() { hello }', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'declareTypeAfterPreproesorDirective', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'preprocess' )
     .expect( 'declare type', 'struct bla' );
   split( '#define hello asd\nstruct bla;', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'declareTypeAfterPreproesorDirectives', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'preprocess' )
     .repeat( 1 )
     .expect( 'declare type', 'struct bla' );
   split( '#define hello asd\n#define hello\\nasdfasd\nstruct bla;', e );
-  e.check();
+  tearDown(e);
 });
 
 test( 'defineTypeAfterDeclareType', (t) => {
-  let e = new Expector( t );
+  let e = setUp( t );
   
   e.expect( 'declare type', ' struct jimmy ' )  
     .expect( 'define type', { name: ' struct hey ', code: ' joe ' } );
   split( 'struct jimmy; struct hey { joe }', e );
-  e.check();
+  tearDown(e);
 });
 
 function readSamplesFile( name ) {

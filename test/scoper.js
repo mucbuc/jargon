@@ -3,52 +3,74 @@
 var assert = require( 'assert' )
   , Scoper = require( '../src/scoper')
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' ).testSequence;
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test;
 
 assert( typeof Scoper === 'function' );
 
-test( 'emptyScope', function(emitter) {
+test( 'emptyScope', function(t) {
+
+  let emitter = setUp( t );
+  
   emitter
     .expect( 'open' )
     .expect( 'close', '' )
     .expect( 'end' );
   split( 'namespace bla {}', emitter );
+
+  tearDown(emitter);
 }); 
 
-test( 'statementScope', function(emitter) {
+test( 'statementScope', function(t) {
+  let emitter = setUp( t );
+
   emitter
     .expect( 'open' )
     .expect( 'close', 'hello;' )
     .expect( 'end' );
 
   split( 'namespace bla { hello; }', emitter );
+
+  tearDown(emitter);
 });
 
-test( 'basicScope', function(emitter) {
+test( 'basicScope', function(t) {
+  let emitter = setUp( t );
+
   emitter
     .expect( 'open' )
     .expect( 'close', 'hello' )
     .expect( 'end' );
   split( 'namespace bla { hello }', emitter );
+  tearDown(emitter);
 });
 
-test( 'nestedScopes', function(emitter) {
+test( 'nestedScopes', function(t) {
+  let emitter = setUp( t );
+
   emitter
     .expect( 'open' )
     .expect( 'close', 'namespace world{ namespace {} }' )
     .expect( 'end' );
   split( 'namespace hello{ namespace world{ namespace {} } }', emitter );
+  tearDown(emitter);
 });
 
-test( 'aggregateScopes', function(emitter) {
+test( 'aggregateScopes', function(t) {
+  let emitter = setUp( t );
+
   emitter  
     .expect( 'open' )
     .expect( 'close', 'namespace inside1 {} namespace inside2 {}' )
     .expect( 'end' );
   split( 'namespace outside{ namespace inside1 {} namespace inside2 {} }', emitter );
+  tearDown(emitter);
 });
 
-test( 'alternativeScopeTag', function(emitter) {
+test( 'alternativeScopeTag', function(t) {
+  let emitter = setUp( t );
   var rules = { 'open': '<', 'close': '>' };
 
   emitter
@@ -56,9 +78,11 @@ test( 'alternativeScopeTag', function(emitter) {
     .expect( 'close', 'typename' )
     .expect( 'end' );
   split( 'template< typename >', emitter, rules );
+  tearDown(emitter);
 });
 
-test( 'alternativeScopeTagNested', function(emitter) {
+test( 'alternativeScopeTagNested', function(t) {
+  let emitter = setUp( t );
   var rules = { 'open': '<', 'close': '>' };
 
   emitter
@@ -66,6 +90,7 @@ test( 'alternativeScopeTagNested', function(emitter) {
     .expect( 'close', 'template< typename >' )
     .expect( 'end' );
   split( 'template< template< typename > >', emitter, rules );  
+  tearDown(emitter);
 });   
 
 function split( code, emitter, rules ) {

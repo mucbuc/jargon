@@ -5,37 +5,52 @@ var assert = require( 'chai' ).assert
   , Scoper = require( '../src/scoper' )
   , Preprocessor = require( '../src/preprocessor' )
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' ).testSequence;
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test;
 
 assert( typeof Preprocessor !== 'undefined' );
 
-test( 'preprocessorSingleLine', function(emitter) {
+test( 'preprocessorSingleLine', function(t) {
+  let emitter = setUp(t);
+
   emitter
     .expect( 'preprocess' )
     .expect( 'end' );
   split( '#define hello hello\nasdfaasdf\nbla', emitter);
+  tearDown(emitter);
 });
 
-test( 'preprocessorAfterComment', function(emitter) {
+test( 'preprocessorAfterComment', function(t) {
+  let emitter = setUp(t);
+
   emitter
     .expect( 'preprocess' )
     .expect( 'end' );
   split( '/*yo*/ #define BLA\n', emitter);
+  tearDown(emitter);
 });
 
-test( 'preprocessorMultiple', function(emitter) {
+test( 'preprocessorMultiple', function(t) {
+  let emitter = setUp(t);
+
   emitter
     .expect( 'preprocess' )
     .repeat( 1 )
     .expect( 'end' );
   split( '#define A\n#define B\n', emitter);
+  tearDown(emitter);
 });
 
-test( 'preprocessorMultiLine', function(emitter) {
+test( 'preprocessorMultiLine', function(t) {
+  let emitter = setUp(t);
+
   emitter
     .expect( 'preprocess' )
     .expect( 'end' );
   split( '#define hello hello\\\nhello\nbla', emitter);
+  tearDown(emitter);
 });
 
 function split( code, emitter ) {

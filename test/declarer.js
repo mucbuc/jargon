@@ -4,44 +4,55 @@ var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Declarer = require( '../src/declarer' )
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' ).testSequence; 
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test; 
 
 assert( typeof Declarer === 'function' );
 
-test( 'declareType', function(emitter){
+test( 'declareType', function(t){
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
     .expect( 'statement' )
     .expect( 'declare type' )
     .expect( 'end' );
   split( 'struct bla;', emitter );
+  tearDown(emitter);
 });
 
-test( 'declareFunction', function(emitter){
+test( 'declareFunction', function(t){
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
     .expect( 'statement' )
     .expect( 'declare function', 'void foo()' )
     .expect( 'end' );
   split( 'void foo();', emitter );
+  tearDown(emitter);
 });
 
-test( 'declareNot1', function(emitter){
+test( 'declareNot1', function(t){
+  let emitter = setUp(t);
   emitter
     .expectNot( 'declare function' )
     .expect( 'statement' )
     .expect( 'code line' )
     .expect( 'end' );
   split( 'bla bla;', emitter );
+  tearDown(emitter);
 });
 
-test( 'declareNot2', function(emitter){
+test( 'declareNot2', function(t){
+  let emitter = setUp(t);
   emitter
     .expectNot( 'declare function' )
     .expect( 'statement' )
     .expect( 'code line' )
     .expect( 'end' );
   split( 'bla += bla();', emitter );
+  tearDown(emitter);
 });
 
 function split( code, emitter ) {
