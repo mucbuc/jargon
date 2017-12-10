@@ -4,11 +4,15 @@ var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
   , Definer = require( '../src/definer' )
   , fluke = require( 'flukejs' )
-  , test = require( './base.js' ).testSequence;
+  , tapeWrapper = require( './tape-wrapper' )
+  , setUp = tapeWrapper.setUp
+  , tearDown = tapeWrapper.tearDown
+  , test = tapeWrapper.test;
 
 assert( typeof Definer === 'function' );
 
-test( 'defineNamespace', function(emitter) {
+test( 'defineNamespace', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
@@ -18,9 +22,11 @@ test( 'defineNamespace', function(emitter) {
   expectScopeTrail( emitter );
 
   split( 'namespace hello { this is it }', emitter );
+  tearDown(emitter);
 }); 
 
-test( 'defineEmptyNamespace', function(emitter) {
+test( 'defineEmptyNamespace', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
@@ -30,9 +36,11 @@ test( 'defineEmptyNamespace', function(emitter) {
   expectScopeTrail( emitter );
   
   split( 'namespace hello {}', emitter );
+  tearDown(emitter);
 });
 
-test( 'defineTypeWithStatement', function(emitter) {
+test( 'defineTypeWithStatement', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define function' )
@@ -42,9 +50,11 @@ test( 'defineTypeWithStatement', function(emitter) {
   expectScopeTrail( emitter );
   
   split( 'struct hello { unsigned world; }', emitter );
+  tearDown(emitter);
 });
 
-test( 'defineType', function(emitter) {
+test( 'defineType', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define function' )
@@ -54,9 +64,11 @@ test( 'defineType', function(emitter) {
   expectScopeTrail( emitter );
   
   split( 'struct cya { yes}', emitter );
+  tearDown(emitter);
 });
 
-test( 'defineTypeAfterStatement', function(emitter) {
+test( 'defineTypeAfterStatement', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define function' )
@@ -66,9 +78,11 @@ test( 'defineTypeAfterStatement', function(emitter) {
   expectScopeTrail( emitter );
   
   split( 'typedef hello string; struct cya { yes}', emitter );
+  tearDown(emitter);
 });
 
-test( 'defineSubType', function(emitter) {
+test( 'defineSubType', function(t) {
+  let emitter = setUp(t);
   emitter
     .expect( 'open' )
     .expect( 'define type', { name: 'struct cya ', meta: ' blu ' } );
@@ -76,9 +90,11 @@ test( 'defineSubType', function(emitter) {
   expectScopeTrail( emitter );
   
   split( 'struct cya : blu { yes }', emitter );
+  tearDown(emitter);
 });
 
-test( 'defineFunction', function(emitter) {
+test( 'defineFunction', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define type' )
@@ -88,9 +104,11 @@ test( 'defineFunction', function(emitter) {
   expectScopeTrail( emitter );
 
   split( 'void foo() { do something }', emitter );
+  tearDown(emitter);
 } );
 
-test ( 'dontDefineFunctionOnIf', function(emitter) {
+test ( 'dontDefineFunctionOnIf', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
     .expect( 'open' )
@@ -98,9 +116,11 @@ test ( 'dontDefineFunctionOnIf', function(emitter) {
     .expect( 'end' );
 
   split( 'if(hello){what up now;}', emitter );
+  tearDown(emitter);
 }); 
 
-test ( 'dontDefineFunctionOnSwitch', function(emitter) {
+test ( 'dontDefineFunctionOnSwitch', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
     .expect( 'open' )
@@ -108,9 +128,11 @@ test ( 'dontDefineFunctionOnSwitch', function(emitter) {
     .expect( 'end' );
 
   split( 'switch(hello){case "what":}', emitter );
+  tearDown(emitter);
 });
 
-test ( 'dontDefineFunctionOnFor', function(emitter) {
+test ( 'dontDefineFunctionOnFor', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
     .expect( 'open' )
@@ -118,9 +140,11 @@ test ( 'dontDefineFunctionOnFor', function(emitter) {
     .expect( 'end' );
 
   split( 'for(hello, bye){case "what":}', emitter );
+  tearDown(emitter);
 });
 
-test ( 'dontDefineFunctionOnWhile', function(emitter) {
+test ( 'dontDefineFunctionOnWhile', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
     .expect( 'open' )
@@ -128,9 +152,11 @@ test ( 'dontDefineFunctionOnWhile', function(emitter) {
     .expect( 'end' );
 
   split( 'while(hello, bye){case "what":}', emitter );
+  tearDown(emitter);
 });
 
-test ( 'dontDefineFunctionOnDo', function(emitter) {
+test ( 'dontDefineFunctionOnDo', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
     .expect( 'open' )
@@ -138,9 +164,11 @@ test ( 'dontDefineFunctionOnDo', function(emitter) {
     .expect( 'end' );
 
   split( 'do(hello, bye){case "what":}', emitter );
+  tearDown(emitter);
 });
 
-test( 'defineMemberFunction', function(emitter) {
+test( 'defineMemberFunction', function(t) {
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define type' )
@@ -153,10 +181,11 @@ test( 'defineMemberFunction', function(emitter) {
   expectScopeTrail( emitter );
 
   split( 'hello::hello() : base() {bla bla}', emitter );
+  tearDown(emitter);
 });
 
-
-test( 'defineNamespaceWithWhite', function(emitter){
+test( 'defineNamespaceWithWhite', function(t){
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
@@ -166,10 +195,11 @@ test( 'defineNamespaceWithWhite', function(emitter){
   expectScopeTrail( emitter );
 
   split( ' namespace hello { this is it }', emitter );
+  tearDown(emitter);
 });
 
-
-test( 'defineEmptyNamespace', function(emitter){
+test( 'defineEmptyNamespace', function(t){
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
@@ -179,9 +209,11 @@ test( 'defineEmptyNamespace', function(emitter){
   expectScopeTrail( emitter );
 
   split( '  namespace world{}', emitter );
+  tearDown(emitter);
 });
 
-test( 'defineNamespaceWithWhite', function(emitter){
+test( 'defineNamespaceWithWhite', function(t){
+  let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
@@ -191,6 +223,8 @@ test( 'defineNamespaceWithWhite', function(emitter){
   expectScopeTrail( emitter );
 
   split( 'namespace   world {}', emitter );
+
+  tearDown(emitter);
 });
 
 function expectScopeTrail(emitter) {
