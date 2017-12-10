@@ -10,15 +10,11 @@ var assert = require( 'assert' )
 
 assert( typeof Scoper !== 'undefined' );
 
-function Template( emitter ) {
+function Template() {
 
-  var rules = { 'open': '<', 'close': '>' };
-
-  emitter.on( 'open', parse );
-  emitter.on( 'statement', parse );
-
-  function parse( response ) {
-    var sub = Object.create( emitter.constructor.prototype )
+  this.process = function( response, cb ) {
+    var rules = { 'open': '<', 'close': '>' };
+    var sub = new events.EventEmitter
       , scoper = new Scoper( rules );
 
     sub.on( 'open', function( req ) {
@@ -28,11 +24,11 @@ function Template( emitter ) {
     } );
 
     sub.on( 'close', function(code) {
-      emitter.emit( 'template parameters', code );
+      cb( 'template parameters', code );
     } );
 
     sub.on( 'end', function( response ) {
-      emitter.emit( 'template parameters', response.lhs );
+      cb( 'template parameters', response.lhs );
     });
 
     fluke.splitAll( response.lhs, function( type, response) {
@@ -40,7 +36,7 @@ function Template( emitter ) {
         }
       , rules
     );
-  }
+  };
 }
 
 module.exports = Template;

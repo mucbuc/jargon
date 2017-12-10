@@ -85,10 +85,12 @@ test( 'templateNestedParameters', function(t) {
 function split( code, emitter ) {
   var rules = { 'open': '{', 'statement': ';' }
     , tokenizer = new Scoper( emitter, rules )
-    , templater = new Template( emitter );
+    , templater = new Template();
   
   fluke.splitAll( code, function( type, request ) {
-      emitter.emit(type, request);
+      templater.process( request, (type, req) => {
+        emitter.emit(type, req);
+      } ); 
     }
     , rules ); 
 }
