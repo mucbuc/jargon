@@ -1,32 +1,51 @@
 #!/usr/bin/env node
 
+"use strict";
+
 var assert = require( 'chai' ).assert
   , fs = require( 'fs' )
+  , path = require( 'path' )
   , jargonSplit = require( '../src/split' )
-  , test = require( './base.js' ).test;
+  , Expector = require( 'expector' ).SeqExpector
+  , test = require( 'tape' );
 
 assert( typeof jargonSplit === 'function' );
 
-test( 'commentBlockPreprocessor', function(emitter) {
-  emitter
-    .expect( 'comment' )
-    .expect( 'preprocess' );
+test( 'commentBlockPreprocessor', (t) => {
+  let e = new Expector( t );
+  
+  e
+  .expect( 'comment' )
+  .expect( 'preprocess' );
 
-  split( '/**/#endif', emitter );
+  split( '/**/#endif', e );
+  e.check();
 });
 
-test( 'commentBlockFormatPreprocessor', function(emitter) {
-  emitter
-    .expect( 'comment' )
+test( 'commentBlockFormatPreprocessor', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'comment' )
     .expect( 'format' )
     .expect( 'preprocess' );
 
-  split( '/**/ #endif', emitter );
+  split( '/**/ #endif', e );
+  e.check();
 });
 
-test( 'readSampleFile', function(emitter) {
-  emitter
-    .expect( 'preprocess' )
+test.skip( 'readSampleFileTemplate', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'comment' );
+
+  split( readSamplesFile( 'template.h' ), e );
+  e.check();
+});
+
+test( 'readSampleFile', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'preprocess' )
     .expect( 'declare type' )
     .expect( 'format' )
     .expect( 'declare function' )
@@ -50,58 +69,70 @@ test( 'readSampleFile', function(emitter) {
     .expect( 'preprocess' )
     .expect( 'comment' );
 
-  split( fs.readFileSync( './test/samples/test.h' ).toString(), emitter );     
+  split( readSamplesFile( 'test.h' ), e );
+  e.check();
 });
 
-test( 'PreprocessFollowedByBlockComment', function(emitter) {
-  emitter
-    .expect( 'preprocess' )
+test( 'PreprocessFollowedByBlockComment', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'preprocess' )
     .expect( 'comment' );
-  split( '#define SOB 1 \/* hey *\/', emitter );
+  split( '#define SOB 1 \/* hey *\/', e );
+  e.check();
 });
 
-test( 'PreprocessFollowedByLineComment', function(emitter) {
-  emitter
-    .expect( 'preprocess' )
+test( 'PreprocessFollowedByLineComment', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'preprocess' )
     .expect( 'comment' )
     .expect( 'format' );
-  split( '#define SOB 1 \/\/ hey\n', emitter );
+  split( '#define SOB 1 \/\/ hey\n', e );
+  e.check();
 });
 
-test( 'PreprocessFollowedByLineCommentWithoutNewLine', function(emitter) {
-  emitter
-    .expect( 'preprocess' )
+test( 'PreprocessFollowedByLineCommentWithoutNewLine', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'preprocess' )
     .expect( 'comment' );
-  split( '#define SOB 1 \/\/ hey', emitter );
+  split( '#define SOB 1 \/\/ hey', e );
+  e.check();
 });
 
-test( 'SingleDeclaration', function(emitter) {
-  emitter
-    .expect( 'declare type', 'struct hello' );
+test( 'SingleDeclaration', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'declare type', 'struct hello' );
 
-  split( 'struct hello;', emitter );  
+  split( 'struct hello;', e );  
+  e.check();
 });
 
-test( 'namespaceTree', function(emitter) {
-  emitter
-    .expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
+test( 'namespaceTree', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
 
-  emitter.once( 'define namespace', function( context ) {
-    emitter
+  e.once( 'define namespace', function( context ) {
+    e
       .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
       .expect( 'format' );
 
-    split( context.code, emitter );
+    split( context.code, e );
   } );
 
-  split( 'namespace outside{ namespace inside {} }', emitter );
+  split( 'namespace outside{ namespace inside {} }', e );
+  e.check();
 }); 
 
-test( 'namespaceDeclaration', function(emitter) {
-  emitter
-    .expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
+test( 'namespaceDeclaration', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
 
-  emitter.once( 'define namespace', function( context ) {
+  e.once( 'define namespace', function( context ) {
 // <<<<<<< HEAD:test/split.js
 //       emitter
 //         .expect( 'format' )
@@ -109,100 +140,125 @@ test( 'namespaceDeclaration', function(emitter) {
 //         .expect( 'format' );
 //       split( context.code );
 // =======
-    emitter.once( 'end', function() {
-      emitter
+    e.once( 'end', function() {
+      e
         .expect( 'format' )
         .expect( 'declare type', 'struct hello' )
         .expect( 'code block' )
         .expect( 'end' );
-      split( context.code, emitter );
+      split( context.code, e );
     } ); 
 //>>>>>>> origin/formatter:test/analyzer.js
   } ); 
-  split( 'namespace outside{ struct hello; }', emitter );
+  split( 'namespace outside{ struct hello; }', e );
+  e.check();
 });
 
-test( 'NestedNamespaces', function(emitter) {
-  emitter
-    .expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
+test( 'NestedNamespaces', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
     .once( 'define namespace', function( context ) {
-      emitter.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
-      emitter.expect( 'format' );
-      split( context.code, emitter );
+      e.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
+      e.expect( 'format' );
+      split( context.code, e );
     } ); 
   
-  split( 'namespace outside { namespace inside {} }', emitter );  
+  split( 'namespace outside { namespace inside {} }', e ); 
+  e.check();
 });
 
-test( 'DeclarationsAndDefinitions', function(emitter) {
-  emitter
-    .expect( 'declare type', 'struct hello' ); 
-  split( 'struct hello;', emitter );
+test( 'DeclarationsAndDefinitions', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'declare type', 'struct hello' ); 
+  split( 'struct hello;', e );
 
-  emitter
-    .expect( 'define type', { name: 'struct hello', code: '' } );
-  split( 'struct hello{};', emitter );
+  
+  e.expect( 'define type', { name: 'struct hello', code: '' } );
+  split( 'struct hello{};', e );
+  e.check();
 });
 
-test( 'NestedTypes', function(emitter) {
-  emitter
-    .expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } );  
-  split( 'struct outside { struct inside {}; };', emitter);
+test( 'NestedTypes', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } );  
+  split( 'struct outside { struct inside {}; };', e);
+  e.check();
 } ); 
 
-test( 'TypeWithFormat', function(emitter) {
-  emitter
-    .expect( 'define type', { name: ' struct inside ', code: '' })
+test( 'TypeWithFormat', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'define type', { name: ' struct inside ', code: '' })
     .expect( 'format' );
-  split( ' struct inside {}; ', emitter );
+  split( ' struct inside {}; ', e );
+  e.check();
 });
 
-test( 'MemberFunctionDeclare', function(emitter) {
-  emitter
-    .expect( 'define type' ); 
-  split( 'struct text{void member();};', emitter );
+test( 'MemberFunctionDeclare', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'define type' ); 
+  split( 'struct text{void member();};', e );
 
-  emitter
-    .expect( 'declare function', 'void member()' ); 
-  split('void member();', emitter ); 
+  
+  e.expect( 'declare function', 'void member()' ); 
+  split('void member();', e );
+  e.check();
 }); 
 
-test( 'FunctionDeclare', function(emitter) {
-  emitter
-    .expect( 'declare function', 'void foo()' );
-  split( 'void foo();', emitter );
+test( 'FunctionDeclare', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'declare function', 'void foo()' );
+  split( 'void foo();', e );
+  e.check();
 });
 
-test( 'FunctionDefine', function(emitter) {
-  emitter
-    .expect( 'define function', { name: 'void foo() ', code: ' hello ' } );
-  split( 'void foo() { hello }', emitter );
+test( 'FunctionDefine', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'define function', { name: 'void foo() ', code: ' hello ' } );
+  split( 'void foo() { hello }', e );
+  e.check();
 });
 
-test( 'declareTypeAfterPreproesorDirective', function(emitter) {
-  emitter
-    .expect( 'preprocess' )
+test( 'declareTypeAfterPreproesorDirective', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'preprocess' )
     .expect( 'declare type', 'struct bla' );
-  split( '#define hello asd\nstruct bla;', emitter );
+  split( '#define hello asd\nstruct bla;', e );
+  e.check();
 });
 
-test( 'declareTypeAfterPreproesorDirectives', function(emitter) {
-  emitter
-    .expect( 'preprocess' )
+test( 'declareTypeAfterPreproesorDirectives', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'preprocess' )
     .repeat( 1 )
     .expect( 'declare type', 'struct bla' );
-  split( '#define hello asd\n#define hello\\nasdfasd\nstruct bla;', emitter );
+  split( '#define hello asd\n#define hello\\nasdfasd\nstruct bla;', e );
+  e.check();
 });
 
-test( 'defineTypeAfterDeclareType', function (emitter) {
-  emitter
-    .expect( 'declare type', ' struct jimmy ' )  
+test( 'defineTypeAfterDeclareType', (t) => {
+  let e = new Expector( t );
+  
+  e.expect( 'declare type', ' struct jimmy ' )  
     .expect( 'define type', { name: ' struct hey ', code: ' joe ' } );
-  split( 'struct jimmy; struct hey { joe }', emitter );
+  split( 'struct jimmy; struct hey { joe }', e );
+  e.check();
 });
+
+function readSamplesFile( name ) {
+  return fs.readFileSync( path.join( __dirname, 'samples', name ), 'utf8' );
+}
 
 function split( code, emitter ) {
   jargonSplit( code, function( event, obj ) { 
       emitter.emit(event, obj);
-    } ); 
+  });
 }
