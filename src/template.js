@@ -10,37 +10,20 @@ var assert = require( 'assert' )
 
 assert( typeof Scoper !== 'undefined' );
 
-function Template( emitter ) {
+function Template() {
 
-  var rules = { 'open': '<', 'close': '>' };
+  this.process = function( request, cb ) {
+    
+    assert( request.hasOwnProperty('resetStash') );
 
-  emitter.on( 'open', parse );
-  emitter.on( 'statement', parse );
+    const rules = { 'open': '<', 'close': '>' }
+      , sub = new events.EventEmitter
+      , scoper = new Scoper( rules ); 
 
-  function parse( response ) {
-    var sub = Object.create( emitter.constructor.prototype )
-      , scoper = new Scoper( rules );
-
-    sub.on( 'open', function( req ) {
-      scoper.process( req, function(type, content) {
-        sub.emit( type, content );
-      });
-    } );
-
-    sub.on( 'close', function(code) {
-      emitter.emit( 'template parameters', code );
-    } );
-
-    sub.on( 'end', function( response ) {
-      emitter.emit( 'template parameters', response.lhs );
-    });
-
-    fluke.splitAll( response.lhs, function( type, response) {
-          sub.emit( type, response );
-        }
-      , rules
-    );
-  }
+    scoper.process( request, (type, content) => {
+      cb( request.lhs + rules.open + content.trim() + rules.close );
+    }); 
+  };
 }
 
 module.exports = Template;

@@ -26,13 +26,14 @@ function split( code, callback ) {
         'comment line': '\\/\\/',
         'comment block': '\\/\\*',
         'open literal': '([^//]"|^")',
-        //'open template': '<',
+        'open template': '<',
         'statement': ';',
         'open': '{'
       }
     , emitter = new events.EventEmitter()
     , literalizer = new Literalizer()
-    , commenter = new Commenter();
+    , commenter = new Commenter()
+    , templater = new Template();
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );
@@ -79,6 +80,12 @@ function split( code, callback ) {
   emitter.on( 'comment block', function( request ) {
     commenter.processBlock( request, function(comment) {
       callback( 'comment', '/*' + comment );
+    });
+  });
+
+  emitter.on( 'open template', function( request ) {
+    templater.process( request, function(templateParams) {
+      callback( 'template parameters', templateParams );
     });
   });
 
