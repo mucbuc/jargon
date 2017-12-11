@@ -118,7 +118,7 @@ test( 'namespaceTree', (t) => {
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
 
-  e.once( 'define namespace', function( context ) {
+  e.once( 'define namespace', ( context ) => {
     e
       .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
       .expect( 'format' );
@@ -135,7 +135,7 @@ test( 'namespaceDeclaration', (t) => {
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
 
-  e.once( 'define namespace', function( context ) {
+  e.once( 'define namespace', ( context ) => {
 // <<<<<<< HEAD:test/split.js
 //       emitter
 //         .expect( 'format' )
@@ -143,7 +143,7 @@ test( 'namespaceDeclaration', (t) => {
 //         .expect( 'format' );
 //       split( context.code );
 // =======
-    e.once( 'end', function() {
+    e.once( 'end', () => {
       e
         .expect( 'format' )
         .expect( 'declare type', 'struct hello' )
@@ -161,7 +161,7 @@ test( 'NestedNamespaces', (t) => {
   let e = setUp( t );
   
   e.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
-    .once( 'define namespace', function( context ) {
+    .once( 'define namespace', ( context ) => {
       e.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
       e.expect( 'format' );
       split( context.code, e );
@@ -261,7 +261,7 @@ function readSamplesFile( name ) {
 }
 
 function split( code, emitter ) {
-  jargonSplit( code, function( event, obj ) { 
+  jargonSplit( code, ( event, obj ) => { 
     emitter.emit(event, obj);
   });
 }
