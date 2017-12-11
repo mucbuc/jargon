@@ -13,5 +13,6 @@ exports.regexMap = {
 	constructorSplitter: /(.*\))\s*:(.*)/,
 	preProcessorDirective: /#.*\n/gm,
 	functionDeclare: /(\w*\s+)*\w*\s*\(.*\)\s*/,
-	typeDeclare: /(struct|class)/
+	typeDeclare: /(struct|class)/,
+	blockDeclare: /(if|switch|for|while|do)\s*\(/
 };
