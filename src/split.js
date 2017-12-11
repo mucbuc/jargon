@@ -21,7 +21,7 @@ assert( typeof Template === 'function' );
 
 function split( code, callback ) {
 
-  var rules = {
+  let rules = {
         'preprocess': '#',
         'comment line': '\\/\\/',
         'comment block': '\\/\\*',
@@ -106,14 +106,14 @@ function split( code, callback ) {
         }
         break;
       default:
-        var formatter = new Formatter();
+        let formatter = new Formatter();
         formatter.forward(event, obj, callback);
       break;
     }
   }
 
   function declare( req ) {
-    var declarer = new Declarer();
+    let declarer = new Declarer();
     declarer.process( req, ( event, obj ) => {
       format(event, obj );
     });

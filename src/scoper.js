@@ -9,7 +9,7 @@ function Scoper(rules = defaultRules) {
 
   this.process = (req, cb) => {
 
-    var depth = 1
+    let depth = 1
       , source = req.rhs
       , content = '';
     req.resetStash(); 
