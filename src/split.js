@@ -72,19 +72,19 @@ function split( code, callback ) {
   });
 
   emitter.on( 'comment line', request => {
-    commenter.processLine( request, function(comment) {
+    commenter.processLine( request, comment => {
       callback( 'comment', '\/\/' + comment + '\n' );
     });
   }); 
 
   emitter.on( 'comment block', request => {
-    commenter.processBlock( request, function(comment) {
+    commenter.processBlock( request, comment => {
       callback( 'comment', '/*' + comment );
     });
   });
 
   emitter.on( 'open template', request => {
-    templater.process( request, function(templateParams) {
+    templater.process( request, templateParams => {
       callback( 'template parameters', templateParams );
     });
   });
@@ -120,7 +120,7 @@ function split( code, callback ) {
   }
 
   function forwardContent( event ) {
-    emitter.on( event, function(obj) {
+    emitter.on( event, obj => {
       emitter.once( 'close', content => {
         obj.code = content;
         format(event, obj);

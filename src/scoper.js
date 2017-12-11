@@ -23,9 +23,9 @@ function Scoper(rules = defaultRules) {
         }
         else if (type == 'close' || type == 'end') {
           if (!--depth) {
-            cb( type, content );
             req.consume( (content + inner.token).length );
             req.resetStash();
+            cb( type, content );
           }
           else {
             content += inner.token;
