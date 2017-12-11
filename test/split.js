@@ -136,13 +136,6 @@ test( 'namespaceDeclaration', t => {
   e.expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
 
   e.once( 'define namespace', ( context ) => {
-// <<<<<<< HEAD:test/split.js
-//       emitter
-//         .expect( 'format' )
-//         .expect( 'declare type', 'struct hello' )
-//         .expect( 'format' );
-//       split( context.code );
-// =======
     e.once( 'end', () => {
       e
         .expect( 'format' )
@@ -151,7 +144,6 @@ test( 'namespaceDeclaration', t => {
         .expect( 'end' );
       split( context.code, e );
     } ); 
-//>>>>>>> origin/formatter:test/analyzer.js
   } ); 
   split( 'namespace outside{ struct hello; }', e );
   tearDown(e);
