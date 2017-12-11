@@ -1,4 +1,4 @@
-var assert = require( 'assert' )
+const assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap;
 
 function Preprocessor() {

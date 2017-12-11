@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var assert = require( 'assert' )
+const assert = require( 'assert' )
   , util = require( 'util' )
   , events = require( 'events' );
 
@@ -28,7 +28,7 @@ function Formatter() {
     function match( content ) {
       assert(typeof content === 'string');
     
-      var matches = content.match( /^(\s*)(.*?)(\s*)$/m );
+      let matches = content.match( /^(\s*)(.*?)(\s*)$/m );
       if (matches) {
         if (matches[1].length) {
           cb( 'format', matches[1] );

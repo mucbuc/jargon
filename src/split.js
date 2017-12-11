@@ -40,7 +40,7 @@ function split( code, callback ) {
   forwardContent( 'define namespace' );
 
   emitter.on( 'open', ( request ) => {
-    var definer = new Definer()
+    let definer = new Definer()
       , scoper = new Scoper();
     definer.process( request, ( type, content ) => {
       emitter.emit( type, content );
@@ -59,7 +59,7 @@ function split( code, callback ) {
   });
 
   emitter.on( 'preprocess', request => {
-    var preprocessor = new Preprocessor(); 
+    let preprocessor = new Preprocessor(); 
 
     if (request.lhs.length && !request.lhs.match( /\S/ ))
     {

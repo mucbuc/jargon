@@ -1,4 +1,4 @@
-var assert = require( 'assert' )
+const assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap;
 
 function Commenter() {
@@ -13,7 +13,7 @@ function Commenter() {
   };
 
   this.processBlock = (req, cb) => {
-    var pos = req.rhs.search( /\*\// ) 
+    let pos = req.rhs.search( /\*\// ) 
       , comment;
 
     assert (pos != -1);

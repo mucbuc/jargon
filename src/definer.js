@@ -1,5 +1,4 @@
-
-var assert = require( 'assert' )
+const assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap;
 
 assert( typeof regexMap !== 'undefined' );
@@ -7,7 +6,7 @@ assert( typeof regexMap !== 'undefined' );
 function Definer() {
 
   this.process = ( obj, cb ) => {
-    var code = obj.lhs.replace( /.*?;/, '' );
+    let code = obj.lhs.replace( /.*?;/, '' );
 
     if (isNamespace(code)) {
       initDefine( 'namespace', code );
@@ -20,7 +19,7 @@ function Definer() {
     }
 
     function isFunction( code ) {
-      var t = code.trim();
+      let t = code.trim();
       if (t.search( regexMap.blockDeclare )==0) { 
         return false;
       }
