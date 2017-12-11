@@ -5,11 +5,8 @@ var assert = require( 'assert' )
 function Declarer() {
 
   this.process = (request, cb) => {
-    var code = request.lhs
-      , rules = { 'statement': ';' };
 
-    fluke.splitAll( code, (type, req) => {
-
+    fluke.splitAll( request.lhs, (type, req) => {
         if (isType(req.lhs)) {
           cb( 'declare type', req.lhs );
         }
@@ -17,8 +14,8 @@ function Declarer() {
           cb( 'declare function', req.lhs );
         }
         else if (req.lhs.length || req.stash.length) {
-          var block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
-          assert( typeof(block) !== 'undefined' );
+          const block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
+          assert( typeof block !== 'undefined' );
           cb( 'code line', block );
         }
 
@@ -29,8 +26,9 @@ function Declarer() {
         function isType(code) {
           return code.search( regexMap.typeDeclare ) != -1;
         }
-      }, 
-      rules 
+      }, { 
+        'statement': ';'
+      } 
     );
   };
 }

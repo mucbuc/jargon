@@ -4,7 +4,10 @@ var assert = require( 'assert' )
 function Commenter() {
   
   this.processLine = (req, cb) => {
-    var comment = req.rhs.match( /.*/ );
+    const comment = req.rhs.match( /.*/ );
+    
+    assert( comment ); 
+
     req.consume( comment[0].length );
     cb( comment[0] ); 
   };
@@ -14,6 +17,7 @@ function Commenter() {
       , comment;
 
     assert (pos != -1);
+    
     comment = req.rhs.substr( 0, pos + req.token.length );
     req.consume( comment.length );
     cb( comment );

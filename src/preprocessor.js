@@ -4,10 +4,10 @@ var assert = require( 'assert' )
 function Preprocessor() {
 
   this.preprocess = ( req, cb ) => {
-    var result = ''
+    let result = ''
       , code = req.rhs;
     do {
-      var chunk = code.length
+      let chunk = code.length
         , newLine = code.search( '\n' ) 
         , commentMultiple = code.search( regexMap.commentMultiple )
         , commentSingle = code.search( regexMap.commentSingle );
