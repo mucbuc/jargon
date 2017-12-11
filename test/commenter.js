@@ -84,12 +84,12 @@ function split( code, emitter ) {
 
   fluke.splitAll( code, ( type, request ) => {
       if (type === 'comment line') {
-        commenter.processLine( request, (val) => {
+        commenter.processLine( request, val => {
           emitter.emit( 'comment line', val );
         } );
       }
       else if (type === 'comment block') {
-        commenter.processBlock( request, (val) => {
+        commenter.processBlock( request, val => {
           emitter.emit( 'comment block', val );
         } );
       }
