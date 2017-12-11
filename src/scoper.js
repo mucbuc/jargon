@@ -1,17 +1,11 @@
 var assert = require( 'assert' )
-  , fluke = require( 'flukejs' );
+  , fluke = require( 'flukejs' )
+  , defaultRules = {
+      'open': '{',
+      'close': '}'
+    }; 
 
-function Scoper( rules ) {
-
-  var instance = this
-    , depth = 0;
-
-  if (typeof rules === 'undefined') {
-    rules = {
-        'open': '{',
-        'close': '}'
-      };
-  }
+function Scoper(rules = defaultRules) {
 
   this.process = (req, cb) => {
 
