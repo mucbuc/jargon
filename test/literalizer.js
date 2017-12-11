@@ -10,7 +10,7 @@ var assert = require( 'assert' )
 
 assert( typeof Literalizer === 'function' );
 
-test( 'stringLiteral', function(t) {
+test( 'stringLiteral', t => {
   let emitter = setUpU(t);
   emitter.expectNot( 'declare' ); 
   emitter.expect( 'open literal' );
@@ -18,7 +18,7 @@ test( 'stringLiteral', function(t) {
   tearDown(emitter);
 });
 
-test( 'stringLiteralWithQutationMarks', function(t) {
+test( 'stringLiteralWithQutationMarks', t => {
   let emitter = setUpU(t);
   emitter.expectNot( 'declare' ); 
   emitter.expect( 'open literal' );
