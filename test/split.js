@@ -13,7 +13,7 @@ var assert = require( 'chai' ).assert
 
 assert( typeof jargonSplit === 'function' );
 
-test( 'commentBlockPreprocessor', (t) => {
+test( 'commentBlockPreprocessor', t => {
   let e = setUp( t );
   
   e
@@ -24,7 +24,7 @@ test( 'commentBlockPreprocessor', (t) => {
   tearDown(e);
 });
 
-test( 'commentBlockFormatPreprocessor', (t) => {
+test( 'commentBlockFormatPreprocessor', t => {
   let e = setUp( t );
   
   e.expect( 'comment' )
@@ -35,7 +35,7 @@ test( 'commentBlockFormatPreprocessor', (t) => {
   tearDown(e);
 });
 
-test( 'readSampleFileTemplate', (t) => {
+test( 'readSampleFileTemplate', t => {
   let e = setUp( t );
   
   e.expect( 'template parameters' )
@@ -45,7 +45,7 @@ test( 'readSampleFileTemplate', (t) => {
   tearDown(e);
 });
 
-test( 'readSampleFile', (t) => {
+test( 'readSampleFile', t => {
   let e = setUp( t );
   
   e.expect( 'preprocess' )
@@ -76,7 +76,7 @@ test( 'readSampleFile', (t) => {
   tearDown(e);
 });
 
-test( 'PreprocessFollowedByBlockComment', (t) => {
+test( 'PreprocessFollowedByBlockComment', t => {
   let e = setUp( t );
   
   e.expect( 'preprocess' )
@@ -85,7 +85,7 @@ test( 'PreprocessFollowedByBlockComment', (t) => {
   tearDown(e);
 });
 
-test( 'PreprocessFollowedByLineComment', (t) => {
+test( 'PreprocessFollowedByLineComment', t => {
   let e = setUp( t );
   
   e.expect( 'preprocess' )
@@ -95,7 +95,7 @@ test( 'PreprocessFollowedByLineComment', (t) => {
   tearDown(e);
 });
 
-test( 'PreprocessFollowedByLineCommentWithoutNewLine', (t) => {
+test( 'PreprocessFollowedByLineCommentWithoutNewLine', t => {
   let e = setUp( t );
   
   e.expect( 'preprocess' )
@@ -104,7 +104,7 @@ test( 'PreprocessFollowedByLineCommentWithoutNewLine', (t) => {
   tearDown(e);
 });
 
-test( 'SingleDeclaration', (t) => {
+test( 'SingleDeclaration', t => {
   let e = setUp( t );
   
   e.expect( 'declare type', 'struct hello' );
@@ -113,7 +113,7 @@ test( 'SingleDeclaration', (t) => {
   tearDown(e);
 });
 
-test( 'namespaceTree', (t) => {
+test( 'namespaceTree', t => {
   let e = setUp( t );
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
@@ -130,7 +130,7 @@ test( 'namespaceTree', (t) => {
   tearDown(e);
 }); 
 
-test( 'namespaceDeclaration', (t) => {
+test( 'namespaceDeclaration', t => {
   let e = setUp( t );
   
   e.expect( 'define namespace', { name: 'namespace outside', code: ' struct hello; ' } ); 
@@ -157,7 +157,7 @@ test( 'namespaceDeclaration', (t) => {
   tearDown(e);
 });
 
-test( 'NestedNamespaces', (t) => {
+test( 'NestedNamespaces', t => {
   let e = setUp( t );
   
   e.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
@@ -171,7 +171,7 @@ test( 'NestedNamespaces', (t) => {
   tearDown(e);
 });
 
-test( 'DeclarationsAndDefinitions', (t) => {
+test( 'DeclarationsAndDefinitions', t => {
   let e = setUp( t );
   
   e.expect( 'declare type', 'struct hello' ); 
@@ -183,7 +183,7 @@ test( 'DeclarationsAndDefinitions', (t) => {
   tearDown(e);
 });
 
-test( 'NestedTypes', (t) => {
+test( 'NestedTypes', t => {
   let e = setUp( t );
   
   e.expect( 'define type', { name: 'struct outside ', code: ' struct inside {}; ' } );  
@@ -191,7 +191,7 @@ test( 'NestedTypes', (t) => {
   tearDown(e);
 } ); 
 
-test( 'TypeWithFormat', (t) => {
+test( 'TypeWithFormat', t => {
   let e = setUp( t );
   
   e.expect( 'define type', { name: ' struct inside ', code: '' })
@@ -200,7 +200,7 @@ test( 'TypeWithFormat', (t) => {
   tearDown(e);
 });
 
-test( 'MemberFunctionDeclare', (t) => {
+test( 'MemberFunctionDeclare', t => {
   let e = setUp( t );
   
   e.expect( 'define type' ); 
@@ -212,7 +212,7 @@ test( 'MemberFunctionDeclare', (t) => {
   tearDown(e);
 }); 
 
-test( 'FunctionDeclare', (t) => {
+test( 'FunctionDeclare', t => {
   let e = setUp( t );
   
   e.expect( 'declare function', 'void foo()' );
@@ -220,7 +220,7 @@ test( 'FunctionDeclare', (t) => {
   tearDown(e);
 });
 
-test( 'FunctionDefine', (t) => {
+test( 'FunctionDefine', t => {
   let e = setUp( t );
   
   e.expect( 'define function', { name: 'void foo() ', code: ' hello ' } );
@@ -228,7 +228,7 @@ test( 'FunctionDefine', (t) => {
   tearDown(e);
 });
 
-test( 'declareTypeAfterPreproesorDirective', (t) => {
+test( 'declareTypeAfterPreproesorDirective', t => {
   let e = setUp( t );
   
   e.expect( 'preprocess' )
@@ -237,7 +237,7 @@ test( 'declareTypeAfterPreproesorDirective', (t) => {
   tearDown(e);
 });
 
-test( 'declareTypeAfterPreproesorDirectives', (t) => {
+test( 'declareTypeAfterPreproesorDirectives', t => {
   let e = setUp( t );
   
   e.expect( 'preprocess' )
@@ -247,7 +247,7 @@ test( 'declareTypeAfterPreproesorDirectives', (t) => {
   tearDown(e);
 });
 
-test( 'defineTypeAfterDeclareType', (t) => {
+test( 'defineTypeAfterDeclareType', t => {
   let e = setUp( t );
   
   e.expect( 'declare type', ' struct jimmy ' )  
