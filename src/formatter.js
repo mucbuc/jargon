@@ -6,7 +6,7 @@ var assert = require( 'assert' )
 
 function Formatter() {
   
-  this.forward = function(event, info, cb) {
+  this.forward = (event, info, cb) => {
 
     if (typeof info === 'string') {
       if (match( info )) {

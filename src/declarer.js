@@ -4,11 +4,11 @@ var assert = require( 'assert' )
 
 function Declarer() {
 
-  this.process = function(request, cb) {
+  this.process = (request, cb) => {
     var code = request.lhs
       , rules = { 'statement': ';' };
 
-    fluke.splitAll( code, function(type, req) {
+    fluke.splitAll( code, (type, req) => {
 
         if (isType(req.lhs)) {
           cb( 'declare type', req.lhs );

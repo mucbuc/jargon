@@ -39,26 +39,26 @@ function split( code, callback ) {
   forwardContent( 'define function' );
   forwardContent( 'define namespace' );
 
-  emitter.on( 'open', function( request ) {
+  emitter.on( 'open', ( request ) => {
     var definer = new Definer()
       , scoper = new Scoper();
-    definer.process( request, function( type, content ) {
+    definer.process( request, ( type, content ) => {
       emitter.emit( type, content );
     });
-    scoper.process(request, function(type, content) {
+    scoper.process(request, (type, content) => {
       emitter.emit( type, content );
     });    
   });
 
-  emitter.on( 'statement', function( request ) {
+  emitter.on( 'statement', request => {
     declare( request );
   });  
 
-  emitter.on( 'end', function( request ) {
+  emitter.on( 'end', request => {
     declare( request );
   });
 
-  emitter.on( 'preprocess', function( request ) {
+  emitter.on( 'preprocess', request => {
     var preprocessor = new Preprocessor(); 
 
     if (request.lhs.length && !request.lhs.match( /\S/ ))
@@ -66,30 +66,30 @@ function split( code, callback ) {
       callback( 'format', request.lhs );
     }
     
-    preprocessor.preprocess( request, function( val ) {
+    preprocessor.preprocess( request, val => {
       callback( 'preprocess', val );
     });
   });
 
-  emitter.on( 'comment line', function( request ) {
+  emitter.on( 'comment line', request => {
     commenter.processLine( request, function(comment) {
       callback( 'comment', '\/\/' + comment + '\n' );
     });
   }); 
 
-  emitter.on( 'comment block', function( request ) {
+  emitter.on( 'comment block', request => {
     commenter.processBlock( request, function(comment) {
       callback( 'comment', '/*' + comment );
     });
   });
 
-  emitter.on( 'open template', function( request ) {
+  emitter.on( 'open template', request => {
     templater.process( request, function(templateParams) {
       callback( 'template parameters', templateParams );
     });
   });
 
-  fluke.splitAll( code, function( type, request ) {
+  fluke.splitAll( code, ( type, request ) => {
       emitter.emit( type, request );
     }
   , rules );
@@ -114,14 +114,14 @@ function split( code, callback ) {
 
   function declare( req ) {
     var declarer = new Declarer();
-    declarer.process( req, function( event, obj ) {
+    declarer.process( req, ( event, obj ) => {
       format(event, obj );
     });
   }
 
   function forwardContent( event ) {
     emitter.on( event, function(obj) {
-      emitter.once( 'close', function(content) {
+      emitter.once( 'close', content => {
         obj.code = content;
         format(event, obj);
       });

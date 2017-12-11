@@ -12,7 +12,7 @@ assert( typeof Scoper !== 'undefined' );
 
 function Template() {
 
-  this.process = function( request, cb ) {
+  this.process = ( request, cb ) => {
     
     assert( request.hasOwnProperty('resetStash') );
 

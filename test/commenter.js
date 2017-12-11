@@ -10,7 +10,7 @@ var assert = require( 'chai' ).assert
 
 assert( typeof Commenter === 'function' );
 
-test( 'commenterSingleLine', function(t){
+test( 'commenterSingleLine', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment line' )
@@ -19,7 +19,7 @@ test( 'commenterSingleLine', function(t){
   tearDown(emitter);
 });
 
-test( 'commenterSingleLineWithoutNewLine', function(t){
+test( 'commenterSingleLineWithoutNewLine', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment line' )
@@ -28,7 +28,7 @@ test( 'commenterSingleLineWithoutNewLine', function(t){
   tearDown(emitter);
 });
 
-test( 'commenterTwoSingleLineWithoutNewLine', function(t){
+test( 'commenterTwoSingleLineWithoutNewLine', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment line' )
@@ -38,7 +38,7 @@ test( 'commenterTwoSingleLineWithoutNewLine', function(t){
   tearDown(emitter);
 });
 
-test( 'commentBlockWithCommentLine', function(t) {
+test( 'commentBlockWithCommentLine', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment block', 'hello*/' )
@@ -48,7 +48,7 @@ test( 'commentBlockWithCommentLine', function(t) {
   tearDown(emitter);
 });
 
-test( 'commentBlock', function(t) {
+test( 'commentBlock', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment block' )
@@ -57,7 +57,7 @@ test( 'commentBlock', function(t) {
   tearDown(emitter);
 });
 
-test( 'commentBlockWithNewLine', function(t) {
+test( 'commentBlockWithNewLine', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment block', '\n*/' )
@@ -66,7 +66,7 @@ test( 'commentBlockWithNewLine', function(t) {
   tearDown(emitter);
 });
 
-test( 'commentBlockWithConent', function(t) {
+test( 'commentBlockWithConent', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment block', 'hello*/' )
@@ -82,14 +82,14 @@ function split( code, emitter ) {
         'comment block': '\\/\\*',
     }; 
 
-  fluke.splitAll( code, function( type, request ) {
+  fluke.splitAll( code, ( type, request ) => {
       if (type === 'comment line') {
-        commenter.processLine( request, function(val) {
+        commenter.processLine( request, (val) => {
           emitter.emit( 'comment line', val );
         } );
       }
       else if (type === 'comment block') {
-        commenter.processBlock( request, function(val) {
+        commenter.processBlock( request, (val) => {
           emitter.emit( 'comment block', val );
         } );
       }

@@ -3,7 +3,7 @@ var assert = require( 'assert' )
 
 function Preprocessor() {
 
-  this.preprocess = function( req, cb ) {
+  this.preprocess = ( req, cb ) => {
     var result = ''
       , code = req.rhs;
     do {
