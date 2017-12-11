@@ -12,7 +12,7 @@ var assert = require( 'chai' ).assert
 
 assert( typeof Preprocessor !== 'undefined' );
 
-test( 'preprocessorSingleLine', function(t) {
+test( 'preprocessorSingleLine', t => {
   let emitter = setUp(t);
 
   emitter
@@ -22,7 +22,7 @@ test( 'preprocessorSingleLine', function(t) {
   tearDown(emitter);
 });
 
-test( 'preprocessorAfterComment', function(t) {
+test( 'preprocessorAfterComment', t => {
   let emitter = setUp(t);
 
   emitter
@@ -32,7 +32,7 @@ test( 'preprocessorAfterComment', function(t) {
   tearDown(emitter);
 });
 
-test( 'preprocessorMultiple', function(t) {
+test( 'preprocessorMultiple', t => {
   let emitter = setUp(t);
 
   emitter
@@ -43,7 +43,7 @@ test( 'preprocessorMultiple', function(t) {
   tearDown(emitter);
 });
 
-test( 'preprocessorMultiLine', function(t) {
+test( 'preprocessorMultiLine', t => {
   let emitter = setUp(t);
 
   emitter
