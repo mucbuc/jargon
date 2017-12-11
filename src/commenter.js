@@ -3,13 +3,13 @@ var assert = require( 'assert' )
 
 function Commenter() {
   
-  this.processLine = function(req, cb) {
+  this.processLine = (req, cb) => {
     var comment = req.rhs.match( /.*/ );
     req.consume( comment[0].length );
     cb( comment[0] ); 
   };
 
-  this.processBlock = function(req, cb) {
+  this.processBlock = (req, cb) => {
     var pos = req.rhs.search( /\*\// ) 
       , comment;
 

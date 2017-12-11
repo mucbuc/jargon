@@ -6,7 +6,7 @@ assert( typeof regexMap !== 'undefined' );
 
 function Definer() {
 
-  this.process = function( obj, cb ) {
+  this.process = ( obj, cb ) => {
     var code = obj.lhs.replace( /.*?;/, '' );
 
     if (isNamespace(code)) {

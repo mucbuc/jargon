@@ -11,7 +11,7 @@ var assert = require( 'assert' )
 
 assert( typeof Definer === 'function' );
 
-test( 'defineNamespace', function(t) {
+test( 'defineNamespace', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
@@ -25,7 +25,7 @@ test( 'defineNamespace', function(t) {
   tearDown(emitter);
 }); 
 
-test( 'defineEmptyNamespace', function(t) {
+test( 'defineEmptyNamespace', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
@@ -39,7 +39,7 @@ test( 'defineEmptyNamespace', function(t) {
   tearDown(emitter);
 });
 
-test( 'defineTypeWithStatement', function(t) {
+test( 'defineTypeWithStatement', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
@@ -53,7 +53,7 @@ test( 'defineTypeWithStatement', function(t) {
   tearDown(emitter);
 });
 
-test( 'defineType', function(t) {
+test( 'defineType', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
@@ -67,7 +67,7 @@ test( 'defineType', function(t) {
   tearDown(emitter);
 });
 
-test( 'defineTypeAfterStatement', function(t) {
+test( 'defineTypeAfterStatement', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
@@ -81,7 +81,7 @@ test( 'defineTypeAfterStatement', function(t) {
   tearDown(emitter);
 });
 
-test( 'defineSubType', function(t) {
+test( 'defineSubType', t =>  {
   let emitter = setUp(t);
   emitter
     .expect( 'open' )
@@ -93,7 +93,7 @@ test( 'defineSubType', function(t) {
   tearDown(emitter);
 });
 
-test( 'defineFunction', function(t) {
+test( 'defineFunction', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
@@ -107,7 +107,7 @@ test( 'defineFunction', function(t) {
   tearDown(emitter);
 } );
 
-test ( 'dontDefineFunctionOnIf', function(t) {
+test ( 'dontDefineFunctionOnIf', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
@@ -119,7 +119,7 @@ test ( 'dontDefineFunctionOnIf', function(t) {
   tearDown(emitter);
 }); 
 
-test ( 'dontDefineFunctionOnSwitch', function(t) {
+test ( 'dontDefineFunctionOnSwitch', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
@@ -131,7 +131,7 @@ test ( 'dontDefineFunctionOnSwitch', function(t) {
   tearDown(emitter);
 });
 
-test ( 'dontDefineFunctionOnFor', function(t) {
+test ( 'dontDefineFunctionOnFor', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
@@ -143,7 +143,7 @@ test ( 'dontDefineFunctionOnFor', function(t) {
   tearDown(emitter);
 });
 
-test ( 'dontDefineFunctionOnWhile', function(t) {
+test ( 'dontDefineFunctionOnWhile', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
@@ -155,7 +155,7 @@ test ( 'dontDefineFunctionOnWhile', function(t) {
   tearDown(emitter);
 });
 
-test ( 'dontDefineFunctionOnDo', function(t) {
+test ( 'dontDefineFunctionOnDo', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
@@ -167,7 +167,7 @@ test ( 'dontDefineFunctionOnDo', function(t) {
   tearDown(emitter);
 });
 
-test( 'defineMemberFunction', function(t) {
+test( 'defineMemberFunction', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
@@ -184,7 +184,7 @@ test( 'defineMemberFunction', function(t) {
   tearDown(emitter);
 });
 
-test( 'defineNamespaceWithWhite', function(t){
+test( 'defineNamespaceWithWhite', t => {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
@@ -198,7 +198,7 @@ test( 'defineNamespaceWithWhite', function(t){
   tearDown(emitter);
 });
 
-test( 'defineEmptyNamespace', function(t){
+test( 'defineEmptyNamespace', t => {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
@@ -212,7 +212,7 @@ test( 'defineEmptyNamespace', function(t){
   tearDown(emitter);
 });
 
-test( 'defineNamespaceWithWhite', function(t){
+test( 'defineNamespaceWithWhite', t => {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )

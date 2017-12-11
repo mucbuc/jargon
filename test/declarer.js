@@ -11,7 +11,7 @@ var assert = require( 'assert' )
 
 assert( typeof Declarer === 'function' );
 
-test( 'declareType', function(t){
+test( 'declareType', t => {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define type' )
@@ -22,7 +22,7 @@ test( 'declareType', function(t){
   tearDown(emitter);
 });
 
-test( 'declareFunction', function(t){
+test( 'declareFunction', t => {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define function' )
@@ -33,7 +33,7 @@ test( 'declareFunction', function(t){
   tearDown(emitter);
 });
 
-test( 'declareNot1', function(t){
+test( 'declareNot1', t => {
   let emitter = setUp(t);
   emitter
     .expectNot( 'declare function' )
@@ -44,7 +44,7 @@ test( 'declareNot1', function(t){
   tearDown(emitter);
 });
 
-test( 'declareNot2', function(t){
+test( 'declareNot2', t => {
   let emitter = setUp(t);
   emitter
     .expectNot( 'declare function' )
@@ -63,7 +63,7 @@ function split( code, emitter ) {
     , tokenizer = new Scoper( emitter, rules )
     , declarer = new Declarer();
     
-  fluke.splitAll( code, function( type, req ) {
+  fluke.splitAll( code, ( type, req ) => {
       emitter.emit( type, req );
       if (type === 'statement') {
         process( req );
@@ -73,7 +73,7 @@ function split( code, emitter ) {
       }
 
       function process( req ) { 
-        declarer.process( req, function( type, val ) {
+        declarer.process( req, ( type, val ) => {
           emitter.emit( type, val );
         });
       }

@@ -9,7 +9,7 @@ var assert = require( 'assert' )
 
 assert( typeof Formatter === 'function' );
 
-test( 'headingSpaces', function(t) {
+test( 'headingSpaces', t => {
     
   let emitter = setUp( t );
 
@@ -20,14 +20,14 @@ test( 'headingSpaces', function(t) {
     .expect( 'ere', 'hello' );
     //.expect( 'end' );
 
-  formatter.forward( 'ere', '\t \t \n hello', function(event, code) {
+  formatter.forward( 'ere', '\t \t \n hello', (event, code) => {
     emitter.emit( event, code ); 
   } );
 
   tearDown( emitter );
 } );
 
-test( 'trailingSpaces', function(t) {
+test( 'trailingSpaces', t => {
 
   let emitter = setUp( t );
   var formatter = new Formatter();
@@ -37,7 +37,7 @@ test( 'trailingSpaces', function(t) {
     .expect( 'format', '\t \t' );
     //.expect( 'end' );
     
-  formatter.forward( 'ere', 'hello\t \t', function(event, code) {
+  formatter.forward( 'ere', 'hello\t \t', (event, code) => {
     emitter.emit( event, code ); 
   } );
 

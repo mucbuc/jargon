@@ -9,7 +9,7 @@ var assert = require( 'assert' )
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test; 
 
-test( 'singleParameter', function(t) {
+test( 'singleParameter', t => {
 
   let emitter = setUpU(t);
   emitter.expect( 'template parameters', 'template<class A>' );
@@ -33,7 +33,7 @@ test( 'singleParameter', function(t) {
   tearDown(emitter);
 });
 
-test( 'multipleParameters', function(t) {
+test( 'multipleParameters', t => {
 
   let emitter = setUpU(t);
   
@@ -58,7 +58,7 @@ test( 'multipleParameters', function(t) {
   tearDown(emitter);
 });
 
-test( 'macroParameters', function(t) {
+test( 'macroParameters', t => {
 
   let emitter = setUpU(t);
   emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
@@ -73,7 +73,7 @@ test( 'macroParameters', function(t) {
   tearDown(emitter);
 });
 
-test( 'templateNestedParameters', function(t) {
+test( 'templateNestedParameters', t => {
 
   let emitter = setUpU(t);
   emitter.expect( 'template parameters', 'template<template< typename >, template< typename >>' );

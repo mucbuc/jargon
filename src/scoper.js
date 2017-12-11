@@ -13,14 +13,14 @@ function Scoper( rules ) {
       };
   }
 
-  this.process = function(req, cb) {
+  this.process = (req, cb) => {
 
     var depth = 1
       , source = req.rhs
       , content = '';
     req.resetStash(); 
     do {
-      fluke.splitNext(source, function(type, inner) {
+      fluke.splitNext(source, (type, inner) => {
         source = inner.rhs;
         content += inner.lhs;
         if (type == 'open') {

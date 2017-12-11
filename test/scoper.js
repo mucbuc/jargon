@@ -10,7 +10,7 @@ var assert = require( 'assert' )
 
 assert( typeof Scoper === 'function' );
 
-test( 'emptyScope', function(t) {
+test( 'emptyScope', t => {
 
   let emitter = setUp( t );
   
@@ -23,7 +23,7 @@ test( 'emptyScope', function(t) {
   tearDown(emitter);
 }); 
 
-test( 'statementScope', function(t) {
+test( 'statementScope', t => {
   let emitter = setUp( t );
 
   emitter
@@ -36,7 +36,7 @@ test( 'statementScope', function(t) {
   tearDown(emitter);
 });
 
-test( 'basicScope', function(t) {
+test( 'basicScope', t => {
   let emitter = setUp( t );
 
   emitter
@@ -47,7 +47,7 @@ test( 'basicScope', function(t) {
   tearDown(emitter);
 });
 
-test( 'nestedScopes', function(t) {
+test( 'nestedScopes', t => {
   let emitter = setUp( t );
 
   emitter
@@ -58,7 +58,7 @@ test( 'nestedScopes', function(t) {
   tearDown(emitter);
 });
 
-test( 'aggregateScopes', function(t) {
+test( 'aggregateScopes', t => {
   let emitter = setUp( t );
 
   emitter  
@@ -69,7 +69,7 @@ test( 'aggregateScopes', function(t) {
   tearDown(emitter);
 });
 
-test( 'alternativeScopeTag', function(t) {
+test( 'alternativeScopeTag', t => {
   let emitter = setUp( t );
   var rules = { 'open': '<', 'close': '>' };
 
@@ -81,7 +81,7 @@ test( 'alternativeScopeTag', function(t) {
   tearDown(emitter);
 });
 
-test( 'alternativeScopeTagNested', function(t) {
+test( 'alternativeScopeTagNested', t => {
   let emitter = setUp( t );
   var rules = { 'open': '<', 'close': '>' };
 
