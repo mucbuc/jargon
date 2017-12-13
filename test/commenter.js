@@ -10,7 +10,7 @@ var assert = require( 'chai' ).assert
 
 assert( typeof Commenter === 'function' );
 
-test.only( 'commenterSingleLineWithSpace', t => {
+test( 'commenterSingleLineWithSpace', t => {
   let emitter = setUp(t);
   emitter
     .expect( 'comment line', 'hello' )

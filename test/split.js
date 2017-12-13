@@ -186,9 +186,11 @@ test( 'NestedTypes', t => {
 test( 'TypeWithFormat', t => {
   let e = setUp( t );
   
-  e.expect( 'define type', { name: ' struct inside ', code: '' })
-    .expect( 'format' );
-  split( ' struct inside {}; ', e );
+  e
+  .expect( 'define type', { name: 'struct inside ', code: '' })
+  .expect( 'format' );
+  
+  split( 'struct inside {}; ', e );
   tearDown(e);
 });
 
@@ -242,9 +244,11 @@ test( 'declareTypeAfterPreproesorDirectives', t => {
 test( 'defineTypeAfterDeclareType', t => {
   let e = setUp( t );
   
-  e.expect( 'declare type', ' struct jimmy ' )  
-    .expect( 'define type', { name: ' struct hey ', code: ' joe ' } );
-  split( 'struct jimmy; struct hey { joe }', e );
+  e.expect( 'declare type', 'struct jimmy' )  
+    .expect( 'format' )
+    .expect( 'define type', { name: 'struct hey ', code: ' joe ' } )
+    .expect( 'format' );
+  split( 'struct jimmy; struct hey { joe } ', e );
   tearDown(e);
 });
 
