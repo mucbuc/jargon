@@ -119,8 +119,8 @@ test( 'namespaceTree', t => {
   e.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
 
   e.once( 'define namespace', ( context ) => {
-    e
-      .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
+    e.expect( 'format' )
+      .expect( 'define namespace', { name: 'namespace inside ', code: '' } )
       .expect( 'format' );
 
     split( context.code, e );
@@ -154,7 +154,8 @@ test( 'NestedNamespaces', t => {
   
   e.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
     .once( 'define namespace', ( context ) => {
-      e.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
+      e.expect( 'format' )
+      e.expect( 'define namespace', { name: 'namespace inside ', code: '' } )
       e.expect( 'format' );
       split( context.code, e );
     } ); 
