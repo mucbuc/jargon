@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+/*
+	objective: 
+	check if parsed result equals file contents 
+*/
+
 var input = ''
   , fs = require( 'fs' )
   , echo = require( './echo' )
