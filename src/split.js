@@ -29,7 +29,7 @@ function split( code, callback ) {
         'open template': '<',
         'statement': ';',
         'open': '{',
-        'format': '^(\\s{2,}|\\t)'
+        'format': '^(\\s|\\t\\n)'
       }
     , emitter = new events.EventEmitter()
     , literalizer = new Literalizer()

@@ -18,9 +18,6 @@ module.exports = (inString, outStream) => {
 				case 'define function':
 					outStream.write( obj.name + '{' + obj.code + '}' );
 					break;
-				case 'preprocess':
-					outStream.write( '#' + obj );
-					break;
 				case 'code line':
 				case 'format': 
 				case 'comment':
