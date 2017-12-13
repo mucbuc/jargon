@@ -28,7 +28,8 @@ function split( code, callback ) {
         'open literal': '([^//]"|^")',
         'open template': '<',
         'statement': ';',
-        'open': '{'
+        'open': '{',
+        'format': '^(\\s{2,}|\\t)'
       }
     , emitter = new events.EventEmitter()
     , literalizer = new Literalizer()
@@ -38,6 +39,10 @@ function split( code, callback ) {
   forwardContent( 'define type' );
   forwardContent( 'define function' );
   forwardContent( 'define namespace' );
+
+  emitter.on( 'format', ( request ) => {
+    callback( 'format', request.token ); 
+  });
 
   emitter.on( 'open', ( request ) => {
     let definer = new Definer()
@@ -73,7 +78,7 @@ function split( code, callback ) {
 
   emitter.on( 'comment line', request => {
     commenter.processLine( request, comment => {
-      callback( 'comment', '\/\/' + comment + '\n' );
+      callback( 'comment', '\/\/' + comment );
     });
   }); 
 
