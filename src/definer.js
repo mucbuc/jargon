@@ -6,8 +6,8 @@ assert( typeof regexMap !== 'undefined' );
 function Definer() {
 
   this.process = ( obj, cb ) => {
-    let code = obj.lhs.replace( /.*?;/, '' );
 
+    let code = obj.lhs.replace( /.*?;/, '' );
     if (isNamespace(code)) {
       initDefine( 'namespace', code );
     }
