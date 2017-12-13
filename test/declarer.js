@@ -12,47 +12,44 @@ var assert = require( 'assert' )
 assert( typeof Declarer === 'function' );
 
 test( 'declareType', t => {
-  let emitter = setUp(t);
-  emitter
+  let e = setUp(t)
     .expectNot( 'define type' )
     .expect( 'statement' )
     .expect( 'declare type' )
     .expect( 'end' );
-  split( 'struct bla;', emitter );
-  tearDown(emitter);
+  split( 'struct bla;', e );
+  tearDown(e);
 });
 
 test( 'declareFunction', t => {
-  let emitter = setUp(t);
-  emitter
+  let e = setUp(t)
     .expectNot( 'define function' )
     .expect( 'statement' )
     .expect( 'declare function', 'void foo()' )
     .expect( 'end' );
-  split( 'void foo();', emitter );
-  tearDown(emitter);
+  split( 'void foo();', e );
+  tearDown(e);
 });
 
 test( 'declareNot1', t => {
-  let emitter = setUp(t);
-  emitter
+  let e = setUp(t)
     .expectNot( 'declare function' )
     .expect( 'statement' )
     .expect( 'code line' )
     .expect( 'end' );
-  split( 'bla bla;', emitter );
-  tearDown(emitter);
+  split( 'bla bla;', e );
+  tearDown(e);
 });
 
 test( 'declareNot2', t => {
-  let emitter = setUp(t);
-  emitter
+  let e = setUp(t)
     .expectNot( 'declare function' )
     .expect( 'statement' )
     .expect( 'code line' )
     .expect( 'end' );
-  split( 'bla += bla();', emitter );
-  tearDown(emitter);
+  
+  split( 'bla += bla();', e );
+  tearDown(e);
 });
 
 function split( code, emitter ) {

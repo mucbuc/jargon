@@ -1,21 +1,15 @@
-var assert = require( 'assert' )
-  , fluke = require( 'flukejs' );
+const assert = require( 'assert' )
+  , fluke = require( 'flukejs' )
+  , defaultRules = {
+      'open': '{',
+      'close': '}'
+    }; 
 
-function Scoper( rules ) {
-
-  var instance = this
-    , depth = 0;
-
-  if (typeof rules === 'undefined') {
-    rules = {
-        'open': '{',
-        'close': '}'
-      };
-  }
+function Scoper(rules = defaultRules) {
 
   this.process = (req, cb) => {
 
-    var depth = 1
+    let depth = 1
       , source = req.rhs
       , content = '';
     req.resetStash(); 
@@ -29,9 +23,9 @@ function Scoper( rules ) {
         }
         else if (type == 'close' || type == 'end') {
           if (!--depth) {
-            cb( type, content );
             req.consume( (content + inner.token).length );
             req.resetStash();
+            cb( type, content );
           }
           else {
             content += inner.token;

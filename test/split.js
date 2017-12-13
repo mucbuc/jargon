@@ -52,22 +52,31 @@ test( 'readSampleFile', t => {
     .expect( 'declare type' )
     .expect( 'format' )
     .expect( 'declare function' )
+    .expect( 'format' )
     .expect( 'code line' )
+    .expect( 'format' )
     .expect( 'define type', { 
-      name: '\nstruct hello\n', 
+      name: 'struct hello\n', 
       code: '\n\tint hello;\n\tvoid bye();\n' 
     })
+    .expect( 'format' )
+    .expect( 'format' )
     .expect( 'define function', {
-      name: '\n\nvoid hello() \n', 
+      name: 'void hello() \n', 
       code: '\n\n'
     })
     .expect( 'format' )
+    .expect( 'format' )
     .expect( 'preprocess' )
+    .expect( 'format' )
     .expect( 'define namespace', {
-      name: '\nnamespace hello \n', 
+      name: 'namespace hello \n', 
       code: '\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n'
     } )
+    .expect( 'format' )
+    .expect( 'format' )
     .expect( 'comment' )
+    .expect( 'format' )
     .expect( 'format' )
     .expect( 'preprocess' )
     .expect( 'comment' );
@@ -119,8 +128,8 @@ test( 'namespaceTree', t => {
   e.expect( 'define namespace', { name: 'namespace outside', code: ' namespace inside {} ' } ); 
 
   e.once( 'define namespace', ( context ) => {
-    e
-      .expect( 'define namespace', { name: ' namespace inside ', code: '' } )
+    e.expect( 'format' )
+      .expect( 'define namespace', { name: 'namespace inside ', code: '' } )
       .expect( 'format' );
 
     split( context.code, e );
@@ -154,7 +163,8 @@ test( 'NestedNamespaces', t => {
   
   e.expect( 'define namespace', { name: 'namespace outside ', code: ' namespace inside {} ' } )
     .once( 'define namespace', ( context ) => {
-      e.expect( 'define namespace', { name: ' namespace inside ', code: '' } );
+      e.expect( 'format' )
+      e.expect( 'define namespace', { name: 'namespace inside ', code: '' } )
       e.expect( 'format' );
       split( context.code, e );
     } ); 
@@ -186,9 +196,11 @@ test( 'NestedTypes', t => {
 test( 'TypeWithFormat', t => {
   let e = setUp( t );
   
-  e.expect( 'define type', { name: ' struct inside ', code: '' })
-    .expect( 'format' );
-  split( ' struct inside {}; ', e );
+  e
+  .expect( 'define type', { name: 'struct inside ', code: '' })
+  .expect( 'format' );
+  
+  split( 'struct inside {}; ', e );
   tearDown(e);
 });
 
@@ -242,9 +254,11 @@ test( 'declareTypeAfterPreproesorDirectives', t => {
 test( 'defineTypeAfterDeclareType', t => {
   let e = setUp( t );
   
-  e.expect( 'declare type', ' struct jimmy ' )  
-    .expect( 'define type', { name: ' struct hey ', code: ' joe ' } );
-  split( 'struct jimmy; struct hey { joe }', e );
+  e.expect( 'declare type', 'struct jimmy' )  
+    .expect( 'format' )
+    .expect( 'define type', { name: 'struct hey ', code: ' joe ' } )
+    .expect( 'format' );
+  split( 'struct jimmy; struct hey { joe } ', e );
   tearDown(e);
 });
 

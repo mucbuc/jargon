@@ -21,14 +21,15 @@ assert( typeof Template === 'function' );
 
 function split( code, callback ) {
 
-  var rules = {
+  let rules = {
         'preprocess': '#',
         'comment line': '\\/\\/',
         'comment block': '\\/\\*',
         'open literal': '([^//]"|^")',
         'open template': '<',
         'statement': ';',
-        'open': '{'
+        'open': '{',
+        'format': '^(\\s|\\t\\n)'
       }
     , emitter = new events.EventEmitter()
     , literalizer = new Literalizer()
@@ -39,8 +40,12 @@ function split( code, callback ) {
   forwardContent( 'define function' );
   forwardContent( 'define namespace' );
 
+  emitter.on( 'format', ( request ) => {
+    callback( 'format', request.token ); 
+  });
+
   emitter.on( 'open', ( request ) => {
-    var definer = new Definer()
+    let definer = new Definer()
       , scoper = new Scoper();
     definer.process( request, ( type, content ) => {
       emitter.emit( type, content );
@@ -59,7 +64,7 @@ function split( code, callback ) {
   });
 
   emitter.on( 'preprocess', request => {
-    var preprocessor = new Preprocessor(); 
+    let preprocessor = new Preprocessor(); 
 
     if (request.lhs.length && !request.lhs.match( /\S/ ))
     {
@@ -72,19 +77,19 @@ function split( code, callback ) {
   });
 
   emitter.on( 'comment line', request => {
-    commenter.processLine( request, function(comment) {
-      callback( 'comment', '\/\/' + comment + '\n' );
+    commenter.processLine( request, comment => {
+      callback( 'comment', '\/\/' + comment );
     });
   }); 
 
   emitter.on( 'comment block', request => {
-    commenter.processBlock( request, function(comment) {
+    commenter.processBlock( request, comment => {
       callback( 'comment', '/*' + comment );
     });
   });
 
   emitter.on( 'open template', request => {
-    templater.process( request, function(templateParams) {
+    templater.process( request, templateParams => {
       callback( 'template parameters', templateParams );
     });
   });
@@ -106,21 +111,21 @@ function split( code, callback ) {
         }
         break;
       default:
-        var formatter = new Formatter();
+        let formatter = new Formatter();
         formatter.forward(event, obj, callback);
       break;
     }
   }
 
   function declare( req ) {
-    var declarer = new Declarer();
+    let declarer = new Declarer();
     declarer.process( req, ( event, obj ) => {
       format(event, obj );
     });
   }
 
   function forwardContent( event ) {
-    emitter.on( event, function(obj) {
+    emitter.on( event, obj => {
       emitter.once( 'close', content => {
         obj.code = content;
         format(event, obj);

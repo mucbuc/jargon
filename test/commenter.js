@@ -10,6 +10,15 @@ var assert = require( 'chai' ).assert
 
 assert( typeof Commenter === 'function' );
 
+test( 'commenterSingleLineWithSpace', t => {
+  let emitter = setUp(t);
+  emitter
+    .expect( 'comment line', 'hello' )
+    .expect( 'end' );
+  split( '  // hello\n', emitter );
+  tearDown(emitter);
+});
+
 test( 'commenterSingleLine', t => {
   let emitter = setUp(t);
   emitter
@@ -84,12 +93,12 @@ function split( code, emitter ) {
 
   fluke.splitAll( code, ( type, request ) => {
       if (type === 'comment line') {
-        commenter.processLine( request, (val) => {
+        commenter.processLine( request, val => {
           emitter.emit( 'comment line', val );
         } );
       }
       else if (type === 'comment block') {
-        commenter.processBlock( request, (val) => {
+        commenter.processBlock( request, val => {
           emitter.emit( 'comment block', val );
         } );
       }
