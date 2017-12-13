@@ -52,22 +52,31 @@ test( 'readSampleFile', t => {
     .expect( 'declare type' )
     .expect( 'format' )
     .expect( 'declare function' )
+    .expect( 'format' )
     .expect( 'code line' )
+    .expect( 'format' )
     .expect( 'define type', { 
-      name: '\nstruct hello\n', 
+      name: 'struct hello\n', 
       code: '\n\tint hello;\n\tvoid bye();\n' 
     })
+    .expect( 'format' )
+    .expect( 'format' )
     .expect( 'define function', {
-      name: '\n\nvoid hello() \n', 
+      name: 'void hello() \n', 
       code: '\n\n'
     })
     .expect( 'format' )
+    .expect( 'format' )
     .expect( 'preprocess' )
+    .expect( 'format' )
     .expect( 'define namespace', {
-      name: '\nnamespace hello \n', 
+      name: 'namespace hello \n', 
       code: '\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n'
     } )
+    .expect( 'format' )
+    .expect( 'format' )
     .expect( 'comment' )
+    .expect( 'format' )
     .expect( 'format' )
     .expect( 'preprocess' )
     .expect( 'comment' );
