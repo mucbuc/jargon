@@ -11,19 +11,21 @@ var assert = require( 'assert' )
 assert( typeof Literalizer === 'function' );
 
 test( 'stringLiteral', t => {
-  let emitter = setUpU(t);
-  emitter.expectNot( 'declare' ); 
-  emitter.expect( 'open literal' );
-  split( '"struct hello;"', emitter );
-  tearDown(emitter);
+  let e = setUpU(t)
+  .expectNot( 'declare' ) 
+  .expect( 'open literal' );
+
+  split( '"struct hello;"', e );
+  tearDown(e);
 });
 
 test( 'stringLiteralWithQutationMarks', t => {
-  let emitter = setUpU(t);
-  emitter.expectNot( 'declare' ); 
-  emitter.expect( 'open literal' );
-  split( '"struct he/"llo;"', emitter );
-  tearDown(emitter);
+  let e = setUpU(t)
+  .expectNot( 'declare' )
+  .expect( 'open literal' );
+  
+  split( '"struct he/"llo;"', e );
+  tearDown(e);
 });
 
 function split( code, emitter ) {
