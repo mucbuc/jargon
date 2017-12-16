@@ -174,12 +174,12 @@ test( 'defineMemberFunction', t =>  {
     .expectNot( 'define type' )
     .expect( 'open' )
     .expect( 'define function', {
-      name: 'hello::hello() returnType '
+      name: 'hello::hello() -> returnType '
     });
 
   expectScopeTrail( emitter );
 
-  split( 'hello::hello() returnType {}', emitter );
+  split( 'hello::hello() -> returnType {}', emitter );
   tearDown(emitter);
 });
 
