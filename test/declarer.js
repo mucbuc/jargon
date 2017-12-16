@@ -31,6 +31,16 @@ test( 'declareFunction', t => {
   tearDown(e);
 });
 
+test( 'declareConstFunction', t => {
+  let e = setUp(t)
+    .expectNot( 'define function' )
+    .expect( 'statement' )
+    .expect( 'declare function', 'void foo() const' )
+    .expect( 'end' );
+  split( 'void foo() const;', e );
+  tearDown(e);
+});
+
 test( 'declareNot1', t => {
   let e = setUp(t)
     .expectNot( 'declare function' )
