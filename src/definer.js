@@ -23,7 +23,7 @@ function Definer() {
       if (t.search( regexMap.blockDeclare )==0) { 
         return false;
       }
-      return t[t.length - 1] == ')';
+      return t.match( /\)[\s\w]*/ ); // [t.length - 1] == ')';
     }
 
     function isType( code ) {

@@ -174,6 +174,22 @@ test( 'defineMemberFunction', t =>  {
     .expectNot( 'define type' )
     .expect( 'open' )
     .expect( 'define function', {
+      name: 'hello::hello() -> returnType '
+    });
+
+  expectScopeTrail( emitter );
+
+  split( 'hello::hello() -> returnType {}', emitter );
+  tearDown(emitter);
+});
+
+test( 'defineConstructFunction', t =>  {
+  let emitter = setUp(t);
+  emitter
+    .expectNot( 'define namespace' )
+    .expectNot( 'define type' )
+    .expect( 'open' )
+    .expect( 'define function', {
       name: 'hello::hello()',
       meta: ' base() '
   } );
