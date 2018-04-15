@@ -28,7 +28,7 @@ function split( code, callback ) {
         'preprocess': '#',
         'comment line': '\\/\\/',
         'comment block': '\\/\\*',
-        'open literal': '([^//]"|^")',
+        //'open literal': '([^//]"|^")',
         'open template': '<',
         'statement': ';',
         'open': '{',
@@ -38,6 +38,8 @@ function split( code, callback ) {
     , literalizer = new Literalizer()
     , commenter = new Commenter()
     , templater = new Template();
+
+  rules = Object.assign( {}, rules, literalizer.register(emitter) );
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );

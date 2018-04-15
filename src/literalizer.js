@@ -2,6 +2,18 @@ const regexMap = require( './regexmap' ).regexMap
   , assert = require( 'assert' );
   
 function Literalizer() {
+
+	this.register = (emitter) => {
+
+	  emitter.on( 'open literal', request => {
+	    literalizer.process( request, (literal) => {
+	      callback( 'literal', literal );
+	    });
+	  }); 
+	
+	  return { 'open literal': '([^//]"|^")' };
+	};
+
 	this.process = (req, cb) => {
 		const match = req.rhs.match( regexMap.stringLiteral );
 		assert( match.length >= 2, req.rhs ); 
