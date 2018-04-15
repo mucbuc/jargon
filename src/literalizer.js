@@ -11,7 +11,7 @@ function Literalizer() {
 	    });
 	  }); 
 	
-	  return { 'open literal': '([^//]"|^")' };
+	  return { 'open literal': regexMap.openLiteral };
 	};
 
 	this.process = (req, cb) => {
