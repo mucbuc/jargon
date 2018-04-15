@@ -19,12 +19,12 @@ test( 'stringLiteral', t => {
   tearDown(e);
 });
 
-test.skip( 'stringLiteralWithQutationMarks', t => {
+test( 'stringLiteralWithQutationMarks', t => {
   let e = setUpU(t)
   .expectNot( 'declare' )
-  .expect( 'open literal' );
+  .expect( 'literal', 'struct hel/"lo;' );
   
-  split( '"struct he/"llo;"', e );
+  split( '"struct hel/"lo;"', e );
   tearDown(e);
 });
 

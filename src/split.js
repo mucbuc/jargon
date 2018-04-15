@@ -8,7 +8,8 @@ var assert = require( 'chai' ).assert
   , Literalizer = require( './literalizer' )
   , Preprocessor = require( './preprocessor' )
   , Scoper = require( './scoper' )
-  , Template = require( './template');
+  , Template = require( './template')
+  , regexMap = require( './regexmap' );
 
 assert( typeof Commenter === 'function' );
 assert( typeof Declarer === 'function' );
@@ -18,9 +19,11 @@ assert( typeof Literalizer === 'function' );
 assert( typeof Preprocessor === 'function' );
 assert( typeof Scoper === 'function' );
 assert( typeof Template === 'function' );
+assert( typeof regexMap !== 'undefined' );
 
 function split( code, callback ) {
 
+    // todo: get these from regex map
   let rules = {
         'preprocess': '#',
         'comment line': '\\/\\/',
@@ -93,6 +96,12 @@ function split( code, callback ) {
       callback( 'template parameters', templateParams );
     });
   });
+
+  emitter.on( 'open literal', request => {
+    literalizer.process( request, (literal) => {
+      callback( 'literal', literal );
+    });
+  }); 
 
   fluke.splitAll( code, ( type, request ) => {
       emitter.emit( type, request );
