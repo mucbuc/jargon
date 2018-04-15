@@ -3,7 +3,7 @@ const regexMap = require( './regexmap' ).regexMap
   
 function Literalizer() {
 	this.process = (req, cb) => {
-		const match = req.rhs.match( /(.*?[^/])"/ );//  regexMap.stringLiteral );
+		const match = req.rhs.match( regexMap.stringLiteral );
 		assert( match.length >= 2, req.rhs ); 
 		
 		const value = match[1];
