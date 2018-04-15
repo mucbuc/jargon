@@ -5,6 +5,7 @@ cpp, tokenizer, parser
 
 ### TODO:
 - `src/literalizer.js` is just stubbed out
+- literalizer doesn't handle `R` syntax 
 
 ### Possible use cases
 Enforce coding guidelins, move literals to the top of file, linter, reorganize code within files, create stubs, ....
