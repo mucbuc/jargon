@@ -28,7 +28,6 @@ function split( code, callback ) {
         'preprocess': '#',
         'comment line': '\\/\\/',
         'comment block': '\\/\\*',
-        //'open literal': '([^//]"|^")',
         'open template': '<',
         'statement': ';',
         'open': '{',
