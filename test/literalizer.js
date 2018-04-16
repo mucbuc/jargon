@@ -31,8 +31,6 @@ test( 'stringLiteralWithQutationMarks', t => {
 
 function split( code, emitter ) {
   splitjs(code, (type, value) => {
-
-    console.log( type, value );
     emitter.emit( type, value );
   });
 }
