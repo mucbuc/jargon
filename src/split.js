@@ -23,11 +23,8 @@ assert( typeof regexMap !== 'undefined' );
 
 function split( code, callback ) {
 
-    // todo: get these from regex map
   let rules = {
         'preprocess': '#',
-        'comment line': '\\/\\/',
-        'comment block': '\\/\\*',
         'open template': '<',
         'statement': ';',
         'open': '{',
@@ -39,6 +36,7 @@ function split( code, callback ) {
     , templater = new Template();
 
   rules = Object.assign( {}, rules, literalizer.register(emitter, callback) );
+  rules = Object.assign( {}, rules, commenter.register(emitter, callback) );
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );
@@ -77,18 +75,6 @@ function split( code, callback ) {
     
     preprocessor.preprocess( request, val => {
       callback( 'preprocess', val );
-    });
-  });
-
-  emitter.on( 'comment line', request => {
-    commenter.processLine( request, comment => {
-      callback( 'comment', '\/\/' + comment );
-    });
-  }); 
-
-  emitter.on( 'comment block', request => {
-    commenter.processBlock( request, comment => {
-      callback( 'comment', '/*' + comment );
     });
   });
 
