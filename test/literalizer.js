@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
 var assert = require( 'assert' )
-  //, Literalizer = require( '../src/literalizer.js')
-  //, fluke = require( 'flukejs' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUpU = tapeWrapper.setUpU
   , tearDown = tapeWrapper.tearDown
@@ -34,23 +32,3 @@ function split( code, emitter ) {
     emitter.emit( type, value );
   });
 }
-
-/*
-
-  var literalizer = new Literalizer()
-    , rules = { 'open literal': '([^//]"|^")' };
-
-  fluke.splitAll( code, function( type, request ) {
-
-      if (type === "open literal")
-      {
-        literalizer.process( request, (result) => {
-          emitter.emit( 'literal', result );
-        });
-      }
-    }
-    , rules ); 
-
-    */
-
-
