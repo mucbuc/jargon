@@ -3,33 +3,47 @@ const assert = require( 'assert' )
 
 function Preprocessor() {
 
-  this.preprocess = ( req, cb ) => {
-    let result = ''
-      , code = req.rhs;
-    do {
-      let chunk = code.length
-        , newLine = code.search( '\n' ) 
-        , commentMultiple = code.search( regexMap.commentMultiple )
-        , commentSingle = code.search( regexMap.commentSingle );
+  this.register = (emitter, callback) => {
 
-      if (newLine != -1) {
-        chunk = newLine + 1;
+    emitter.on( 'preprocess', req => {
+
+/*
+      // see if I can move this
+      if (req.lhs.length && !req.lhs.match( /\S/ ))
+      {
+        callback( 'format', req.lhs );
+        return;///?
       }
-      if (commentMultiple != -1) {
-        chunk = Math.min( chunk, commentMultiple );
+*/      
+      let result = ''
+        , code = req.rhs;
+      do {
+        let chunk = code.length
+          , newLine = code.search( '\n' ) 
+          , commentMultiple = code.search( regexMap.commentMultiple )
+          , commentSingle = code.search( regexMap.commentSingle );
+
+        if (newLine != -1) {
+          chunk = newLine + 1;
+        }
+        if (commentMultiple != -1) {
+          chunk = Math.min( chunk, commentMultiple );
+        }
+        if (commentSingle != -1) {
+          chunk = Math.min( chunk, commentSingle );
+        }
+        result += code.substr( 0, chunk );
+        code = code.substr( chunk, code.length );
       }
-      if (commentSingle != -1) {
-        chunk = Math.min( chunk, commentSingle );
+      while (result[result.length - 2] === '\\' );
+      
+      req.consume( result.length );
+      if (typeof callback !== 'undefined') {
+        callback( 'preprocess', '#' + result );
       }
-      result += code.substr( 0, chunk );
-      code = code.substr( chunk, code.length );
-    }
-    while (result[result.length - 2] === '\\' );
-    
-    req.consume( result.length );
-    if (typeof cb !== 'undefined') {
-      cb( result );
-    }
+    });
+
+    return { 'preprocess': '#', };
   };
 }
 

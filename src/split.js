@@ -24,7 +24,6 @@ assert( typeof regexMap !== 'undefined' );
 function split( code, callback ) {
 
   let rules = {
-        'preprocess': '#',
         'open template': '<',
         'statement': ';',
         'open': '{',
@@ -33,10 +32,12 @@ function split( code, callback ) {
     , emitter = new events.EventEmitter()
     , literalizer = new Literalizer()
     , commenter = new Commenter()
-    , templater = new Template();
+    , templater = new Template()
+    , preprocessor = new Preprocessor();
 
   rules = Object.assign( {}, rules, literalizer.register(emitter, callback) );
   rules = Object.assign( {}, rules, commenter.register(emitter, callback) );
+  rules = Object.assign( {}, rules, preprocessor.register(emitter, callback) );
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );
@@ -63,19 +64,6 @@ function split( code, callback ) {
 
   emitter.on( 'end', request => {
     declare( request );
-  });
-
-  emitter.on( 'preprocess', request => {
-    let preprocessor = new Preprocessor(); 
-
-    if (request.lhs.length && !request.lhs.match( /\S/ ))
-    {
-      callback( 'format', request.lhs );
-    }
-    
-    preprocessor.preprocess( request, val => {
-      callback( 'preprocess', val );
-    });
   });
 
   emitter.on( 'open template', request => {

@@ -8,61 +8,38 @@ var assert = require( 'chai' ).assert
   , tapeWrapper = require( './tape-wrapper' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
-  , test = tapeWrapper.test;
+  , test = tapeWrapper.test
+  , splitjs = require( './../src/split' );
 
 assert( typeof Preprocessor !== 'undefined' );
 
 test( 'preprocessorSingleLine', t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect( 'preprocess' )
-    .expect( 'end' );
-  split( '#define hello hello\nasdfaasdf\nbla', emitter);
-  tearDown(emitter);
-});
-
-test( 'preprocessorAfterComment', t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect( 'preprocess' )
-    .expect( 'end' );
-  split( '/*yo*/ #define BLA\n', emitter);
+  let emitter = 
+    setUp(t)
+    .expect( 'preprocess', '#define hello hello\n' );
+  split( '#define hello hello\n', emitter);
   tearDown(emitter);
 });
 
 test( 'preprocessorMultiple', t => {
-  let emitter = setUp(t);
-
-  emitter
+  let emitter = 
+    setUp(t)
     .expect( 'preprocess' )
-    .repeat( 1 )
-    .expect( 'end' );
+    .repeat( 1 );
   split( '#define A\n#define B\n', emitter);
   tearDown(emitter);
 });
 
 test( 'preprocessorMultiLine', t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect( 'preprocess' )
-    .expect( 'end' );
-  split( '#define hello hello\\\nhello\nbla', emitter);
+  let emitter = 
+    setUp(t)
+    .expect( 'preprocess', '#define hello hello\\\nhello\n' );
+  split( '#define hello hello\\\nhello\n', emitter);
   tearDown(emitter);
 });
 
 function split( code, emitter ) {
-  var preprocessor = new Preprocessor()
-    , rules = { 'preprocess': '#' };
-
-  fluke.splitAll( code, function( type, request ) {
-      if (type === 'preprocess') {  
-        preprocessor.preprocess( request, function() {});
-      }
-      emitter.emit(type, request);
-    }
-    , rules ); 
+  splitjs(code, (type, value) => {
+    emitter.emit( type, value );
+  });
 }
-
