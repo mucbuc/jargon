@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
 var assert = require( 'assert' )
-  , Literalizer = require( '../src/literalizer.js')
-  , fluke = require( 'flukejs' )
+  //, Literalizer = require( '../src/literalizer.js')
+  //, fluke = require( 'flukejs' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUpU = tapeWrapper.setUpU
   , tearDown = tapeWrapper.tearDown
-  , test = tapeWrapper.test;
+  , test = tapeWrapper.test
+  , splitjs = require( './../src/split' );
 
-assert( typeof Literalizer === 'function' );
+assert( typeof splitjs === 'function' );
 
 test( 'stringLiteral', t => {
   let e = setUpU(t)
@@ -29,6 +30,15 @@ test( 'stringLiteralWithQutationMarks', t => {
 });
 
 function split( code, emitter ) {
+  splitjs(code, (type, value) => {
+
+    console.log( type, value );
+    emitter.emit( type, value );
+  });
+}
+
+/*
+
   var literalizer = new Literalizer()
     , rules = { 'open literal': '([^//]"|^")' };
 
@@ -42,5 +52,7 @@ function split( code, emitter ) {
       }
     }
     , rules ); 
-}
+
+    */
+
 

@@ -39,7 +39,7 @@ function split( code, callback ) {
     , commenter = new Commenter()
     , templater = new Template();
 
-  rules = Object.assign( {}, rules, literalizer.register(emitter) );
+  rules = Object.assign( {}, rules, literalizer.register(emitter, callback) );
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );
@@ -98,12 +98,6 @@ function split( code, callback ) {
       callback( 'template parameters', templateParams );
     });
   });
-
-  emitter.on( 'open literal', request => {
-    literalizer.process( request, (literal) => {
-      callback( 'literal', literal );
-    });
-  }); 
 
   fluke.splitAll( code, ( type, request ) => {
       emitter.emit( type, request );

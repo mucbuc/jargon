@@ -6,7 +6,6 @@ exports.regexMap = {
 	define: /#.*define.*\s*\n?/g, 
 	undefine: /#.*undef.*\n?/mg,
 	stringLiteral: /(.*?[^/])"/,
-	openLiteral: /([^//]"|^")/,
 	arrayInitBlock: /\s*=.*?;/g, 
 	preProcessorLine: /^\s*#.*/mg, 
 	typeDef: /typedef.*?;/mg,
