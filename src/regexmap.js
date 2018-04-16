@@ -5,7 +5,6 @@ exports.regexMap = {
 	defineNewLine: /\\[ \t]*\n/mg,
 	define: /#.*define.*\s*\n?/g, 
 	undefine: /#.*undef.*\n?/mg,
-	stringLiteral: /(.*?[^/])"/,
 	arrayInitBlock: /\s*=.*?;/g, 
 	preProcessorLine: /^\s*#.*/mg, 
 	typeDef: /typedef.*?;/mg,

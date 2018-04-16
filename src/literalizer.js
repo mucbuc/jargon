@@ -1,12 +1,11 @@
-const regexMap = require( './regexmap' ).regexMap
-  , assert = require( 'assert' );
+const assert = require( 'assert' );
   
 function Literalizer() {
 
 	this.register = (emitter, callback) => {
 
 	  emitter.on( 'open literal', req => {
-		const match = req.rhs.match( regexMap.stringLiteral );
+		const match = req.rhs.match( /(.*?[^/])"/ );
 		assert( match.length >= 2, req.rhs ); 
 		
 		const value = match[1];
