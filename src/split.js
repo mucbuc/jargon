@@ -30,9 +30,9 @@ function split( code, callback ) {
     , declarer = new Declarer()
     , definer = new Definer();
 
-  rules = Object.assign( {}, rules, literalizer.register(emitter, callback) );
-  rules = Object.assign( {}, rules, commenter.register(emitter, callback) );
-  rules = Object.assign( {}, rules, preprocessor.register(emitter, callback) );
+  mergeRules( literalizer.register(emitter, callback) );
+  mergeRules( commenter.register(emitter, callback) );
+  mergeRules( preprocessor.register(emitter, callback) );
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );
@@ -42,15 +42,19 @@ function split( code, callback ) {
     callback( 'format', request.token ); 
   });
 
-  rules = Object.assign( {}, rules, definer.register(emitter, callback) );
-  rules = Object.assign( {}, rules, declarer.register(emitter, callback) );
-  rules = Object.assign( {}, rules, templater.register( emitter, callback ) );
+  mergeRules( definer.register(emitter, callback) );
+  mergeRules( declarer.register(emitter, callback) );
+  mergeRules( templater.register( emitter, callback ) );
   
   fluke.splitAll( code, ( type, request ) => {
       emitter.emit( type, request );
     }
   , rules );
   
+  function mergeRules(r) {
+    rules = Object.assign( rules, r );
+  }
+
   function forwardContent( event ) {
     emitter.on( event, obj => {
       emitter.once( 'close', content => {
