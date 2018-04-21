@@ -3,7 +3,7 @@
     - declare type
     - declare function
     - code line
-    - format
+    - format  ???? try to move
 */
 
 const assert = require( 'assert' )
@@ -11,6 +11,10 @@ const assert = require( 'assert' )
   , fluke = require( 'flukejs' );
 
 function Declarer() {
+
+  this.register = (emitter, callback) => {
+    return { 'statement': ';' };
+  };
 
   this.process = (request, cb) => {
 

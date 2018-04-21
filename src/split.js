@@ -24,7 +24,6 @@ assert( typeof regexMap !== 'undefined' );
 function split( code, callback ) {
 
   let rules = {
-        'statement': ';',
         'open': '{',
         'format': '^(\\s|\\t\\n)'
       }
@@ -32,7 +31,8 @@ function split( code, callback ) {
     , literalizer = new Literalizer()
     , commenter = new Commenter()
     , templater = new Template()
-    , preprocessor = new Preprocessor();
+    , preprocessor = new Preprocessor()
+    , declarer = new Declarer();
 
   rules = Object.assign( {}, rules, literalizer.register(emitter, callback) );
   rules = Object.assign( {}, rules, commenter.register(emitter, callback) );
@@ -57,6 +57,8 @@ function split( code, callback ) {
     });    
   });
 
+  rules = Object.assign( {}, rules, declarer.register(emitter, callback) );
+
   emitter.on( 'statement', request => {
     declare( request );
   });  
@@ -73,7 +75,7 @@ function split( code, callback ) {
   , rules );
   
   function declare( req ) {
-    let declarer = new Declarer();
+    
     declarer.process( req, ( event, obj ) => {
       let formatter = new Formatter();
       formatter.forward(event, obj, callback);
