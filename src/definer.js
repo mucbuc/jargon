@@ -1,11 +1,30 @@
 const assert = require( 'assert' )
+  , Scoper = require( './scoper' )
   , regexMap = require( './regexmap' ).regexMap;
 
+assert( typeof Scoper === 'function' );
 assert( typeof regexMap !== 'undefined' );
 
 function Definer() {
 
-  this.process = ( obj, cb ) => {
+  this.register = (emitter) => {
+
+    emitter.on( 'open', ( request ) => {
+      let scoper = new Scoper();
+  
+      process( request, ( type, content ) => {
+        emitter.emit( type, content );
+      });
+
+      scoper.process(request, (type, content) => {
+        emitter.emit( type, content );
+      });    
+    });
+
+    return { 'open': '{' };
+  };
+
+  function process( obj, cb ) {
 
     let code = obj.lhs.replace( /.*?;/, '' );
     if (isNamespace(code)) {

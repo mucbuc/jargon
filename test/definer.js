@@ -7,7 +7,8 @@ var assert = require( 'assert' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
-  , test = tapeWrapper.test;
+  , test = tapeWrapper.test
+  , splitjs = require( './../src/split' );
 
 assert( typeof Definer === 'function' );
 
@@ -16,10 +17,7 @@ test( 'defineNamespace', t =>  {
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define namespace', { name: 'namespace hello ' } );
-
-  expectScopeTrail( emitter );
+    .expect( 'define namespace', { name: 'namespace hello ', code: ' this is it ' } );
 
   split( 'namespace hello { this is it }', emitter );
   tearDown(emitter);
@@ -30,10 +28,7 @@ test( 'defineEmptyNamespace', t =>  {
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define namespace', { name: 'namespace hello ' } );
-
-  expectScopeTrail( emitter );
+    .expect( 'define namespace', { name: 'namespace hello ', code: '' } );
   
   split( 'namespace hello {}', emitter );
   tearDown(emitter);
@@ -44,11 +39,8 @@ test( 'defineTypeWithStatement', t =>  {
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define type', { name: 'struct hello ' } );
+    .expect( 'define type', { name: 'struct hello ', code: ' unsigned world; ' } );
 
-  expectScopeTrail( emitter );
-  
   split( 'struct hello { unsigned world; }', emitter );
   tearDown(emitter);
 });
@@ -58,42 +50,22 @@ test( 'defineType', t =>  {
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define type', { name: 'struct cya ' } );
-
-  expectScopeTrail( emitter );
+    .expect( 'define type', { name: 'struct cya ', code: ' yes' } );
   
   split( 'struct cya { yes}', emitter );
   tearDown(emitter);
 });
 
-test( 'defineTypeAfterStatement', t =>  {
+test.only( 'defineSubType', t =>  {
   let emitter = setUp(t);
   emitter
-    .expectNot( 'define namespace' )
-    .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define type', { name: ' struct cya ' } );
+    .expect( 'define type', { name: 'struct cya ', meta: ' blu ', code: ' yes ' } );
 
-  expectScopeTrail( emitter );
-  
-  split( 'typedef hello string; struct cya { yes}', emitter );
-  tearDown(emitter);
-});
-
-test( 'defineSubType', t =>  {
-  let emitter = setUp(t);
-  emitter
-    .expect( 'open' )
-    .expect( 'define type', { name: 'struct cya ', meta: ' blu ' } );
-
-  expectScopeTrail( emitter );
-  
   split( 'struct cya : blu { yes }', emitter );
   tearDown(emitter);
 });
 
-test( 'defineFunction', t =>  {
+/*test( 'defineFunction', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
@@ -248,24 +220,9 @@ function expectScopeTrail(emitter) {
     .expect( 'close' )
     .expect( 'end' );
 }
-
+*/
 function split( code, emitter ) {
-  var tokenizer
-    , definer
-    , rules = {
-        'open': '{',
-        'close': '}',
-    };
-    
-  definer = new Definer();
-  tokenizer = new Scoper( rules );
-  fluke.splitAll( code, function( type, request ) {
-      emitter.emit(type, request);
-      if (type == 'open') {
-        definer.process( request, function(type, content) {
-          emitter.emit( type, content );
-        });
-      }
-    }
-    , rules ); 
+  splitjs(code, (type, value) => {
+    emitter.emit( type, value );
+  });
 }

@@ -7,7 +7,6 @@ var assert = require( 'chai' ).assert
   , Formatter = require( './formatter' )
   , Literalizer = require( './literalizer' )
   , Preprocessor = require( './preprocessor' )
-  , Scoper = require( './scoper' )
   , Template = require( './template')
   , regexMap = require( './regexmap' );
 
@@ -17,14 +16,12 @@ assert( typeof Definer === 'function' );
 assert( typeof Formatter === 'function' );
 assert( typeof Literalizer === 'function' );
 assert( typeof Preprocessor === 'function' );
-assert( typeof Scoper === 'function' );
 assert( typeof Template === 'function' );
 assert( typeof regexMap !== 'undefined' );
 
 function split( code, callback ) {
 
   let rules = {
-        'open': '{',
         'format': '^(\\s|\\t\\n)'
       }
     , emitter = new events.EventEmitter()
@@ -32,7 +29,8 @@ function split( code, callback ) {
     , commenter = new Commenter()
     , templater = new Template()
     , preprocessor = new Preprocessor()
-    , declarer = new Declarer();
+    , declarer = new Declarer()
+    , definer = new Definer();
 
   rules = Object.assign( {}, rules, literalizer.register(emitter, callback) );
   rules = Object.assign( {}, rules, commenter.register(emitter, callback) );
@@ -46,17 +44,7 @@ function split( code, callback ) {
     callback( 'format', request.token ); 
   });
 
-  emitter.on( 'open', ( request ) => {
-    let definer = new Definer()
-      , scoper = new Scoper();
-    definer.process( request, ( type, content ) => {
-      emitter.emit( type, content );
-    });
-    scoper.process(request, (type, content) => {
-      emitter.emit( type, content );
-    });    
-  });
-
+  rules = Object.assign( {}, rules, definer.register(emitter, callback) );
   rules = Object.assign( {}, rules, declarer.register(emitter, callback) );
   rules = Object.assign( {}, rules, templater.register( emitter, callback ) );
   
