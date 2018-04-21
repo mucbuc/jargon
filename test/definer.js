@@ -121,18 +121,15 @@ test ( 'dontDefineFunctionOnDo', t =>  {
   tearDown(emitter);
 });
 
-/*
 test( 'defineMemberFunction', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define type' )
-    .expect( 'open' )
     .expect( 'define function', {
-      name: 'hello::hello() -> returnType '
+      name: 'hello::hello() -> returnType ',
+      code: ''
     });
-
-  expectScopeTrail( emitter );
 
   split( 'hello::hello() -> returnType {}', emitter );
   tearDown(emitter);
@@ -143,13 +140,11 @@ test( 'defineConstructFunction', t =>  {
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define type' )
-    .expect( 'open' )
     .expect( 'define function', {
       name: 'hello::hello()',
-      meta: ' base() '
+      meta: ' base() ',
+      code: 'bla bla'
   } );
-
-  expectScopeTrail( emitter );
 
   split( 'hello::hello() : base() {bla bla}', emitter );
   tearDown(emitter);
@@ -160,12 +155,9 @@ test( 'defineNamespaceWithWhite', t => {
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define namespace', { name: ' namespace hello ' } );
+    .expect( 'define namespace', { name: 'namespace hello ', code: ' this is it ' } );
 
-  expectScopeTrail( emitter );
-
-  split( ' namespace hello { this is it }', emitter );
+  split( 'namespace hello { this is it }', emitter );
   tearDown(emitter);
 });
 
@@ -174,12 +166,9 @@ test( 'defineEmptyNamespace', t => {
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define namespace', { name: '  namespace world' } );
+    .expect( 'define namespace', { name: 'namespace world', code: '' } );
 
-  expectScopeTrail( emitter );
-
-  split( '  namespace world{}', emitter );
+  split( 'namespace world{}', emitter );
   tearDown(emitter);
 });
 
@@ -188,22 +177,13 @@ test( 'defineNamespaceWithWhite', t => {
   emitter
     .expectNot( 'define type' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define namespace', { name: 'namespace   world ' } )
-
-  expectScopeTrail( emitter );
+    .expect( 'define namespace', { name: 'namespace   world ', code: '' } )
 
   split( 'namespace   world {}', emitter );
 
   tearDown(emitter);
 });
 
-function expectScopeTrail(emitter) {
-  return emitter
-    .expect( 'close' )
-    .expect( 'end' );
-}
-*/
 function split( code, emitter ) {
   splitjs(code, (type, value) => {
     emitter.emit( type, value );
