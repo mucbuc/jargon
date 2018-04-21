@@ -1,3 +1,11 @@
+/* 
+  involves test types
+    - declare type
+    - declare function
+    - code line
+    - format
+*/
+
 const assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap
   , fluke = require( 'flukejs' );
@@ -19,23 +27,23 @@ function Declarer() {
           cb( !isSpace(block) ? 'code line' : 'format', block );
         }
 
-        function isFunctionDeclaration(code) {
-          return code.search( regexMap.functionDeclare ) == 0;
-        }
-
-        function isType(code) {
-          return code.search( regexMap.typeDeclare ) != -1;
-        }
-
-        function isSpace(code) {
-          return code.match( /\S/ ) ? false : true; 
-        }
-
       }, { 
         'statement': ';'
       } 
     );
   };
+
+  function isFunctionDeclaration(code) {
+    return code.search( regexMap.functionDeclare ) == 0;
+  }
+
+  function isType(code) {
+    return code.search( regexMap.typeDeclare ) != -1;
+  }
+
+  function isSpace(code) {
+    return code.match( /\S/ ) ? false : true; 
+  }
 }
 
 module.exports = Declarer;
