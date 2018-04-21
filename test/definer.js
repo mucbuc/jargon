@@ -150,17 +150,6 @@ test( 'defineConstructFunction', t =>  {
   tearDown(emitter);
 });
 
-test( 'defineNamespaceWithWhite', t => {
-  let emitter = setUp(t);
-  emitter
-    .expectNot( 'define type' )
-    .expectNot( 'define function' )
-    .expect( 'define namespace', { name: 'namespace hello ', code: ' this is it ' } );
-
-  split( 'namespace hello { this is it }', emitter );
-  tearDown(emitter);
-});
-
 test( 'defineEmptyNamespace', t => {
   let emitter = setUp(t);
   emitter
