@@ -7,8 +7,7 @@ var assert = require( 'chai' ).assert
   , Formatter = require( './formatter' )
   , Literalizer = require( './literalizer' )
   , Preprocessor = require( './preprocessor' )
-  , Template = require( './template')
-  , regexMap = require( './regexmap' );
+  , Template = require( './template');
 
 assert( typeof Commenter === 'function' );
 assert( typeof Declarer === 'function' );
@@ -17,7 +16,6 @@ assert( typeof Formatter === 'function' );
 assert( typeof Literalizer === 'function' );
 assert( typeof Preprocessor === 'function' );
 assert( typeof Template === 'function' );
-assert( typeof regexMap !== 'undefined' );
 
 function split( code, callback ) {
 
