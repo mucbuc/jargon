@@ -12,17 +12,20 @@ assert( typeof Scoper !== 'undefined' );
 
 function Template() {
 
-  this.process = ( request, cb ) => {
-    
-    assert( request.hasOwnProperty('resetStash') );
+  this.register = (emitter, callback) => {
 
-    const rules = { 'open': '<', 'close': '>' }
-      , sub = new events.EventEmitter
-      , scoper = new Scoper( rules ); 
+    emitter.on( 'open template', request => {
+      assert( request.hasOwnProperty('resetStash') );
+      const rules = { 'open': '<', 'close': '>' }
+        , sub = new events.EventEmitter
+        , scoper = new Scoper( rules ); 
 
-    scoper.process( request, (type, content) => {
-      cb( request.lhs + rules.open + content.trim() + rules.close );
-    }); 
+      scoper.process( request, (type, content) => {
+        callback( 'template parameters', request.lhs + rules.open + content.trim() + rules.close );
+      }); 
+    });
+
+    return { 'open template': '<', };
   };
 }
 

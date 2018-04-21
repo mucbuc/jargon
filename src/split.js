@@ -66,12 +66,8 @@ function split( code, callback ) {
     declare( request );
   });
 
-  emitter.on( 'open template', request => {
-    templater.process( request, templateParams => {
-      callback( 'template parameters', templateParams );
-    });
-  });
-
+  rules = Object.assign( {}, rules, templater.register( emitter, callback ) );
+  
   fluke.splitAll( code, ( type, request ) => {
       emitter.emit( type, request );
     }
