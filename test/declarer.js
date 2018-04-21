@@ -7,7 +7,7 @@ var assert = require( 'assert' )
   , test = tapeWrapper.test
   , splitjs = require( './../src/split' ); 
 
-test.only( 'declareType', t => {
+test( 'declareType', t => {
   let e = setUp(t)
     .expectNot( 'define type' )
     .expect( 'declare type' );
@@ -18,9 +18,7 @@ test.only( 'declareType', t => {
 test( 'declareFunction', t => {
   let e = setUp(t)
     .expectNot( 'define function' )
-    .expect( 'statement' )
-    .expect( 'declare function', 'void foo()' )
-    .expect( 'end' );
+    .expect( 'declare function', 'void foo()' );
   split( 'void foo();', e );
   tearDown(e);
 });
@@ -28,9 +26,7 @@ test( 'declareFunction', t => {
 test( 'declareConstFunction', t => {
   let e = setUp(t)
     .expectNot( 'define function' )
-    .expect( 'statement' )
-    .expect( 'declare function', 'void foo() const' )
-    .expect( 'end' );
+    .expect( 'declare function', 'void foo() const' );
   split( 'void foo() const;', e );
   tearDown(e);
 });
@@ -38,9 +34,7 @@ test( 'declareConstFunction', t => {
 test( 'declareNot1', t => {
   let e = setUp(t)
     .expectNot( 'declare function' )
-    .expect( 'statement' )
-    .expect( 'code line' )
-    .expect( 'end' );
+    .expect( 'code line' );
   split( 'bla bla;', e );
   tearDown(e);
 });
@@ -48,9 +42,7 @@ test( 'declareNot1', t => {
 test( 'declareNot2', t => {
   let e = setUp(t)
     .expectNot( 'declare function' )
-    .expect( 'statement' )
-    .expect( 'code line' )
-    .expect( 'end' );
+    .expect( 'code line' );
   
   split( 'bla += bla();', e );
   tearDown(e);
