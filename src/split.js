@@ -24,7 +24,6 @@ assert( typeof regexMap !== 'undefined' );
 function split( code, callback ) {
 
   let rules = {
-        'open template': '<',
         'statement': ';',
         'open': '{',
         'format': '^(\\s|\\t\\n)'
