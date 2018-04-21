@@ -8,15 +8,32 @@
 
 const assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap
-  , fluke = require( 'flukejs' );
+  , fluke = require( 'flukejs' )
+  , Formatter = require( './formatter' );
 
 function Declarer() {
 
   this.register = (emitter, callback) => {
+
+    emitter.on( 'statement', request => {
+      declare( request );
+    });  
+
+    emitter.on( 'end', request => {
+      declare( request );
+    });
+
+    function declare( request ) {
+      process( request, ( event, obj ) => {
+        let formatter = new Formatter();
+        formatter.forward(event, obj, callback);
+      });
+    }
+
     return { 'statement': ';' };
   };
 
-  this.process = (request, cb) => {
+  function process(request, cb) {
 
     fluke.splitAll( request.lhs, (type, req) => {
         if (isType(req.lhs)) {

@@ -1,22 +1,16 @@
 #!/usr/bin/env node
 
 var assert = require( 'assert' )
-  , Scoper = require( '../src/scoper' )
-  , Declarer = require( '../src/declarer' )
-  , fluke = require( 'flukejs' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
-  , test = tapeWrapper.test; 
+  , test = tapeWrapper.test
+  , splitjs = require( './../src/split' ); 
 
-assert( typeof Declarer === 'function' );
-
-test( 'declareType', t => {
+test.only( 'declareType', t => {
   let e = setUp(t)
     .expectNot( 'define type' )
-    .expect( 'statement' )
-    .expect( 'declare type' )
-    .expect( 'end' );
+    .expect( 'declare type' );
   split( 'struct bla;', e );
   tearDown(e);
 });
@@ -63,28 +57,8 @@ test( 'declareNot2', t => {
 });
 
 function split( code, emitter ) {
-  var rules = {
-      'statement': ';',
-      'open': '{'
-    }
-    , tokenizer = new Scoper( emitter, rules )
-    , declarer = new Declarer();
-    
-  fluke.splitAll( code, ( type, req ) => {
-      emitter.emit( type, req );
-      if (type === 'statement') {
-        process( req );
-      }
-      else if (type === 'end') {
-        process( req );
-      }
-
-      function process( req ) { 
-        declarer.process( req, ( type, val ) => {
-          emitter.emit( type, val );
-        });
-      }
-    }
-    , rules ); 
+  splitjs(code, (type, value) => {
+    emitter.emit( type, value );
+  });
 }
 

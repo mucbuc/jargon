@@ -58,15 +58,6 @@ function split( code, callback ) {
   });
 
   rules = Object.assign( {}, rules, declarer.register(emitter, callback) );
-
-  emitter.on( 'statement', request => {
-    declare( request );
-  });  
-
-  emitter.on( 'end', request => {
-    declare( request );
-  });
-
   rules = Object.assign( {}, rules, templater.register( emitter, callback ) );
   
   fluke.splitAll( code, ( type, request ) => {
@@ -74,14 +65,6 @@ function split( code, callback ) {
     }
   , rules );
   
-  function declare( req ) {
-    
-    declarer.process( req, ( event, obj ) => {
-      let formatter = new Formatter();
-      formatter.forward(event, obj, callback);
-    });
-  }
-
   function forwardContent( event ) {
     emitter.on( event, obj => {
       emitter.once( 'close', content => {
