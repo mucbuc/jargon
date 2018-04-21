@@ -56,7 +56,7 @@ test( 'defineType', t =>  {
   tearDown(emitter);
 });
 
-test.only( 'defineSubType', t =>  {
+test( 'defineSubType', t =>  {
   let emitter = setUp(t);
   emitter
     .expect( 'define type', { name: 'struct cya ', meta: ' blu ', code: ' yes ' } );
@@ -65,20 +65,17 @@ test.only( 'defineSubType', t =>  {
   tearDown(emitter);
 });
 
-/*test( 'defineFunction', t =>  {
+test.only( 'defineFunction', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
     .expectNot( 'define type' )
-    .expect( 'open' )
-    .expect( 'define function', { name: 'void foo() ' } );
-
-  expectScopeTrail( emitter );
+    .expect( 'define function', { name: 'void foo() ', code: ' do something ' } );
 
   split( 'void foo() { do something }', emitter );
   tearDown(emitter);
 } );
-
+/*
 test ( 'dontDefineFunctionOnIf', t =>  {
   let emitter = setUp(t);
   emitter
