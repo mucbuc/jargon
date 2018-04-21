@@ -33,6 +33,9 @@ function split( code, callback ) {
   mergeRules( literalizer.register(emitter, callback) );
   mergeRules( commenter.register(emitter, callback) );
   mergeRules( preprocessor.register(emitter, callback) );
+  mergeRules( definer.register(emitter, callback) );
+  mergeRules( declarer.register(emitter, callback) );
+  mergeRules( templater.register( emitter, callback ) );
 
   forwardContent( 'define type' );
   forwardContent( 'define function' );
@@ -41,10 +44,6 @@ function split( code, callback ) {
   emitter.on( 'format', ( request ) => {
     callback( 'format', request.token ); 
   });
-
-  mergeRules( definer.register(emitter, callback) );
-  mergeRules( declarer.register(emitter, callback) );
-  mergeRules( templater.register( emitter, callback ) );
   
   fluke.splitAll( code, ( type, request ) => {
       emitter.emit( type, request );
@@ -59,8 +58,7 @@ function split( code, callback ) {
     emitter.on( event, obj => {
       emitter.once( 'close', content => {
         obj.code = content;
-        let formatter = new Formatter();
-        formatter.forward(event, obj, callback);
+        callback( event, obj );
       });
     });
   }
