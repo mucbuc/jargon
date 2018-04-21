@@ -16,13 +16,7 @@ function Declarer() {
         else if (req.lhs.length || req.stash.length) {
           const block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
           assert( typeof block !== 'undefined' );
-
-          if (!block.match( /\S/ )) {
-            cb( 'format', block );
-          }
-          else {
-            cb( 'code line', block );
-          }
+          cb( !isSpace(block) ? 'code line' : 'format', block );
         }
 
         function isFunctionDeclaration(code) {
@@ -32,6 +26,11 @@ function Declarer() {
         function isType(code) {
           return code.search( regexMap.typeDeclare ) != -1;
         }
+
+        function isSpace(code) {
+          return code.match( /\S/ ) ? false : true; 
+        }
+
       }, { 
         'statement': ';'
       } 
