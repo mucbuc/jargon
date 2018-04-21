@@ -65,7 +65,7 @@ test( 'defineSubType', t =>  {
   tearDown(emitter);
 });
 
-test.only( 'defineFunction', t =>  {
+test( 'defineFunction', t =>  {
   let emitter = setUp(t);
   emitter
     .expectNot( 'define namespace' )
@@ -75,26 +75,20 @@ test.only( 'defineFunction', t =>  {
   split( 'void foo() { do something }', emitter );
   tearDown(emitter);
 } );
-/*
+
 test ( 'dontDefineFunctionOnIf', t =>  {
   let emitter = setUp(t);
-  emitter
-    .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'close' )
-    .expect( 'end' );
+  emitter.expectNot( 'define function' );
 
   split( 'if(hello){what up now;}', emitter );
   tearDown(emitter);
 }); 
 
+
 test ( 'dontDefineFunctionOnSwitch', t =>  {
   let emitter = setUp(t);
   emitter
-    .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'close' )
-    .expect( 'end' );
+    .expectNot( 'define function' );
 
   split( 'switch(hello){case "what":}', emitter );
   tearDown(emitter);
@@ -103,10 +97,7 @@ test ( 'dontDefineFunctionOnSwitch', t =>  {
 test ( 'dontDefineFunctionOnFor', t =>  {
   let emitter = setUp(t);
   emitter
-    .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'close' )
-    .expect( 'end' );
+    .expectNot( 'define function' );
 
   split( 'for(hello, bye){case "what":}', emitter );
   tearDown(emitter);
@@ -115,10 +106,7 @@ test ( 'dontDefineFunctionOnFor', t =>  {
 test ( 'dontDefineFunctionOnWhile', t =>  {
   let emitter = setUp(t);
   emitter
-    .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'close' )
-    .expect( 'end' );
+    .expectNot( 'define function' );
 
   split( 'while(hello, bye){case "what":}', emitter );
   tearDown(emitter);
@@ -127,15 +115,13 @@ test ( 'dontDefineFunctionOnWhile', t =>  {
 test ( 'dontDefineFunctionOnDo', t =>  {
   let emitter = setUp(t);
   emitter
-    .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'close' )
-    .expect( 'end' );
+    .expectNot( 'define function' );
 
   split( 'do(hello, bye){case "what":}', emitter );
   tearDown(emitter);
 });
 
+/*
 test( 'defineMemberFunction', t =>  {
   let emitter = setUp(t);
   emitter
