@@ -14,16 +14,6 @@ function Formatter() {
       }
     }
     cb( event, info );
-    
-    // else if (info.hasOwnProperty( 'name'))
-    // {
-    //   if (match(info.name)) {
-    //     return;
-    //   }
-    //   cb( event, info.name );
-    //   return;
-    // }
-    //
 
     function match( content ) {
       assert(typeof content === 'string');
