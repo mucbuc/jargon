@@ -72,28 +72,11 @@ function split( code, callback ) {
     }
   , rules );
   
-  function format(event, obj) {
-
-    switch (event) {
-      case 'code line':
-        if (!obj.match( /\S/ )) {
-          callback( 'format', obj );
-        }
-        else {
-          callback( 'code line', obj + ';' );
-        }
-        break;
-      default:
-        let formatter = new Formatter();
-        formatter.forward(event, obj, callback);
-      break;
-    }
-  }
-
   function declare( req ) {
     let declarer = new Declarer();
     declarer.process( req, ( event, obj ) => {
-      format(event, obj );
+      let formatter = new Formatter();
+      formatter.forward(event, obj, callback);
     });
   }
 
@@ -101,7 +84,8 @@ function split( code, callback ) {
     emitter.on( event, obj => {
       emitter.once( 'close', content => {
         obj.code = content;
-        format(event, obj);
+        let formatter = new Formatter();
+        formatter.forward(event, obj, callback);
       });
     });
   }

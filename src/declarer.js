@@ -16,7 +16,13 @@ function Declarer() {
         else if (req.lhs.length || req.stash.length) {
           const block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
           assert( typeof block !== 'undefined' );
-          cb( 'code line', block );
+
+          if (!block.match( /\S/ )) {
+            cb( 'format', block );
+          }
+          else {
+            cb( 'code line', block );
+          }
         }
 
         function isFunctionDeclaration(code) {
