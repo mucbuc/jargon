@@ -9,7 +9,7 @@
 const assert = require( 'assert' )
   , regexMap = require( './regexmap' ).regexMap
   , fluke = require( 'flukejs' )
-  , Formatter = require( './formatter' );
+  , format = require( './formatter' );
 
 function Declarer(emitter, callback) {
 
@@ -25,8 +25,7 @@ function Declarer(emitter, callback) {
 
   function declare( request ) {
     process( request, ( event, obj ) => {
-      let formatter = new Formatter();
-      formatter.forward(event, obj, callback);
+      format(event, obj, callback);
     });
   }
 };

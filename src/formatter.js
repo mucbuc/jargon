@@ -4,38 +4,31 @@ const assert = require( 'assert' )
   , util = require( 'util' )
   , events = require( 'events' );
 
-function Formatter() {
+function format(event, info, cb) {
+
+  if (typeof info === 'string') {
+    if (match( info )) {
+      return;
+    }
+  }
+  cb( event, info );
+
+  function match( content ) {
+    assert(typeof content === 'string');
   
-  this.forward = (event, info, cb) => {
-
-    if (typeof info === 'string') {
-      if (match( info )) {
-        return;
+    let matches = content.match( /^(\s*)(.*?)(\s*)$/m );
+    if (matches) {
+      if (matches[1].length) {
+        cb( 'format', matches[1] );
       }
-    }
-    cb( event, info );
-
-    function match( content ) {
-      assert(typeof content === 'string');
-    
-      let matches = content.match( /^(\s*)(.*?)(\s*)$/m );
-      if (matches) {
-        if (matches[1].length) {
-          cb( 'format', matches[1] );
-        }
-        cb( event, matches[2] );
-        if (matches[3].length) {
-          cb( 'format', matches[3] ); 
-        }
-        return true;
+      cb( event, matches[2] );
+      if (matches[3].length) {
+        cb( 'format', matches[3] ); 
       }
-      return false;
+      return true;
     }
-
-  };
-
+    return false;
+  }
 };
 
-util.inherits( Formatter, events.EventEmitter );
-
-module.exports = Formatter; 
+module.exports = format; 
