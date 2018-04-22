@@ -6,11 +6,12 @@ const assert = require( 'assert' )
 
 function format(event, info, cb) {
 
-  if (typeof info === 'string') {
-    if (match( info )) {
-      return;
-    }
+  assert (typeof info === 'string');
+
+  if (match( info )) {
+    return;
   }
+  
   cb( event, info );
 
   function match( content ) {
