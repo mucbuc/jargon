@@ -6,7 +6,7 @@ var assert = require( 'chai' ).assert
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
-  , splitjs = require( './../src/split' );
+  , split = require( './base' ).split; 
 
 test( 'commenterSingleLine', t => {
   let emitter = 
@@ -49,9 +49,3 @@ test( 'commentBlockWithConent', t => {
   split( '/*\nhello*/', emitter );
   tearDown(emitter);
 });
-
-function split( code, emitter ) {
-  splitjs(code, (type, value) => {
-    emitter.emit( type, value );
-  });
-}

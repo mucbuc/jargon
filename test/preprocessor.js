@@ -8,7 +8,7 @@ var assert = require( 'chai' ).assert
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
-  , splitjs = require( './../src/split' );
+  , split = require( './base' ).split; 
 
 test( 'preprocessorSingleLine', t => {
   let emitter = 
@@ -34,9 +34,3 @@ test( 'preprocessorMultiLine', t => {
   split( '#define hello hello\\\nhello\n', emitter);
   tearDown(emitter);
 });
-
-function split( code, emitter ) {
-  splitjs(code, (type, value) => {
-    emitter.emit( type, value );
-  });
-}

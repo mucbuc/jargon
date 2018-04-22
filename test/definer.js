@@ -7,7 +7,7 @@ var assert = require( 'assert' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
-  , splitjs = require( './../src/split' );
+  , split = require( './base' ).split; 
 
 test( 'defineNamespace', t =>  {
   let emitter = setUp(t);
@@ -184,9 +184,3 @@ test( 'defineNamespaceWithWhite', t => {
 
   tearDown(emitter);
 });
-
-function split( code, emitter ) {
-  splitjs(code, (type, value) => {
-    emitter.emit( type, value );
-  });
-}

@@ -8,7 +8,7 @@ var assert = require( 'assert' )
   , setUpU = tapeWrapper.setUpU
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
-  , splitjs = require( './../src/split' ); 
+  , split = require( './base' ).split; 
 
 test( 'singleParameter', t => {
 
@@ -46,9 +46,3 @@ test( 'templateNestedParameters', t => {
 
   tearDown(emitter);
 });
-
-function split( code, emitter ) {
-  splitjs(code, (type, value) => {
-    emitter.emit( type, value );
-  });
-}

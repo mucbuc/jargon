@@ -5,7 +5,7 @@ var assert = require( 'assert' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
-  , splitjs = require( './../src/split' ); 
+  , split = require( './base' ).split; 
 
 test( 'declareType', t => {
   let e = setUp(t)
@@ -48,10 +48,3 @@ test( 'declareNot2', t => {
   split( 'bla += bla();', e );
   tearDown(e);
 });
-
-function split( code, emitter ) {
-  splitjs(code, (type, value) => {
-    emitter.emit( type, value );
-  });
-}
-

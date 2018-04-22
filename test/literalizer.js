@@ -5,9 +5,7 @@ var assert = require( 'assert' )
   , setUpU = tapeWrapper.setUpU
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
-  , splitjs = require( './../src/split' );
-
-assert( typeof splitjs === 'function' );
+  , split = require( './base' ).split; 
 
 test( 'stringLiteral', t => {
   let e = setUpU(t)
@@ -26,9 +24,3 @@ test( 'stringLiteralWithQutationMarks', t => {
   split( '"struct hel/"lo;"', e );
   tearDown(e);
 });
-
-function split( code, emitter ) {
-  splitjs(code, (type, value) => {
-    emitter.emit( type, value );
-  });
-}
