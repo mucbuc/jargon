@@ -10,23 +10,19 @@ var assert = require( 'assert' )
 
 assert( typeof Scoper !== 'undefined' );
 
-function Template() {
+function Template(emitter, callback) {
+  emitter.on( 'open template', request => {
+    assert( request.hasOwnProperty('resetStash') );
+    const rules = { 'open': '<', 'close': '>' }
+      , sub = new events.EventEmitter
+      , scoper = new Scoper( rules ); 
 
-  this.register = (emitter, callback) => {
+    scoper.process( request, (type, content) => {
+      callback( 'template parameters', request.lhs + rules.open + content.trim() + rules.close );
+    }); 
+  });
 
-    emitter.on( 'open template', request => {
-      assert( request.hasOwnProperty('resetStash') );
-      const rules = { 'open': '<', 'close': '>' }
-        , sub = new events.EventEmitter
-        , scoper = new Scoper( rules ); 
-
-      scoper.process( request, (type, content) => {
-        callback( 'template parameters', request.lhs + rules.open + content.trim() + rules.close );
-      }); 
-    });
-
-    return { 'open template': '<', };
-  };
+  return { 'open template': '<', };
 }
 
 module.exports = Template;
