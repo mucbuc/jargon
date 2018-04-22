@@ -4,24 +4,13 @@ var assert = require( 'chai' ).assert
   , Commenter = require( './commenter' )
   , Declarer = require( './declarer' )
   , Definer = require( './definer' )
-  , Formatter = require( './formatter' )
   , Literalizer = require( './literalizer' )
   , Preprocessor = require( './preprocessor' )
   , Template = require( './template');
 
-assert( typeof Commenter === 'function' );
-assert( typeof Declarer === 'function' );
-assert( typeof Definer === 'function' );
-assert( typeof Formatter === 'function' );
-assert( typeof Literalizer === 'function' );
-assert( typeof Preprocessor === 'function' );
-assert( typeof Template === 'function' );
-
 function split( code, callback ) {
 
-  let rules = {
-        'format': '^(\\s|\\t\\n)'
-      }
+  let rules = { format: '^(\\s|\\t\\n)' }
     , emitter = new events.EventEmitter();
 
   mergeRules( Literalizer(emitter, callback) );
