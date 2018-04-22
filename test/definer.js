@@ -2,15 +2,12 @@
 
 var assert = require( 'assert' )
   , Scoper = require( '../src/scoper' )
-  , Definer = require( '../src/definer' )
   , fluke = require( 'flukejs' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
   , splitjs = require( './../src/split' );
-
-assert( typeof Definer === 'function' );
 
 test( 'defineNamespace', t =>  {
   let emitter = setUp(t);
