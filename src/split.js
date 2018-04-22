@@ -23,10 +23,9 @@ function split( code, callback ) {
         'format': '^(\\s|\\t\\n)'
       }
     , emitter = new events.EventEmitter()
-    , literalizer = new Literalizer()
     , templater = new Template();
 
-  mergeRules( literalizer.register(emitter, callback) );
+  mergeRules( Literalizer(emitter, callback) );
   mergeRules( Commenter(emitter, callback) );
   mergeRules( Preprocessor(emitter, callback) );
   mergeRules( Definer(emitter, callback) );
