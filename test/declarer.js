@@ -27,6 +27,7 @@ test( 'declareConstFunction', t => {
   let e = setUp(t)
     .expectNot( 'define function' )
     .expect( 'declare function', 'void foo() const' );
+
   split( 'void foo() const;', e );
   tearDown(e);
 });

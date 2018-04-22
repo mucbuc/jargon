@@ -147,6 +147,21 @@ test( 'defineConstructFunction', t =>  {
   tearDown(emitter);
 });
 
+test( 'defineConstructFunction', t =>  {
+  let emitter = setUp(t);
+  emitter
+    .expectNot( 'define namespace' )
+    .expectNot( 'define type' )
+    .expect( 'define function', {
+      name: 'hello::hello()',
+      meta: ' base() ',
+      code: 'bla bla'
+  } );
+
+  split( 'hello::hello() : base() {bla bla}', emitter );
+  tearDown(emitter);
+});
+
 test( 'defineEmptyNamespace', t => {
   let emitter = setUp(t);
   emitter
