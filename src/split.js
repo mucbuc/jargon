@@ -24,14 +24,13 @@ function split( code, callback ) {
       }
     , emitter = new events.EventEmitter()
     , literalizer = new Literalizer()
-    , commenter = new Commenter()
     , templater = new Template()
     , preprocessor = new Preprocessor()
     , declarer = new Declarer()
     , definer = new Definer();
 
   mergeRules( literalizer.register(emitter, callback) );
-  mergeRules( commenter.register(emitter, callback) );
+  mergeRules( Commenter(emitter, callback) );
   mergeRules( preprocessor.register(emitter, callback) );
   mergeRules( definer.register(emitter, callback) );
   mergeRules( declarer.register(emitter, callback) );

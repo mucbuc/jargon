@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 
 var assert = require( 'chai' ).assert
-  , Commenter = require( '../src/commenter' )
   , fluke = require( 'flukejs' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
   , splitjs = require( './../src/split' );
-
-assert( typeof Commenter === 'function' );
 
 test( 'commenterSingleLine', t => {
   let emitter = 

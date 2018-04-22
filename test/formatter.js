@@ -18,7 +18,6 @@ test( 'headingSpaces', t => {
   emitter
     .expect( 'format', '\t \t \n ' )
     .expect( 'ere', 'hello' );
-    //.expect( 'end' );
 
   formatter.forward( 'ere', '\t \t \n hello', (event, code) => {
     emitter.emit( event, code ); 
@@ -35,7 +34,6 @@ test( 'trailingSpaces', t => {
   emitter
     .expect( 'ere', 'hello' )
     .expect( 'format', '\t \t' );
-    //.expect( 'end' );
     
   formatter.forward( 'ere', 'hello\t \t', (event, code) => {
     emitter.emit( event, code ); 
