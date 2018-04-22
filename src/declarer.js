@@ -34,7 +34,13 @@ function Declarer(emitter, callback) {
       else if (req.lhs.length || req.stash.length) {
         const block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
         assert( typeof block !== 'undefined' );
-        format( !isSpace(block) ? 'code line' : 'format', block, callback );
+        
+        if (isSpace(block)) {
+          callback( 'format', block, callback );
+        }
+        else {
+          format( 'code line', block, callback );
+        }
       }
 
     }, { 
