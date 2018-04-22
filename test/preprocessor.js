@@ -3,15 +3,12 @@
 var assert = require( 'chai' ).assert
   , events = require( 'events' )
   , Scoper = require( '../src/scoper' )
-  , Preprocessor = require( '../src/preprocessor' )
   , fluke = require( 'flukejs' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
   , test = tapeWrapper.test
   , splitjs = require( './../src/split' );
-
-assert( typeof Preprocessor !== 'undefined' );
 
 test( 'preprocessorSingleLine', t => {
   let emitter = 
