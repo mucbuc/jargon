@@ -24,32 +24,24 @@ function Declarer(emitter, callback) {
   return { 'statement': ';' };
 
   function declare( request ) {
-    process( request, ( event, obj ) => {
-      format(event, obj, callback);
-    });
-  }
-};
-
-function process(request, cb) {
-
-  fluke.splitAll( request.lhs, (type, req) => {
+    fluke.splitAll( request.lhs, (type, req) => {
       if (isType(req.lhs)) {
-        cb( 'declare type', req.lhs );
+        format( 'declare type', req.lhs, callback );
       }
       else if (isFunctionDeclaration(req.lhs)) {
-        cb( 'declare function', req.lhs );
+        format( 'declare function', req.lhs, callback );
       }
       else if (req.lhs.length || req.stash.length) {
         const block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
         assert( typeof block !== 'undefined' );
-        cb( !isSpace(block) ? 'code line' : 'format', block );
+        format( !isSpace(block) ? 'code line' : 'format', block, callback );
       }
 
     }, { 
       'statement': ';'
-    } 
-  );
-};
+    });
+  }
+}
 
 function isFunctionDeclaration(code) {
   return code.search( regexMap.functionDeclare ) == 0;
