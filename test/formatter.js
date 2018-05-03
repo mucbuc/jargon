@@ -1,40 +1,34 @@
 #!/usr/bin/env node
 
-var assert = require( 'assert' )
-  , format = require( '../src/formatter.js' )
-  , tapeWrapper = require( './tape-wrapper' )
-  , setUp = tapeWrapper.setUp
-  , tearDown = tapeWrapper.tearDown
-  , test = tapeWrapper.test;
+var assert = require("assert"),
+  format = require("../src/formatter.js"),
+  tapeWrapper = require("./tape-wrapper"),
+  setUp = tapeWrapper.setUp,
+  tearDown = tapeWrapper.tearDown,
+  test = tapeWrapper.test;
 
-assert( typeof format === 'function' );
+assert(typeof format === "function");
 
-test( 'headingSpaces', t => {
-    
-  let emitter = setUp( t );
+test("headingSpaces", t => {
+  let emitter = setUp(t);
 
-  emitter
-    .expect( 'format', '\t \t \n ' )
-    .expect( 'ere', 'hello' );
+  emitter.expect("format", "\t \t \n ").expect("ere", "hello");
 
-  format( 'ere', '\t \t \n hello', (event, code) => {
-    emitter.emit( event, code ); 
-  } );
+  format("ere", "\t \t \n hello", (event, code) => {
+    emitter.emit(event, code);
+  });
 
-  tearDown( emitter );
-} );
+  tearDown(emitter);
+});
 
-test( 'trailingSpaces', t => {
+test("trailingSpaces", t => {
+  let emitter = setUp(t);
 
-  let emitter = setUp( t );
+  emitter.expect("ere", "hello").expect("format", "\t \t");
 
-  emitter
-    .expect( 'ere', 'hello' )
-    .expect( 'format', '\t \t' );
-    
-  format( 'ere', 'hello\t \t', (event, code) => {
-    emitter.emit( event, code ); 
-  } );
+  format("ere", "hello\t \t", (event, code) => {
+    emitter.emit(event, code);
+  });
 
-  tearDown( emitter );
+  tearDown(emitter);
 });

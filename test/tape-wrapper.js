@@ -1,13 +1,13 @@
-let SeqExpector = require( 'expector' ).SeqExpector
-  , Expector = require( 'expector' ).Expector
-  , test = require( 'tape' );
+let SeqExpector = require("expector").SeqExpector,
+  Expector = require("expector").Expector,
+  test = require("tape");
 
 function setUp(t) {
-  return new SeqExpector(t); 
+  return new SeqExpector(t);
 }
 
 function setUpU(t) {
-  return new Expector(t); 
+  return new Expector(t);
 }
 
 function tearDown(fixture) {
@@ -15,8 +15,8 @@ function tearDown(fixture) {
 }
 
 module.exports = {
-	setUp,
-	setUpU,
-	test, 
-	tearDown
-}
+  setUp,
+  setUpU,
+  test,
+  tearDown
+};
