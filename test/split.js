@@ -5,13 +5,11 @@
 var assert = require( 'chai' ).assert
   , fs = require( 'fs' )
   , path = require( 'path' )
-  , jargonSplit = require( '../src/split' )
   , tapeWrapper = require( './tape-wrapper' )
   , setUp = tapeWrapper.setUp
   , tearDown = tapeWrapper.tearDown
-  , test = tapeWrapper.test;
-
-assert( typeof jargonSplit === 'function' );
+  , test = tapeWrapper.test
+  , split = require( './base' ).split;
 
 test( 'commentBlockPreprocessor', t => {
   let e = setUp( t );
@@ -264,10 +262,4 @@ test( 'defineTypeAfterDeclareType', t => {
 
 function readSamplesFile( name ) {
   return fs.readFileSync( path.join( __dirname, 'samples', name ), 'utf8' );
-}
-
-function split( code, emitter ) {
-  jargonSplit( code, ( event, obj ) => { 
-    emitter.emit(event, obj);
-  });
 }
