@@ -28,3 +28,7 @@ Enforce coding guidelins, move literals to the top of file, linter, reorganize c
 'preprocess'  
 'statement'  
 'template parameters'  
+
+### To automate:
+`jshint src/split.js -c conf.json`  
+`prettier --write "{src,test}/**/*.js"`  
