@@ -2,7 +2,7 @@
 
 "use strict";
 
-var assert = require("chai").assert,
+var assert = require("assert"),
   fs = require("fs"),
   path = require("path"),
   tapeWrapper = require("./tape-wrapper"),

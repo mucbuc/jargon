@@ -10,7 +10,6 @@
     "url": "git://github.com/mucbuc/jargon"
   },
   "dependencies": {
-    "chai": "*",
     "tape": "*",
     "flukejs": "*", 
     "expector": "*"

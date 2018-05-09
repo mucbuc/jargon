@@ -1,4 +1,4 @@
-var assert = require("chai").assert,
+var assert = require("assert"),
   fluke = require("flukejs"),
   events = require("events"),
   Commenter = require("./commenter"),
