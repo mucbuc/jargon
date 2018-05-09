@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var assert = require("assert"),
-  format = require("../src/formatter.js"),
+  format = require("../../src/formatter.js"),
   tapeWrapper = require("./tape-wrapper"),
   setUp = tapeWrapper.setUp,
   tearDown = tapeWrapper.tearDown,

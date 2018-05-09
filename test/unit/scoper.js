@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var assert = require("assert"),
-  Scoper = require("../src/scoper"),
+  Scoper = require("../../src/scoper"),
   fluke = require("flukejs"),
   tapeWrapper = require("./tape-wrapper"),
   setUp = tapeWrapper.setUp,

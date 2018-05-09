@@ -1,4 +1,4 @@
-let splitjs = require("./../src/split");
+let splitjs = require("./../../src/split");
 
 function split(code, emitter) {
   splitjs(code, (type, value) => {

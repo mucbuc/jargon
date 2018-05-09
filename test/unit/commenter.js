@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-var assert = require("chai").assert,
-  fluke = require("flukejs"),
+let fluke = require("flukejs"),
   tapeWrapper = require("./tape-wrapper"),
   setUp = tapeWrapper.setUp,
   tearDown = tapeWrapper.tearDown,
