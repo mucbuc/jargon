@@ -5,7 +5,7 @@ var assert = require("assert"),
   setUp = tapeWrapper.setUp,
   tearDown = tapeWrapper.tearDown,
   test = tapeWrapper.test,
-  split = require("./base").split;
+  split = require("../base").split;
 
 test("declareType", t => {
   let e = setUp(t)

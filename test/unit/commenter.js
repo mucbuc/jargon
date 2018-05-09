@@ -5,7 +5,7 @@ let fluke = require("flukejs"),
   setUp = tapeWrapper.setUp,
   tearDown = tapeWrapper.tearDown,
   test = tapeWrapper.test,
-  split = require("./base").split;
+  split = require("../base").split;
 
 test("commenterSingleLine", t => {
   let emitter = setUp(t).expect("comment", "// hello");

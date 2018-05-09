@@ -6,7 +6,7 @@ var assert = require("assert"),
   setUpU = tapeWrapper.setUpU,
   tearDown = tapeWrapper.tearDown,
   test = tapeWrapper.test,
-  split = require("./base").split;
+  split = require("../base").split;
 
 test("singleParameter", t => {
   let emitter = setUpU(t);

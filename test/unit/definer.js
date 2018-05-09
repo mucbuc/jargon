@@ -6,7 +6,7 @@ var assert = require("assert"),
   setUp = tapeWrapper.setUp,
   tearDown = tapeWrapper.tearDown,
   test = tapeWrapper.test,
-  split = require("./base").split;
+  split = require("../base").split;
 
 test("defineNamespace", t => {
   let emitter = setUp(t);
