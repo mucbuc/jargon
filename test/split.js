@@ -37,7 +37,7 @@ test("readSampleFileTemplate", t => {
 
   e.expect("template parameters").expect("declare function");
 
-  split(readSamplesFile("template.h"), e);
+  split(`template<class T>void foo(T);`, e);
   tearDown(e);
 });
 
@@ -78,7 +78,38 @@ test("readSampleFile", t => {
     .expect("preprocess")
     .expect("comment");
 
-  split(readSamplesFile("test.h"), e);
+  const source = `#define INCLUDE_GUARD
+class hello;
+void hello();
+int good;
+struct hello
+{
+	int hello;
+	void bye();
+};
+
+void hello() 
+{
+
+}
+
+#pragma lj alsdkf
+
+namespace hello 
+{
+	fdsa;jlsjk
+	;kjdsafl;lj
+	;klj
+}
+
+/*
+
+
+*/
+
+#endif  // INCLUDE_GUARD`;
+
+  split(source, e);
   tearDown(e);
 });
 
@@ -270,7 +301,3 @@ test("defineTypeAfterDeclareType", t => {
   split("struct jimmy; struct hey { joe } ", e);
   tearDown(e);
 });
-
-function readSamplesFile(name) {
-  return fs.readFileSync(path.join(__dirname, "samples", name), "utf8");
-}
