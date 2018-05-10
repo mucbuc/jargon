@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var assert = require("assert"),
-  tapeWrapper = require("./tape-wrapper"),
+  tapeWrapper = require("../tape-wrapper"),
   setUp = tapeWrapper.setUp,
   tearDown = tapeWrapper.tearDown,
   test = tapeWrapper.test,

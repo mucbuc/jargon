@@ -2,7 +2,7 @@
 
 var assert = require("assert"),
   fluke = require("flukejs"),
-  tapeWrapper = require("./tape-wrapper"),
+  tapeWrapper = require("../tape-wrapper"),
   setUpU = tapeWrapper.setUpU,
   tearDown = tapeWrapper.tearDown,
   test = tapeWrapper.test,

@@ -3,7 +3,7 @@
 var assert = require("assert"),
   Scoper = require("../../src/scoper"),
   fluke = require("flukejs"),
-  tapeWrapper = require("./tape-wrapper"),
+  tapeWrapper = require("../tape-wrapper"),
   setUp = tapeWrapper.setUp,
   tearDown = tapeWrapper.tearDown,
   test = tapeWrapper.test;
