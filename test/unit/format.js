@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var assert = require("assert"),
-  format = require("../../src/formatter.js"),
+  format = require("../../src/format.js"),
   base = require("../base"),
   setUp = base.setUp,
   tearDown = base.tearDown,

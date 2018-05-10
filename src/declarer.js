@@ -9,7 +9,7 @@
 const assert = require("assert"),
   regexMap = require("./regexmap").regexMap,
   fluke = require("flukejs"),
-  format = require("./formatter");
+  format = require("./format");
 
 function Declarer(emitter, callback) {
   emitter.on("statement", request => {
