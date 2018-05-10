@@ -3,10 +3,10 @@
 var assert = require("assert"),
   Scoper = require("../../src/scoper"),
   fluke = require("flukejs"),
-  tapeWrapper = require("../tape-wrapper"),
-  setUp = tapeWrapper.setUp,
-  tearDown = tapeWrapper.tearDown,
-  test = tapeWrapper.test;
+  base = require("../base"),
+  setUp = base.setUp,
+  tearDown = base.tearDown,
+  test = base.test;
 
 assert(typeof Scoper === "function");
 

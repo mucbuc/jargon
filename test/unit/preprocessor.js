@@ -3,11 +3,11 @@
 var assert = require("assert"),
   events = require("events"),
   fluke = require("flukejs"),
-  tapeWrapper = require("../tape-wrapper"),
-  setUp = tapeWrapper.setUp,
-  tearDown = tapeWrapper.tearDown,
-  test = tapeWrapper.test,
-  split = require("../base").split;
+  base = require("../base"),
+  setUp = base.setUp,
+  tearDown = base.tearDown,
+  test = base.test,
+  split = base.split;
 
 test("preprocessorSingleLine", t => {
   let emitter = setUp(t).expect("preprocess", "#define hello hello\n");

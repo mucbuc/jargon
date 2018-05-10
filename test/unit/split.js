@@ -5,11 +5,11 @@
 var assert = require("assert"),
   fs = require("fs"),
   path = require("path"),
-  tapeWrapper = require("../tape-wrapper"),
-  setUp = tapeWrapper.setUp,
-  tearDown = tapeWrapper.tearDown,
-  test = tapeWrapper.test,
-  split = require("../base").split;
+  base = require("../base"),
+  setUp = base.setUp,
+  tearDown = base.tearDown,
+  test = base.test,
+  split = base.split;
 
 test("commentBlockPreprocessor", t => {
   let e = setUp(t);

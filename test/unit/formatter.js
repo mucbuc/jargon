@@ -2,11 +2,12 @@
 
 var assert = require("assert"),
   format = require("../../src/formatter.js"),
-  tapeWrapper = require("../tape-wrapper"),
-  setUp = tapeWrapper.setUp,
-  tearDown = tapeWrapper.tearDown,
-  test = tapeWrapper.test;
-
+  base = require("../base"),
+  setUp = base.setUp,
+  tearDown = base.tearDown,
+  test = base.test,
+  split = base.split;
+  
 assert(typeof format === "function");
 
 test("headingSpaces", t => {

@@ -2,11 +2,11 @@
 
 var assert = require("assert"),
   fluke = require("flukejs"),
-  tapeWrapper = require("../tape-wrapper"),
-  setUp = tapeWrapper.setUp,
-  tearDown = tapeWrapper.tearDown,
-  test = tapeWrapper.test,
-  split = require("../base").split;
+  base = require("../base"),
+  setUp = base.setUp,
+  tearDown = base.tearDown,
+  test = base.test,
+  split = base.split;
 
 test("defineNamespace", t => {
   let emitter = setUp(t);

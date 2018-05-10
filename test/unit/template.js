@@ -2,11 +2,11 @@
 
 var assert = require("assert"),
   fluke = require("flukejs"),
-  tapeWrapper = require("../tape-wrapper"),
-  setUpU = tapeWrapper.setUpU,
-  tearDown = tapeWrapper.tearDown,
-  test = tapeWrapper.test,
-  split = require("../base").split;
+  base = require("../base"),
+  setUpU = base.setUpU,
+  tearDown = base.tearDown,
+  test = base.test,
+  split = base.split;
 
 test("singleParameter", t => {
   let emitter = setUpU(t);
