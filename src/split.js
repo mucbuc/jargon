@@ -1,6 +1,7 @@
 var assert = require("assert"),
   fluke = require("flukejs"),
   events = require("events"),
+  Formatter = require("./formatter"),
   Commenter = require("./commenter"),
   Declarer = require("./declarer"),
   Definer = require("./definer"),
@@ -23,13 +24,7 @@ function split(code, callback) {
   forwardContent("define function");
   forwardContent("define namespace");
 
-  emitter.on("format", req => {
-    const format = req.rhs.match(/^(\s|\t|\n)*/m);
-    assert(format);
-    req.consume(format[0].length);
-
-    callback("format", format[0]);
-  });
+  Formatter(emitter, callback); 
 
   fluke.splitAll(
     code,
