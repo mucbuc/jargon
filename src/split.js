@@ -9,7 +9,7 @@ var assert = require("assert"),
   Template = require("./template");
 
 function split(code, callback) {
-  let rules = { format: "^(\\s|\\t\\n)" },
+  let rules = { format: "^(\\s|\\t|\\n)" },
     emitter = new events.EventEmitter();
 
   mergeRules(Literalizer(emitter, callback));
@@ -23,8 +23,12 @@ function split(code, callback) {
   forwardContent("define function");
   forwardContent("define namespace");
 
-  emitter.on("format", request => {
-    callback("format", request.token);
+  emitter.on("format", req => {
+    const format = req.rhs.match(/^(\s|\t|\n)*/m);
+    assert(format);
+    req.consume(format[0].length);
+
+    callback("format", format[0]);
   });
 
   fluke.splitAll(

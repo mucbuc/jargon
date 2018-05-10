@@ -57,12 +57,10 @@ test("readSampleFile", t => {
       code: "\n\tint hello;\n\tvoid bye();\n"
     })
     .expect("format")
-    .expect("format")
     .expect("define function", {
       name: "void hello() \n",
       code: "\n\n"
     })
-    .expect("format")
     .expect("format")
     .expect("preprocess")
     .expect("format")
@@ -71,9 +69,7 @@ test("readSampleFile", t => {
       code: "\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n"
     })
     .expect("format")
-    .expect("format")
     .expect("comment")
-    .expect("format")
     .expect("format")
     .expect("preprocess")
     .expect("comment");
