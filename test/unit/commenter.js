@@ -24,6 +24,21 @@ test("commenterSingleLine", t => {
   tearDown(emitter);
 });
 
+test("commenterSingleLineWithoutNewLine", t => {
+  let emitter = setUp(t).expect("comment");
+  split("// hello", emitter);
+  tearDown(emitter);
+});
+
+test("commenterTwoSingleLineWithoutNewLine", t => {
+  let emitter = setUp(t)
+    .expect("comment")
+    .expect("format")
+    .expect("comment");
+  split("// hello\n//hello", emitter);
+  tearDown(emitter);
+});
+
 test("commentBlockWithCommentLine", t => {
   let emitter = setUp(t)
     .expect("comment", "/*hello*/")
