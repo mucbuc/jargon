@@ -59,7 +59,7 @@ test("commentBlockWithNewLine", t => {
   tearDown(emitter);
 });
 
-test("commentBlockWithConent", t => {
+test("commentBlockWithContent", t => {
   let emitter = setUp(t).expect("comment", "/*\nhello*/");
   split("/*\nhello*/", emitter);
   tearDown(emitter);
