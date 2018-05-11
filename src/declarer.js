@@ -17,12 +17,17 @@ function Declarer(emitter, callback) {
   });
 
   emitter.on("end", request => {
-    declare(request);
+    if (request.hasOwnProperty('lhs'))
+    {
+      declare(request);
+    }
   });
 
   return { statement: ";" };
 
   function declare(request) {
+    assert(request.hasOwnProperty('lhs'));
+      
     fluke.splitAll(
       request.lhs,
       (type, req) => {

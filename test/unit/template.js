@@ -15,23 +15,23 @@ test("singleParameter", t => {
   .expect( 'template parameters', 'template<class A>' );
   split( 'template<class A>', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A>{', emitter );
+  emitter.expect( 'template parameters', 'template<class A>' );
+  split( 'template<class A>{', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A>;', emitter );
+  emitter.expect( 'template parameters', 'template<class A>' );
+  split( 'template<class A>;', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A> text text {', emitter );
+  emitter.expect( 'template parameters', 'template<class A>' );
+  split( 'template<class A> text text {', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A> text text;', emitter );
+  emitter.expect( 'template parameters', 'template<class A>' );
+  split( 'template<class A> text text;', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A> void text( A a ) {', emitter );
+  emitter.expect( 'template parameters', 'template<class A>' );
+  split( 'template<class A> void text( A a ) {', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A> void text( A a );', emitter );
+  emitter.expect( 'template parameters', 'template<class A>' );
+  split( 'template<class A> void text( A a );', emitter );
 
   tearDown(emitter);
 });
@@ -42,23 +42,23 @@ test("multipleParameters", t => {
   emitter.expect("template parameters", "template<class A, class B>");
   split("template< class A, class B>", emitter);
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B>;', emitter );
+  emitter.expect( 'template parameters', 'template<class A, class B>' );
+  split( 'template< class A, class B>;', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B>{', emitter );
+  emitter.expect( 'template parameters', 'template<class A, class B>' );
+  split( 'template< class A, class B>{', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B> text;', emitter );
+  emitter.expect( 'template parameters', 'template<class A, class B>' );
+  split( 'template< class A, class B> text;', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B> text{', emitter );
+  emitter.expect( 'template parameters', 'template<class A, class B>' );
+  split( 'template< class A, class B> text{', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B> void text( A a );', emitter );
+  emitter.expect( 'template parameters', 'template<class A, class B>' );
+  split( 'template< class A, class B> void text( A a );', emitter );
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B> void text( A a ) {', emitter );
+  emitter.expect( 'template parameters', 'template<class A, class B>' );
+  split( 'template< class A, class B> void text( A a ) {', emitter );
 
   tearDown(emitter);
 });
@@ -68,14 +68,14 @@ test("macroParameters", t => {
   emitter.expect("template parameters", "template<MACRO(), MACRO>");
   split("template< MACRO(), MACRO >", emitter);
 
-// emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
-// split( 'template< MACRO(), MACRO >;', emitter );
+  emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
+  split( 'template< MACRO(), MACRO >;', emitter );
 
-// emitter.expect( 'template parameters', 'template<MACRO(ARG), MACRO()>' );
-// split( 'template< MACRO(ARG), MACRO() >;', emitter );
+  emitter.expect( 'template parameters', 'template<MACRO(ARG), MACRO()>' );
+  split( 'template< MACRO(ARG), MACRO() >;', emitter );
 
-// emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
-// split( 'template< MACRO(), MACRO >;', emitter );
+  emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
+  split( 'template< MACRO(), MACRO >;', emitter );
 
   tearDown(emitter);
 });
