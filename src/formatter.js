@@ -8,6 +8,8 @@ function Formatter(emitter, callback) {
 
     callback("format", format[0]);
   });
+
+  return { format: "^(\\s|\\t|\\n)" };
 }
 
 module.exports = Formatter;

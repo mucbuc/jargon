@@ -10,7 +10,7 @@ var assert = require("assert"),
   Template = require("./template");
 
 function split(code, callback) {
-  let rules = { format: "^(\\s|\\t|\\n)" },
+  let rules = {},
     emitter = new events.EventEmitter();
 
   mergeRules(Literalizer(emitter, callback));
@@ -24,7 +24,7 @@ function split(code, callback) {
   forwardContent("define function");
   forwardContent("define namespace");
 
-  Formatter(emitter, callback); 
+  mergeRules(Formatter(emitter, callback)); 
 
   fluke.splitAll(
     code,
