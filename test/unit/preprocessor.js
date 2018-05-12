@@ -15,15 +15,6 @@ test("preprocessorSingleLine", t => {
   tearDown(emitter);
 });
 
-test("preprocessorAfterComment", t => {
-  let emitter = setUp(t)
-    .expect("comment")
-    .expect("format")
-    .expect("preprocess");
-  split("/*yo*/ #define BLA\n", emitter);
-  tearDown(emitter);
-});
-
 test("preprocessorMultiple", t => {
   let emitter = setUp(t)
     .expect("preprocess")

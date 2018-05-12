@@ -7,35 +7,10 @@ let fluke = require("flukejs"),
   test = base.test,
   split = base.split;
 
-test("commenterSingleLineWithSpace", t => {
-  let emitter = setUp(t)
-    .expect("format", "  ")
-    .expect("comment", "// hello")
-    .expect("format");
-
-  split("  // hello\n", emitter);
-  tearDown(emitter);
-});
-
 test("commenterSingleLine", t => {
   let emitter = setUp(t).expect("comment", "// hello");
 
   split("// hello", emitter);
-  tearDown(emitter);
-});
-
-test("commenterSingleLineWithoutNewLine", t => {
-  let emitter = setUp(t).expect("comment");
-  split("// hello", emitter);
-  tearDown(emitter);
-});
-
-test("commenterTwoSingleLineWithoutNewLine", t => {
-  let emitter = setUp(t)
-    .expect("comment")
-    .expect("format")
-    .expect("comment");
-  split("// hello\n//hello", emitter);
   tearDown(emitter);
 });
 

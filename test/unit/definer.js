@@ -58,18 +58,6 @@ test("defineType", t => {
   tearDown(emitter);
 });
 
-test("defineTypeAfterStatement", t => {
-  let emitter = setUp(t)
-    .expectNot("define namespace")
-    .expectNot("define function")
-    .expect("code line")
-    .expect("format")
-    .expect("define type", { name: "struct cya ", code: " inside " });
-
-  split("typedef hello string; struct cya { inside }", emitter);
-  tearDown(emitter);
-});
-
 test("defineSubType", t => {
   let emitter = setUp(t);
   emitter.expect("define type", {
@@ -171,16 +159,6 @@ test("defineConstructFunction", t => {
   tearDown(emitter);
 });
 
-test( 'defineNamespaceWithWhite', t => {
-  let emitter = setUp(t)
-    .expectNot( 'define type' )
-    .expectNot( 'define function' )
-    .expect( 'format' )
-    .expect( 'define namespace', { name: 'namespace hello ', "code":" this is it " } );
-
-  split( ' namespace hello { this is it }', emitter );
-  tearDown(emitter);
-});
 
 test("defineEmptyNamespace", t => {
   let emitter = setUp(t)
