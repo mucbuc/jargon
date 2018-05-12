@@ -3,14 +3,6 @@ const assert = require("assert"),
 
 function Preprocessor(emitter, callback) {
   emitter.on("preprocess", req => {
-    /*
-    // see if I can move this
-    if (req.lhs.length && !req.lhs.match( /\S/ ))
-    {
-      callback( 'format', req.lhs );
-      return;///?
-    }
-*/
 
     let result = "",
       code = req.rhs;
