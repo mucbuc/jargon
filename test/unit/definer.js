@@ -110,32 +110,28 @@ test("dontDefineFunctionOnSwitch", t => {
 });
 
 test("dontDefineFunctionOnFor", t => {
-  let emitter = setUp(t);
-  emitter.expectNot("define function");
+  let emitter = setUp(t).expectNot("define function");
 
   split('for(hello, bye){case "what":}', emitter);
   tearDown(emitter);
 });
 
 test("dontDefineFunctionOnWhile", t => {
-  let emitter = setUp(t);
-  emitter.expectNot("define function");
+  let emitter = setUp(t).expectNot("define function");
 
   split('while(hello, bye){case "what":}', emitter);
   tearDown(emitter);
 });
 
 test("dontDefineFunctionOnDo", t => {
-  let emitter = setUp(t);
-  emitter.expectNot("define function");
+  let emitter = setUp(t).expectNot("define function");
 
   split('do(hello, bye){case "what":}', emitter);
   tearDown(emitter);
 });
 
 test("defineMemberFunction", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expectNot("define namespace")
     .expectNot("define type")
     .expect("define function", {
@@ -148,8 +144,7 @@ test("defineMemberFunction", t => {
 });
 
 test("defineConstructFunction", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expectNot("define namespace")
     .expectNot("define type")
     .expect("define function", {
@@ -163,8 +158,7 @@ test("defineConstructFunction", t => {
 });
 
 test("defineConstructFunction", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expectNot("define namespace")
     .expectNot("define type")
     .expect("define function", {
@@ -177,9 +171,19 @@ test("defineConstructFunction", t => {
   tearDown(emitter);
 });
 
+test( 'defineNamespaceWithWhite', t => {
+  let emitter = setUp(t)
+    .expectNot( 'define type' )
+    .expectNot( 'define function' )
+    .expect( 'open' )
+    .expect( 'define namespace', { name: ' namespace hello ' } );
+
+  split( ' namespace hello { this is it }', emitter );
+  tearDown(emitter);
+});
+
 test("defineEmptyNamespace", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expectNot("define type")
     .expectNot("define function")
     .expect("define namespace", { name: "namespace world", code: "" });
@@ -189,8 +193,7 @@ test("defineEmptyNamespace", t => {
 });
 
 test("defineNamespaceWithWhite", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expectNot("define type")
     .expectNot("define function")
     .expect("define namespace", { name: "namespace   world ", code: "" });
