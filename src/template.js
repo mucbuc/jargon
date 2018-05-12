@@ -3,27 +3,29 @@
         templates are always declarations or definitions
 */
 
-var assert = require( 'assert' )
-  , fluke = require( 'flukejs' )
-  , Scoper = require( './scoper' )
-  , events = require( 'events' );
+var assert = require("assert"),
+  fluke = require("flukejs"),
+  Scoper = require("./scoper"),
+  events = require("events");
 
-assert( typeof Scoper !== 'undefined' );
+assert(typeof Scoper !== "undefined");
 
-function Template() {
+function Template(emitter, callback) {
+  emitter.on("open template", request => {
+    assert(request.hasOwnProperty("resetStash"));
+    const rules = { open: "<", close: ">" },
+      sub = new events.EventEmitter(),
+      scoper = new Scoper(rules);
 
-  this.process = ( request, cb ) => {
-    
-    assert( request.hasOwnProperty('resetStash') );
+    scoper.process(request, (type, content) => {
+      callback(
+        "template parameters",
+        request.lhs + rules.open + content.trim() + rules.close
+      );
+    });
+  });
 
-    const rules = { 'open': '<', 'close': '>' }
-      , sub = new events.EventEmitter
-      , scoper = new Scoper( rules ); 
-
-    scoper.process( request, (type, content) => {
-      cb( request.lhs + rules.open + content.trim() + rules.close );
-    }); 
-  };
+  return { "open template": "<" };
 }
 
 module.exports = Template;

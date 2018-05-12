@@ -1,51 +1,15 @@
-#!/usr/bin/env node
+const assert = require("assert");
 
-const assert = require( 'assert' )
-  , util = require( 'util' )
-  , events = require( 'events' );
+function Formatter(emitter, callback) {
+  emitter.on("format", req => {
+    const format = req.rhs.match(/^(\s|\t|\n)*/m);
+    assert(format);
+    req.consume(format[0].length);
 
-function Formatter() {
-  
-  this.forward = (event, info, cb) => {
+    callback("format", format[0]);
+  });
 
-    if (typeof info === 'string') {
-      if (match( info )) {
-        return;
-      }
-    }
-    cb( event, info );
-    
-    // else if (info.hasOwnProperty( 'name'))
-    // {
-    //   if (match(info.name)) {
-    //     return;
-    //   }
-    //   cb( event, info.name );
-    //   return;
-    // }
-    //
+  return { format: "^(\\s|\\t|\\n)" };
+}
 
-    function match( content ) {
-      assert(typeof content === 'string');
-    
-      let matches = content.match( /^(\s*)(.*?)(\s*)$/m );
-      if (matches) {
-        if (matches[1].length) {
-          cb( 'format', matches[1] );
-        }
-        cb( event, matches[2] );
-        if (matches[3].length) {
-          cb( 'format', matches[3] ); 
-        }
-        return true;
-      }
-      return false;
-    }
-
-  };
-
-};
-
-util.inherits( Formatter, events.EventEmitter );
-
-module.exports = Formatter; 
+module.exports = Formatter;

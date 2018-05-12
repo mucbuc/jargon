@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 
-var assert = require( 'assert' )
-  , Scoper = require( '../src/scoper' )
-  , Template = require( '../src/template' )
-  , fluke = require( 'flukejs' )
-  , tapeWrapper = require( './tape-wrapper' )
-  , setUpU = tapeWrapper.setUpU
-  , tearDown = tapeWrapper.tearDown
-  , test = tapeWrapper.test; 
+var assert = require("assert"),
+  fluke = require("flukejs"),
+  base = require("../base"),
+  setUpU = base.setUpU,
+  tearDown = base.tearDown,
+  test = base.test,
+  split = base.split;
 
-test( 'singleParameter', t => {
-
+test("singleParameter", t => {
   let emitter = setUpU(t);
+
+  emitter
+  .expect( 'template parameters', 'template<class A>' );
+  split( 'template<class A>', emitter );
+
   emitter.expect( 'template parameters', 'template<class A>' );
   split( 'template<class A>{', emitter );
 
@@ -33,10 +36,12 @@ test( 'singleParameter', t => {
   tearDown(emitter);
 });
 
-test( 'multipleParameters', t => {
-
+test("multipleParameters", t => {
   let emitter = setUpU(t);
-  
+
+  emitter.expect("template parameters", "template<class A, class B>");
+  split("template< class A, class B>", emitter);
+
   emitter.expect( 'template parameters', 'template<class A, class B>' );
   split( 'template< class A, class B>;', emitter );
 
@@ -58,9 +63,11 @@ test( 'multipleParameters', t => {
   tearDown(emitter);
 });
 
-test( 'macroParameters', t => {
-
+test("macroParameters", t => {
   let emitter = setUpU(t);
+  emitter.expect("template parameters", "template<MACRO(), MACRO>");
+  split("template< MACRO(), MACRO >", emitter);
+
   emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
   split( 'template< MACRO(), MACRO >;', emitter );
 
@@ -73,25 +80,13 @@ test( 'macroParameters', t => {
   tearDown(emitter);
 });
 
-test( 'templateNestedParameters', t => {
-
+test("templateNestedParameters", t => {
   let emitter = setUpU(t);
-  emitter.expect( 'template parameters', 'template<template< typename >, template< typename >>' );
-  split( 'template< template< typename >, template< typename > >;', emitter );
+  emitter.expect(
+    "template parameters",
+    "template<template< typename >, template< typename >>"
+  );
+  split("template< template< typename >, template< typename > >", emitter);
 
   tearDown(emitter);
 });
-
-function split( code, emitter ) {
-  var rules = { 'open': '<', 'close': '>' }
-    , templater = new Template();
-  
-  fluke.splitAll( code, function( type, request ) {
-      if (type == 'open' || type == 'close') {
-        templater.process( request, (result) => {
-          emitter.emit('template parameters', result);
-        } ); 
-      }
-    }
-    , rules ); 
-}

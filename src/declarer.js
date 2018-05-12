@@ -1,36 +1,69 @@
-const assert = require( 'assert' )
-  , regexMap = require( './regexmap' ).regexMap
-  , fluke = require( 'flukejs' );
+/* 
+  involves test types
+    - declare type
+    - declare function
+    - code line
+    - format  ???? try to move
+*/
 
-function Declarer() {
+const assert = require("assert"),
+  regexMap = require("./regexmap").regexMap,
+  fluke = require("flukejs"),
+  format = require("./format");
 
-  this.process = (request, cb) => {
+function Declarer(emitter, callback) {
+  emitter.on("statement", request => {
+    declare(request);
+  });
 
-    fluke.splitAll( request.lhs, (type, req) => {
+  emitter.on("end", request => {
+    if (request.hasOwnProperty('lhs'))
+    {
+      declare(request);
+    }
+  });
+
+  return { statement: ";" };
+
+  function declare(request) {
+    assert(request.hasOwnProperty('lhs'));
+      
+    fluke.splitAll(
+      request.lhs,
+      (type, req) => {
         if (isType(req.lhs)) {
-          cb( 'declare type', req.lhs );
-        }
-        else if (isFunctionDeclaration(req.lhs)) {
-          cb( 'declare function', req.lhs );
-        }
-        else if (req.lhs.length || req.stash.length) {
-          const block = req.lhs + (typeof req.stash === 'undefined' ? '' : req.stash);
-          assert( typeof block !== 'undefined' );
-          cb( 'code line', block );
-        }
+          format("declare type", req.lhs, callback);
+        } else if (isFunctionDeclaration(req.lhs)) {
+          format("declare function", req.lhs, callback);
+        } else if (req.lhs.length || req.stash.length) {
+          const block =
+            req.lhs + (typeof req.stash === "undefined" ? "" : req.stash);
+          assert(typeof block !== "undefined");
 
-        function isFunctionDeclaration(code) {
-          return code.search( regexMap.functionDeclare ) == 0;
+          if (isSpace(block)) {
+            callback("format", block, callback);
+          } else {
+            format("code line", block, callback);
+          }
         }
-
-        function isType(code) {
-          return code.search( regexMap.typeDeclare ) != -1;
-        }
-      }, { 
-        'statement': ';'
-      } 
+      },
+      {
+        statement: ";"
+      }
     );
-  };
+  }
+}
+
+function isFunctionDeclaration(code) {
+  return code.search(regexMap.functionDeclare) == 0;
+}
+
+function isType(code) {
+  return code.search(regexMap.typeDeclare) != -1;
+}
+
+function isSpace(code) {
+  return code.match(/\S/) ? false : true;
 }
 
 module.exports = Declarer;

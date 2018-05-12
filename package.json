@@ -2,7 +2,7 @@
   "name": "jargon",
   "version": "0.0.0",
   "scripts": {
-    "test": "tape test/**/*.js"
+    "test": "tape test/*.js test/**/*.js"
   },
   "main": "./src/split.js",
   "repository": {
@@ -10,7 +10,6 @@
     "url": "git://github.com/mucbuc/jargon"
   },
   "dependencies": {
-    "chai": "*",
     "tape": "*",
     "flukejs": "*", 
     "expector": "*"
