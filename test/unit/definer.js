@@ -175,8 +175,8 @@ test( 'defineNamespaceWithWhite', t => {
   let emitter = setUp(t)
     .expectNot( 'define type' )
     .expectNot( 'define function' )
-    .expect( 'open' )
-    .expect( 'define namespace', { name: ' namespace hello ' } );
+    .expect( 'format' )
+    .expect( 'define namespace', { name: 'namespace hello ', "code":" this is it " } );
 
   split( ' namespace hello { this is it }', emitter );
   tearDown(emitter);
