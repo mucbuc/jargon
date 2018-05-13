@@ -44,14 +44,17 @@ test("defineTypeAfterStatement", t => {
   tearDown(emitter);
 });
 
-test( 'defineNamespaceWithWhite', t => {
+test("defineNamespaceWithWhite", t => {
   let emitter = setUp(t)
-    .expectNot( 'define type' )
-    .expectNot( 'define function' )
-    .expect( 'format' )
-    .expect( 'define namespace', { name: 'namespace hello ', "code":" this is it " } );
+    .expectNot("define type")
+    .expectNot("define function")
+    .expect("format")
+    .expect("define namespace", {
+      name: "namespace hello ",
+      code: " this is it "
+    });
 
-  split( ' namespace hello { this is it }', emitter );
+  split(" namespace hello { this is it }", emitter);
   tearDown(emitter);
 });
 
@@ -63,4 +66,3 @@ test("preprocessorAfterComment", t => {
   split("/*yo*/ #define BLA\n", emitter);
   tearDown(emitter);
 });
-
