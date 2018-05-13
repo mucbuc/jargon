@@ -15,17 +15,12 @@ function setUp(t) {
   return new SeqExpector(t);
 }
 
-function setUpU(t) {
-  return new Expector(t);
-}
-
 function tearDown(fixture) {
   fixture.check(fixture);
 }
 
 module.exports = {
   setUp,
-  setUpU,
   test,
   tearDown, 
   split
