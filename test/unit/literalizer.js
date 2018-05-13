@@ -2,13 +2,13 @@
 
 var assert = require("assert"),
   base = require("../base"),
-  setUpU = base.setUpU,
+  setUp = base.setUp,
   tearDown = base.tearDown,
   test = base.test,
   split = base.split;
 
 test("stringLiteral", t => {
-  let e = setUpU(t)
+  let e = setUp(t)
     .expectNot("declare")
     .expect("literal", "struct hello;");
 
@@ -17,7 +17,7 @@ test("stringLiteral", t => {
 });
 
 test("stringLiteralWithQutationMarks", t => {
-  let e = setUpU(t)
+  let e = setUp(t)
     .expectNot("declare")
     .expect("literal", 'struct hel/"lo;');
 
