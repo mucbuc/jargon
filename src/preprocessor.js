@@ -3,7 +3,6 @@ const assert = require("assert"),
 
 function Preprocessor(emitter, callback) {
   emitter.on("preprocess", req => {
-
     let result = "",
       code = req.rhs;
     do {

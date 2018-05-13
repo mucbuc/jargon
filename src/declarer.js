@@ -17,8 +17,7 @@ function Declarer(emitter, callback) {
   });
 
   emitter.on("end", request => {
-    if (request.hasOwnProperty('lhs'))
-    {
+    if (request.hasOwnProperty("lhs")) {
       declare(request);
     }
   });
@@ -26,8 +25,8 @@ function Declarer(emitter, callback) {
   return { statement: ";" };
 
   function declare(request) {
-    assert(request.hasOwnProperty('lhs'));
-      
+    assert(request.hasOwnProperty("lhs"));
+
     fluke.splitAll(
       request.lhs,
       (type, req) => {

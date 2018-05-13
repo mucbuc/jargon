@@ -22,6 +22,6 @@ function tearDown(fixture) {
 module.exports = {
   setUp,
   test,
-  tearDown, 
+  tearDown,
   split
 };

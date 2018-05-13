@@ -159,7 +159,6 @@ test("defineConstructFunction", t => {
   tearDown(emitter);
 });
 
-
 test("defineEmptyNamespace", t => {
   let emitter = setUp(t)
     .expectNot("define type")

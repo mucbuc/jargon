@@ -7,7 +7,7 @@ var assert = require("assert"),
   tearDown = base.tearDown,
   test = base.test,
   split = base.split;
-  
+
 assert(typeof format === "function");
 
 test("headingSpaces", t => {
