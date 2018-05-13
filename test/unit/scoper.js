@@ -84,10 +84,16 @@ test("alternativeScopeTag", t => {
 });
 
 test("alternativeScopeTagNested", t => {
-  tearDown(split("template< template< typename > >", setUp(t)
-    .expect("open")
-    .expect("close", "template< typename >")
-    .expect("end"), { open: "<", close: ">" }));
+  tearDown(
+    split(
+      "template< template< typename > >",
+      setUp(t)
+        .expect("open")
+        .expect("close", "template< typename >")
+        .expect("end"),
+      { open: "<", close: ">" }
+    )
+  );
 });
 
 function split(code, emitter, rules) {
