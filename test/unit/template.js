@@ -11,20 +11,26 @@ var assert = require("assert"),
 test("singleParameter", t => {
   let emitter = setUp(t);
 
-  emitter.expect("template parameters", "template<class A>");
-  split("template<class A>", emitter);
-
-  emitter.expect("template parameters", "template<class A>");
-  split("template<class A>{", emitter);
-
-  emitter.expect("template parameters", "template<class A>");
-  split("template<class A>;", emitter);
-
-  emitter.expect("template parameters", "template<class A>").expect("format");
-  split("template<class A> text text {", emitter);
-
-  emitter.expect("template parameters", "template<class A>").expect("format");
-  split("template<class A> ;", emitter);
+  split(
+    "template<class A>",
+    emitter.expect("template parameters", "template<class A>")
+  );
+  split(
+    "template<class A>{",
+    emitter.expect("template parameters", "template<class A>")
+  );
+  split(
+    "template<class A>;",
+    emitter.expect("template parameters", "template<class A>")
+  );
+  split(
+    "template<class A> text text {",
+    emitter.expect("template parameters", "template<class A>").expect("format")
+  );
+  split(
+    "template<class A> ;",
+    emitter.expect("template parameters", "template<class A>").expect("format")
+  );
 
   // emitter.expect( 'template parameters', 'template<class A>' );
   // split( 'template<class A> void text( A a ) {}', emitter );
@@ -79,28 +85,33 @@ test("multipleParameters", t => {
 
 test("macroParameters", t => {
   let emitter = setUp(t);
-  emitter.expect("template parameters", "template<MACRO(), MACRO>");
-  split("template< MACRO(), MACRO >", emitter);
-
-  emitter.expect("template parameters", "template<MACRO(), MACRO>");
-  split("template< MACRO(), MACRO >;", emitter);
-
-  emitter.expect("template parameters", "template<MACRO(ARG), MACRO()>");
-  split("template< MACRO(ARG), MACRO() >;", emitter);
-
-  emitter.expect("template parameters", "template<MACRO(), MACRO>");
-  split("template< MACRO(), MACRO >;", emitter);
-
+  split(
+    "template< MACRO(), MACRO >",
+    emitter.expect("template parameters", "template<MACRO(), MACRO>")
+  );
+  split(
+    "template< MACRO(), MACRO >;",
+    emitter.expect("template parameters", "template<MACRO(), MACRO>")
+  );
+  split(
+    "template< MACRO(ARG), MACRO() >;",
+    emitter.expect("template parameters", "template<MACRO(ARG), MACRO()>")
+  );
+  split(
+    "template< MACRO(), MACRO >;",
+    emitter.expect("template parameters", "template<MACRO(), MACRO>")
+  );
   tearDown(emitter);
 });
 
 test("templateNestedParameters", t => {
-  let emitter = setUp(t);
-  emitter.expect(
-    "template parameters",
-    "template<template< typename >, template< typename >>"
+  tearDown(
+    split(
+      "template< template< typename >, template< typename > >",
+      setUp(t).expect(
+        "template parameters",
+        "template<template< typename >, template< typename >>"
+      )
+    )
   );
-  split("template< template< typename >, template< typename > >", emitter);
-
-  tearDown(emitter);
 });
