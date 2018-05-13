@@ -11,88 +11,83 @@ var assert = require("assert"),
 assert(typeof Scoper === "function");
 
 test("emptyScope", t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect("open")
-    .expect("close", "")
-    .expect("end");
-  split("namespace bla {}", emitter);
-
-  tearDown(emitter);
+  tearDown(
+    split(
+      "namespace bla {}",
+      setUp(t)
+        .expect("open")
+        .expect("close", "")
+        .expect("end")
+    )
+  );
 });
 
 test("statementScope", t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect("open")
-    .expect("close", "hello;")
-    .expect("end");
-
-  split("namespace bla { hello; }", emitter);
-
-  tearDown(emitter);
+  tearDown(
+    split(
+      "namespace bla { hello; }",
+      setUp(t)
+        .expect("open")
+        .expect("close", "hello;")
+        .expect("end")
+    )
+  );
 });
 
 test("basicScope", t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect("open")
-    .expect("close", "hello")
-    .expect("end");
-  split("namespace bla { hello }", emitter);
-  tearDown(emitter);
+  tearDown(
+    split(
+      "namespace bla { hello }",
+      setUp(t)
+        .expect("open")
+        .expect("close", "hello")
+        .expect("end")
+    )
+  );
 });
 
 test("nestedScopes", t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect("open")
-    .expect("close", "namespace world{ namespace {} }")
-    .expect("end");
-  split("namespace hello{ namespace world{ namespace {} } }", emitter);
-  tearDown(emitter);
+  tearDown(
+    split(
+      "namespace hello{ namespace world{ namespace {} } }",
+      setUp(t)
+        .expect("open")
+        .expect("close", "namespace world{ namespace {} }")
+        .expect("end")
+    )
+  );
 });
 
 test("aggregateScopes", t => {
-  let emitter = setUp(t);
-
-  emitter
-    .expect("open")
-    .expect("close", "namespace inside1 {} namespace inside2 {}")
-    .expect("end");
-  split(
-    "namespace outside{ namespace inside1 {} namespace inside2 {} }",
-    emitter
+  tearDown(
+    split(
+      "namespace outside{ namespace inside1 {} namespace inside2 {} }",
+      setUp(t)
+        .expect("open")
+        .expect("close", "namespace inside1 {} namespace inside2 {}")
+        .expect("end")
+    )
   );
-  tearDown(emitter);
 });
 
 test("alternativeScopeTag", t => {
-  let emitter = setUp(t);
-  var rules = { open: "<", close: ">" };
-
-  emitter
-    .expect("open")
-    .expect("close", "typename")
-    .expect("end");
-  split("template< typename >", emitter, rules);
-  tearDown(emitter);
+  tearDown(
+    split(
+      "template< typename >",
+      setUp(t)
+        .expect("open")
+        .expect("close", "typename")
+        .expect("end"),
+      { open: "<", close: ">" }
+    )
+  );
 });
 
 test("alternativeScopeTagNested", t => {
-  let emitter = setUp(t);
-  var rules = { open: "<", close: ">" };
-
-  emitter
+  tearDown(split("template< template< typename > >", setUp(t)
     .expect("open")
     .expect("close", "template< typename >")
-    .expect("end");
-  split("template< template< typename > >", emitter, rules);
-  tearDown(emitter);
+    .expect("end"), { open: "<", close: ">" }));
 });
 
 function split(code, emitter, rules) {
@@ -115,4 +110,6 @@ function split(code, emitter, rules) {
     },
     rules
   );
+
+  return emitter;
 }
