@@ -7,6 +7,8 @@ function split(code, emitter) {
   splitjs(code, (type, value) => {
     emitter.emit(type, value);
   });
+
+  return emitter;
 }
 
 function setUp(t) {

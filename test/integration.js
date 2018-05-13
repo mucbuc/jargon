@@ -33,36 +33,43 @@ test("commenterTwoSingleLineWithoutNewLine", t => {
 });
 
 test("defineTypeAfterStatement", t => {
-  let emitter = setUp(t)
-    .expectNot("define namespace")
-    .expectNot("define function")
-    .expect("code line")
-    .expect("format")
-    .expect("define type", { name: "struct cya ", code: " inside " });
-
-  split("typedef hello string; struct cya { inside }", emitter);
-  tearDown(emitter);
+  tearDown(
+    split(
+      "typedef hello string; struct cya { inside }",
+      setUp(t)
+        .expectNot("define namespace")
+        .expectNot("define function")
+        .expect("code line")
+        .expect("format")
+        .expect("define type", { name: "struct cya ", code: " inside " })
+    )
+  );
 });
 
 test("defineNamespaceWithWhite", t => {
-  let emitter = setUp(t)
-    .expectNot("define type")
-    .expectNot("define function")
-    .expect("format")
-    .expect("define namespace", {
-      name: "namespace hello ",
-      code: " this is it "
-    });
-
-  split(" namespace hello { this is it }", emitter);
-  tearDown(emitter);
+  tearDown(
+    split(
+      " namespace hello { this is it }",
+      setUp(t)
+        .expectNot("define type")
+        .expectNot("define function")
+        .expect("format")
+        .expect("define namespace", {
+          name: "namespace hello ",
+          code: " this is it "
+        })
+    )
+  );
 });
 
 test("preprocessorAfterComment", t => {
-  let emitter = setUp(t)
-    .expect("comment")
-    .expect("format")
-    .expect("preprocess");
-  split("/*yo*/ #define BLA\n", emitter);
-  tearDown(emitter);
+  tearDown(
+    split(
+      "/*yo*/ #define BLA\n",
+      setUp(t)
+        .expect("comment")
+        .expect("format")
+        .expect("preprocess")
+    )
+  );
 });
