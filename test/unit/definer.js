@@ -58,8 +58,7 @@ test("defineSubType", t => {
     code: " yes "
   });
 
-  split("struct cya : blu { yes }", emitter);
-  tearDown(emitter);
+  tearDown(split("struct cya : blu { yes }", emitter));
 });
 
 test("defineFunction", t => {
@@ -67,45 +66,39 @@ test("defineFunction", t => {
   emitter
     .expect("define function", { name: "void foo() ", code: " do something " });
 
-  split("void foo() { do something }", emitter);
-  tearDown(emitter);
+  tearDown(split("void foo() { do something }", emitter));
 });
 
 test("dontDefineFunctionOnIf", t => {
   let emitter = setUp(t);
   emitter.expectNot("define function");
 
-  split("if(hello){what up now;}", emitter);
-  tearDown(emitter);
+  tearDown(split("if(hello){what up now;}", emitter));
 });
 
 test("dontDefineFunctionOnSwitch", t => {
   let emitter = setUp(t);
   emitter.expectNot("define function");
 
-  split('switch(hello){case "what":}', emitter);
-  tearDown(emitter);
+  tearDown(split('switch(hello){case "what":}', emitter));
 });
 
 test("dontDefineFunctionOnFor", t => {
   let emitter = setUp(t).expectNot("define function");
 
-  split('for(hello, bye){case "what":}', emitter);
-  tearDown(emitter);
+  tearDown(split('for(hello, bye){case "what":}', emitter));
 });
 
 test("dontDefineFunctionOnWhile", t => {
   let emitter = setUp(t).expectNot("define function");
 
-  split('while(hello, bye){case "what":}', emitter);
-  tearDown(emitter);
+  tearDown(split('while(hello, bye){case "what":}', emitter));
 });
 
 test("dontDefineFunctionOnDo", t => {
   let emitter = setUp(t).expectNot("define function");
 
-  split('do(hello, bye){case "what":}', emitter);
-  tearDown(emitter);
+  tearDown(split('do(hello, bye){case "what":}', emitter));
 });
 
 test("defineMemberFunction", t => {
@@ -115,8 +108,7 @@ test("defineMemberFunction", t => {
       code: ""
     });
 
-  split("hello::hello() -> returnType {}", emitter);
-  tearDown(emitter);
+  tearDown(split("hello::hello() -> returnType {}", emitter));
 });
 
 test("defineConstructFunction", t => {
@@ -127,8 +119,7 @@ test("defineConstructFunction", t => {
       code: "bla bla"
     });
 
-  split("hello::hello() : base() {bla bla}", emitter);
-  tearDown(emitter);
+  tearDown(split("hello::hello() : base() {bla bla}", emitter));
 });
 
 test("defineConstructFunction", t => {
@@ -138,24 +129,20 @@ test("defineConstructFunction", t => {
       meta: " base() ",
       code: "bla bla"
     });
-
-  split("hello::hello() : base() {bla bla}", emitter);
-  tearDown(emitter);
+  
+  tearDown(split("hello::hello() : base() {bla bla}", emitter));
 });
 
 test("defineEmptyNamespace", t => {
   let emitter = setUp(t)
     .expect("define namespace", { name: "namespace world", code: "" });
 
-  split("namespace world{}", emitter);
-  tearDown(emitter);
+  tearDown(split("namespace world{}", emitter));
 });
 
 test("defineNamespaceWithWhite", t => {
   let emitter = setUp(t)
     .expect("define namespace", { name: "namespace   world ", code: "" });
 
-  split("namespace   world {}", emitter);
-
-  tearDown(emitter);
+  tearDown(split("namespace   world {}", emitter));
 });
