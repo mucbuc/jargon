@@ -11,8 +11,6 @@ var assert = require("assert"),
 test("defineNamespace", t => {
   let emitter = setUp(t);
   emitter
-    .expectNot("define type")
-    .expectNot("define function")
     .expect("define namespace", {
       name: "namespace hello ",
       code: " this is it "
@@ -25,8 +23,6 @@ test("defineNamespace", t => {
 test("defineEmptyNamespace", t => {
   let emitter = setUp(t);
   emitter
-    .expectNot("define type")
-    .expectNot("define function")
     .expect("define namespace", { name: "namespace hello ", code: "" });
 
   split("namespace hello {}", emitter);
@@ -36,8 +32,6 @@ test("defineEmptyNamespace", t => {
 test("defineTypeWithStatement", t => {
   let emitter = setUp(t);
   emitter
-    .expectNot("define namespace")
-    .expectNot("define function")
     .expect("define type", {
       name: "struct hello ",
       code: " unsigned world; "
@@ -50,8 +44,6 @@ test("defineTypeWithStatement", t => {
 test("defineType", t => {
   let emitter = setUp(t);
   emitter
-    .expectNot("define namespace")
-    .expectNot("define function")
     .expect("define type", { name: "struct cya ", code: " yes" });
 
   split("struct cya { yes}", emitter);
@@ -73,8 +65,6 @@ test("defineSubType", t => {
 test("defineFunction", t => {
   let emitter = setUp(t);
   emitter
-    .expectNot("define namespace")
-    .expectNot("define type")
     .expect("define function", { name: "void foo() ", code: " do something " });
 
   split("void foo() { do something }", emitter);
@@ -120,8 +110,6 @@ test("dontDefineFunctionOnDo", t => {
 
 test("defineMemberFunction", t => {
   let emitter = setUp(t)
-    .expectNot("define namespace")
-    .expectNot("define type")
     .expect("define function", {
       name: "hello::hello() -> returnType ",
       code: ""
@@ -133,8 +121,6 @@ test("defineMemberFunction", t => {
 
 test("defineConstructFunction", t => {
   let emitter = setUp(t)
-    .expectNot("define namespace")
-    .expectNot("define type")
     .expect("define function", {
       name: "hello::hello()",
       meta: " base() ",
@@ -147,8 +133,6 @@ test("defineConstructFunction", t => {
 
 test("defineConstructFunction", t => {
   let emitter = setUp(t)
-    .expectNot("define namespace")
-    .expectNot("define type")
     .expect("define function", {
       name: "hello::hello()",
       meta: " base() ",
@@ -161,8 +145,6 @@ test("defineConstructFunction", t => {
 
 test("defineEmptyNamespace", t => {
   let emitter = setUp(t)
-    .expectNot("define type")
-    .expectNot("define function")
     .expect("define namespace", { name: "namespace world", code: "" });
 
   split("namespace world{}", emitter);
@@ -171,8 +153,6 @@ test("defineEmptyNamespace", t => {
 
 test("defineNamespaceWithWhite", t => {
   let emitter = setUp(t)
-    .expectNot("define type")
-    .expectNot("define function")
     .expect("define namespace", { name: "namespace   world ", code: "" });
 
   split("namespace   world {}", emitter);

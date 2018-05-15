@@ -9,7 +9,6 @@ var assert = require("assert"),
 
 test("stringLiteral", t => {
   let e = setUp(t)
-    .expectNot("declare")
     .expect("literal", "struct hello;");
 
   split('"struct hello;"', e);
@@ -18,7 +17,6 @@ test("stringLiteral", t => {
 
 test("stringLiteralWithQutationMarks", t => {
   let e = setUp(t)
-    .expectNot("declare")
     .expect("literal", 'struct hel/"lo;');
 
   split('"struct hel/"lo;"', e);

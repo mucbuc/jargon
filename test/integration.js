@@ -40,8 +40,6 @@ test("defineTypeAfterStatement", t => {
     split(
       "typedef hello string; struct cya { inside }",
       setUp(t)
-        .expectNot("define namespace")
-        .expectNot("define function")
         .expect("code line")
         .expect("format")
         .expect("define type", { name: "struct cya ", code: " inside " })
@@ -54,8 +52,6 @@ test("defineNamespaceWithWhite", t => {
     split(
       " namespace hello { this is it }",
       setUp(t)
-        .expectNot("define type")
-        .expectNot("define function")
         .expect("format")
         .expect("define namespace", {
           name: "namespace hello ",
