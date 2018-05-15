@@ -8,7 +8,7 @@ var assert = require("assert"),
   test = base.test,
   split = base.split;
 
-test.only("singleParameter", t => {
+test("singleParameter", t => {
   let emitter = setUp(t);
 
   split(
@@ -19,18 +19,18 @@ test.only("singleParameter", t => {
     "template<class A>{",
     emitter.expect("template parameters", "template<class A>")
   );
-  // split(
-  //   "template<class A>;",
-  //   emitter.expect("template parameters", "template<class A>")
-  // );
-  // split(
-  //   "template<class A> text text {",
-  //   emitter.expect("template parameters", "template<class A>").expect("format")
-  // );
-  // split(
-  //   "template<class A> ;",
-  //   emitter.expect("template parameters", "template<class A>").expect("format")
-  // );
+  split(
+    "template<class A>;",
+    emitter.expect("template parameters", "template<class A>")
+  );
+  split(
+    "template<class A> text text {",
+    emitter.expect("template parameters", "template<class A>").expect("format")
+  );
+  split(
+    "template<class A> ;",
+    emitter.expect("template parameters", "template<class A>").expect("format")
+  );
 
   // emitter.expect( 'template parameters', 'template<class A>' );
   // split( 'template<class A> void text( A a ) {}', emitter );
