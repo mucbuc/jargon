@@ -25,8 +25,7 @@ test("defineEmptyNamespace", t => {
   emitter
     .expect("define namespace", { name: "namespace hello ", code: "" });
 
-  split("namespace hello {}", emitter);
-  tearDown(emitter);
+  tearDown(split("namespace hello {}", emitter));
 });
 
 test("defineTypeWithStatement", t => {
@@ -37,8 +36,7 @@ test("defineTypeWithStatement", t => {
       code: " unsigned world; "
     });
 
-  split("struct hello { unsigned world; }", emitter);
-  tearDown(emitter);
+  tearDown(split("struct hello { unsigned world; }", emitter));
 });
 
 test("defineType", t => {
@@ -46,8 +44,7 @@ test("defineType", t => {
   emitter
     .expect("define type", { name: "struct cya ", code: " yes" });
 
-  split("struct cya { yes}", emitter);
-  tearDown(emitter);
+  tearDown(split("struct cya { yes}", emitter));
 });
 
 test("defineSubType", t => {
