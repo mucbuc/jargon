@@ -49,32 +49,20 @@ test("singleParameter", t => {
 });
 
 test("multipleParameters", t => {
-  let emitter = setUp(t);
-
-  split(
+  tearDown(split(
     "template< class A, class B>",
-    emitter.expect("template parameters", "template<class A, class B>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<class A, class B>")
+  ));
 });
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-
-  split(
+  tearDown(split(
     "template< class A, class B>;",
-    emitter.expect("template parameters", "template<class A, class B>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<class A, class B>")
+  ));
 });
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-
-  split(
-    "template< class A, class B>{",
-    emitter.expect("template parameters", "template<class A, class B>")
-  );
 
   // emitter.expect( 'template parameters', 'template<class A, class B>' );
   // split( 'template< class A, class B> void text( A a );', emitter );
@@ -82,7 +70,10 @@ test("singleParameter", t => {
   // emitter.expect( 'template parameters', 'template<class A, class B>' );
   // split( 'template< class A, class B> void text( A a ) {', emitter );
 
-  tearDown(emitter);
+  tearDown(split(
+    "template< class A, class B>{",
+    setUp(t).expect("template parameters", "template<class A, class B>")
+  ));
 });
 
 test("macroParameters", t => {
