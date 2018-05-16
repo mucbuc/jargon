@@ -153,3 +153,25 @@ test( 'templateAndFormat', (t) => {
 
   tearDown(emitter);
 });
+
+test( 'templateAndCode', (t) => {
+  
+  let emitter = setUp(t);
+
+  split(
+    "template< class A, class B> text;",
+    emitter
+      .expect("template parameters", "template<class A, class B>")
+      .expect("format")
+      .expect("code line", "text")
+  );
+
+  split(
+    "template< class A, class B> text{",
+    emitter
+      .expect("template parameters", "template<class A, class B>")
+      .expect("format")
+  );
+
+  tearDown(emitter);
+});

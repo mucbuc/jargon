@@ -51,21 +51,6 @@ test("multipleParameters", t => {
     emitter.expect("template parameters", "template<class A, class B>")
   );
 
-  split(
-    "template< class A, class B> text;",
-    emitter
-      .expect("template parameters", "template<class A, class B>")
-      .expect("format")
-      .expect("code line", "text")
-  );
-
-  split(
-    "template< class A, class B> text{",
-    emitter
-      .expect("template parameters", "template<class A, class B>")
-      .expect("format")
-  );
-
   // emitter.expect( 'template parameters', 'template<class A, class B>' );
   // split( 'template< class A, class B> void text( A a );', emitter );
 
