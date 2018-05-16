@@ -86,39 +86,31 @@ test("singleParameter", t => {
 });
 
 test("macroParameters", t => {
-  let emitter = setUp(t);
-  split(
+  tearDown(split(
     "template< MACRO(), MACRO >",
-    emitter.expect("template parameters", "template<MACRO(), MACRO>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
+  ));
 });
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-  split(
+  tearDown(split(
     "template< MACRO(), MACRO >;",
-    emitter.expect("template parameters", "template<MACRO(), MACRO>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
+  ));
 });
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-  split(
+  tearDown(split(
     "template< MACRO(ARG), MACRO() >;",
-    emitter.expect("template parameters", "template<MACRO(ARG), MACRO()>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<MACRO(ARG), MACRO()>")
+  ));
 });
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-  split(
+  tearDown(split(
     "template< MACRO(), MACRO >;",
-    emitter.expect("template parameters", "template<MACRO(), MACRO>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
+  ));
 });
 
 test("templateNestedParameters", t => {
