@@ -11,9 +11,8 @@ var assert = require("assert"),
 assert(typeof format === "function");
 
 test("headingSpaces", t => {
-  let emitter = setUp(t);
-
-  emitter.expect("format", "\t \t \n ").expect("ere", "hello");
+  let emitter = setUp(t)
+    .expect("format", "\t \t \n ").expect("ere", "hello");
 
   format("ere", "\t \t \n hello", (event, code) => {
     emitter.emit(event, code);
@@ -23,9 +22,8 @@ test("headingSpaces", t => {
 });
 
 test("trailingSpaces", t => {
-  let emitter = setUp(t);
-
-  emitter.expect("ere", "hello").expect("format", "\t \t");
+  let emitter = setUp(t)
+    .expect("ere", "hello").expect("format", "\t \t");
 
   format("ere", "hello\t \t", (event, code) => {
     emitter.emit(event, code);
