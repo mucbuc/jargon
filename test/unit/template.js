@@ -9,27 +9,17 @@ var assert = require("assert"),
   split = base.split;
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-
-  split(
+  tearDown(split(
     "template<class A>",
-    emitter.expect("template parameters", "template<class A>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<class A>")
+  ));
 });
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-  tearDown(emitter);
-});
-
-test("singleParameter", t => {
-  let emitter = setUp(t);
-  split(
+  tearDown(split(
     "template<class A>{",
-    emitter.expect("template parameters", "template<class A>")
-  );
-  tearDown(emitter);
+    setUp(t).expect("template parameters", "template<class A>")
+  ));
 });
 
 test("singleParameter", t => {
