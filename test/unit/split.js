@@ -140,9 +140,7 @@ test("TypeWithFormat", t => {
 });
 
 test("MemberFunctionDeclare", t => {
-  let e = setUp(t);
-
-  e.expect("define type");
+  let e = setUp(t).expect("define type");
   split("struct text{void member();};", e);
 
   e.expect("declare function", "void member()");
