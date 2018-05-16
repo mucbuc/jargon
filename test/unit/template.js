@@ -15,10 +15,25 @@ test("singleParameter", t => {
     "template<class A>",
     emitter.expect("template parameters", "template<class A>")
   );
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
   split(
     "template<class A>{",
     emitter.expect("template parameters", "template<class A>")
   );
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
   split(
     "template<class A>;",
     emitter.expect("template parameters", "template<class A>")
@@ -40,11 +55,21 @@ test("multipleParameters", t => {
     "template< class A, class B>",
     emitter.expect("template parameters", "template<class A, class B>")
   );
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
 
   split(
     "template< class A, class B>;",
     emitter.expect("template parameters", "template<class A, class B>")
   );
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
 
   split(
     "template< class A, class B>{",
@@ -66,14 +91,29 @@ test("macroParameters", t => {
     "template< MACRO(), MACRO >",
     emitter.expect("template parameters", "template<MACRO(), MACRO>")
   );
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
   split(
     "template< MACRO(), MACRO >;",
     emitter.expect("template parameters", "template<MACRO(), MACRO>")
   );
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
   split(
     "template< MACRO(ARG), MACRO() >;",
     emitter.expect("template parameters", "template<MACRO(ARG), MACRO()>")
   );
+  tearDown(emitter);
+});
+
+test("singleParameter", t => {
+  let emitter = setUp(t);
   split(
     "template< MACRO(), MACRO >;",
     emitter.expect("template parameters", "template<MACRO(), MACRO>")
