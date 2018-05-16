@@ -23,11 +23,6 @@ test("singleParameter", t => {
 });
 
 test("singleParameter", t => {
-  let emitter = setUp(t);
-  split(
-    "template<class A>;",
-    emitter.expect("template parameters", "template<class A>")
-  );
 
   // emitter.expect( 'template parameters', 'template<class A>' );
   // split( 'template<class A> void text( A a ) {}', emitter );
@@ -35,7 +30,10 @@ test("singleParameter", t => {
   // emitter.expect( 'template parameters', 'template<class A>' );
   // split( 'template<class A> void text( A a );', emitter );
 
-  tearDown(emitter);
+  tearDown(split(
+    "template<class A>;",
+    setUp(t).expect("template parameters", "template<class A>")
+  ));
 });
 
 test("multipleParameters", t => {
