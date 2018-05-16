@@ -9,28 +9,23 @@ var assert = require("assert"),
   split = base.split;
 
 test("defineNamespace", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expect("define namespace", {
       name: "namespace hello ",
       code: " this is it "
     });
-
-  split("namespace hello { this is it }", emitter);
-  tearDown(emitter);
+  tearDown(split("namespace hello { this is it }", emitter));
 });
 
 test("defineEmptyNamespace", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expect("define namespace", { name: "namespace hello ", code: "" });
 
   tearDown(split("namespace hello {}", emitter));
 });
 
 test("defineTypeWithStatement", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expect("define type", {
       name: "struct hello ",
       code: " unsigned world; "
@@ -40,61 +35,52 @@ test("defineTypeWithStatement", t => {
 });
 
 test("defineType", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expect("define type", { name: "struct cya ", code: " yes" });
 
   tearDown(split("struct cya { yes}", emitter));
 });
 
 test("defineSubType", t => {
-  let emitter = setUp(t);
-  emitter.expect("define type", {
-    name: "struct cya ",
-    meta: " blu ",
-    code: " yes "
+  let emitter = setUp(t)
+    .expect("define type", {
+      name: "struct cya ",
+      meta: " blu ",
+      code: " yes "
   });
 
   tearDown(split("struct cya : blu { yes }", emitter));
 });
 
 test("defineFunction", t => {
-  let emitter = setUp(t);
-  emitter
+  let emitter = setUp(t)
     .expect("define function", { name: "void foo() ", code: " do something " });
 
   tearDown(split("void foo() { do something }", emitter));
 });
 
 test("dontDefineFunctionOnIf", t => {
-  let emitter = setUp(t);
-  emitter.expectNot("define function");
-
+  let emitter = setUp(t).expectNot("define function");
   tearDown(split("if(hello){what up now;}", emitter));
 });
 
 test("dontDefineFunctionOnSwitch", t => {
-  let emitter = setUp(t);
-  emitter.expectNot("define function");
-
+  let emitter = setUp(t).expectNot("define function");
   tearDown(split('switch(hello){case "what":}', emitter));
 });
 
 test("dontDefineFunctionOnFor", t => {
   let emitter = setUp(t).expectNot("define function");
-
   tearDown(split('for(hello, bye){case "what":}', emitter));
 });
 
 test("dontDefineFunctionOnWhile", t => {
   let emitter = setUp(t).expectNot("define function");
-
   tearDown(split('while(hello, bye){case "what":}', emitter));
 });
 
 test("dontDefineFunctionOnDo", t => {
   let emitter = setUp(t).expectNot("define function");
-
   tearDown(split('do(hello, bye){case "what":}', emitter));
 });
 
