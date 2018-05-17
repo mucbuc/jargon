@@ -10,29 +10,29 @@ var assert = require("assert"),
 test("declareType", t => {
   let e = setUp(t)
     .expect("declare type");
-  tearDown(split("struct bla;", e));
+  splitCheck("struct bla;", e);
 });
 
 test("declareFunction", t => {
   let e = setUp(t)
     .expect("declare function", "void foo()");
-  tearDown(split("void foo();", e));
+  splitCheck("void foo();", e);
 });
 
 test("declareConstFunction", t => {
   let e = setUp(t)
     .expect("declare function", "void foo() const");
-  tearDown(split("void foo() const;", e));
+  splitCheck("void foo() const;", e);
 });
 
 test("declareNot1", t => {
   let e = setUp(t)
     .expect("code line");
-  tearDown(split("bla bla;", e));
+  splitCheck("bla bla;", e);
 });
 
 test("declareNot2", t => {
   let e = setUp(t)
     .expect("code line");
-  tearDown(split("bla += bla();", e));
+  splitCheck("bla += bla();", e);
 });

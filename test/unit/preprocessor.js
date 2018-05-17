@@ -7,21 +7,21 @@ var assert = require("assert"),
   setUp = base.setUp,
   tearDown = base.tearDown,
   test = base.test,
-  split = base.split;
+  splitCheck = base.splitCheck;
 
 test("preprocessorSingleLine", t => {
   let emitter = setUp(t).expect("preprocess", "#define hello hello\n");
-  tearDown(split("#define hello hello\n", emitter));
+  splitCheck("#define hello hello\n", emitter);
 });
 
 test("preprocessorMultiple", t => {
   let emitter = setUp(t)
     .expect("preprocess")
     .repeat(1);
-  tearDown(split("#define A\n#define B\n", emitter));
+  splitCheck("#define A\n#define B\n", emitter);
 });
 
 test("preprocessorMultiLine", t => {
   let emitter = setUp(t).expect("preprocess", "#define hello hello\\\nhello\n");
-  tearDown(split("#define hello hello\\\nhello\n", emitter));
+  splitCheck("#define hello hello\\\nhello\n", emitter);
 });

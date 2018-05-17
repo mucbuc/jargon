@@ -9,17 +9,17 @@ var assert = require("assert"),
   split = base.split;
 
 test("singleParameter", t => {
-  tearDown(split(
+  splitCheck(
     "template<class A>",
     setUp(t).expect("template parameters", "template<class A>")
-  ));
+  );
 });
 
 test("singleParameter", t => {
-  tearDown(split(
+  splitCheck(
     "template<class A>{",
     setUp(t).expect("template parameters", "template<class A>")
-  ));
+  );
 });
 
 test("singleParameter", t => {
@@ -30,17 +30,17 @@ test("singleParameter", t => {
   // emitter.expect( 'template parameters', 'template<class A>' );
   // split( 'template<class A> void text( A a );', emitter );
 
-  tearDown(split(
+  splitCheck(
     "template<class A>;",
     setUp(t).expect("template parameters", "template<class A>")
-  ));
+  );
 });
 
 test("multipleParameters", t => {
-  tearDown(split(
+  splitCheck(
     "template< class A, class B>",
     setUp(t).expect("template parameters", "template<class A, class B>")
-  ));
+  );
 });
 
 test("singleParameter", t => {
@@ -58,24 +58,24 @@ test("singleParameter", t => {
   // emitter.expect( 'template parameters', 'template<class A, class B>' );
   // split( 'template< class A, class B> void text( A a ) {', emitter );
 
-  tearDown(split(
+  splitCheck(
     "template< class A, class B>{",
     setUp(t).expect("template parameters", "template<class A, class B>")
-  ));
+  );
 });
 
 test("macroParameters", t => {
-  tearDown(split(
+  splitCheck(
     "template< MACRO(), MACRO >",
     setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
-  ));
+  );
 });
 
 test("singleParameter", t => {
-  tearDown(split(
+  splitCheck(
     "template< MACRO(), MACRO >;",
     setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
-  ));
+  );
 });
 
 test("singleParameter", t => {
@@ -86,20 +86,18 @@ test("singleParameter", t => {
 });
 
 test("singleParameter", t => {
-  tearDown(split(
+  splitCheck(
     "template< MACRO(), MACRO >;",
     setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
-  ));
+  );
 });
 
 test("templateNestedParameters", t => {
-  tearDown(
-    split(
-      "template< template< typename >, template< typename > >",
-      setUp(t).expect(
-        "template parameters",
-        "template<template< typename >, template< typename >>"
-      )
+  splitCheck(
+    "template< template< typename >, template< typename > >",
+    setUp(t).expect(
+      "template parameters",
+      "template<template< typename >, template< typename >>"
     )
   );
 });

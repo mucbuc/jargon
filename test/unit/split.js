@@ -9,13 +9,14 @@ var assert = require("assert"),
   setUp = base.setUp,
   tearDown = base.tearDown,
   test = base.test,
-  split = base.split;
+  split = base.split
+  splitCheck = base.splitCheck;
 
 test("commentBlockPreprocessor", t => {
   let e = setUp(t)
     .expect("comment")
     .expect("preprocess");
-  tearDown(split("/**/#endif", e));
+  splitCheck("/**/#endif", e);
 });
 
 test("commentBlockFormatPreprocessor", t => {
@@ -24,21 +25,21 @@ test("commentBlockFormatPreprocessor", t => {
     .expect("format")
     .expect("preprocess");
 
-  tearDown(split("/**/ #endif", e));
+  splitCheck("/**/ #endif", e);
 });
 
 test("readSampleFileTemplate", t => {
   let e = setUp(t)
     .expect("template parameters")
     .expect("declare function");
-  tearDown(split(`template<class T>void foo(T);`, e));
+  splitCheck(`template<class T>void foo(T);`, e);
 });
 
 test("PreprocessFollowedByBlockComment", t => {
   let e = setUp(t);
 
   e.expect("preprocess").expect("comment");
-  tearDown(split("#define SOB 1 /* hey */", e));
+  splitCheck("#define SOB 1 /* hey */", e);
 });
 
 test("PreprocessFollowedByLineComment", t => {
@@ -48,19 +49,19 @@ test("PreprocessFollowedByLineComment", t => {
     .expect("preprocess")
     .expect("comment")
     .expect("format");
-  tearDown(split("#define SOB 1 // hey\n", e));
+  splitCheck("#define SOB 1 // hey\n", e);
 });
 
 test("PreprocessFollowedByLineCommentWithoutNewLine", t => {
   let e = setUp(t);
 
   e.expect("preprocess").expect("comment");
-  tearDown(split("#define SOB 1 // hey", e));
+  splitCheck("#define SOB 1 // hey", e);
 });
 
 test("SingleDeclaration", t => {
   let e = setUp(t).expect("declare type", "struct hello");
-  tearDown(split("struct hello;", e));
+  splitCheck("struct hello;", e);
 });
 
 test("namespaceTree", t => {
@@ -78,7 +79,7 @@ test("namespaceTree", t => {
     split(context.code, e);
   });
 
-  tearDown(split("namespace outside{ namespace inside {} }", e));
+  splitCheck("namespace outside{ namespace inside {} }", e);
 });
 
 test("namespaceDeclaration", t => {
@@ -97,7 +98,7 @@ test("namespaceDeclaration", t => {
       split(context.code, e);
     });
   });
-  tearDown(split("namespace outside{ struct hello; }", e));
+  splitCheck("namespace outside{ struct hello; }", e);
 });
 
 test("NestedNamespaces", t => {
@@ -112,7 +113,7 @@ test("NestedNamespaces", t => {
       e.expect("format");
       split(context.code, e);
     });
-  tearDown(split("namespace outside { namespace inside {} }", e));
+  splitCheck("namespace outside { namespace inside {} }", e);
 });
 
 test("DeclarationsAndDefinitions", t => {
@@ -120,7 +121,7 @@ test("DeclarationsAndDefinitions", t => {
   split("struct hello;", e);
 
   e.expect("define type", { name: "struct hello", code: "" });
-  tearDown(split("struct hello{};", e));
+  splitCheck("struct hello{};", e);
 });
 
 test("NestedTypes", t => {
@@ -128,7 +129,7 @@ test("NestedTypes", t => {
     name: "struct outside ",
     code: " struct inside {}; "
   });
-  tearDown(split("struct outside { struct inside {}; };", e));
+  splitCheck("struct outside { struct inside {}; };", e);
 });
 
 test("TypeWithFormat", t => {
@@ -136,7 +137,7 @@ test("TypeWithFormat", t => {
     .expect("define type", { name: "struct inside ", code: "" })
     .expect("format");
 
-  tearDown(split("struct inside {}; ", e));
+  splitCheck("struct inside {}; ", e);
 });
 
 test("MemberFunctionDeclare", t => {
@@ -144,12 +145,12 @@ test("MemberFunctionDeclare", t => {
   split("struct text{void member();};", e);
 
   e.expect("declare function", "void member()");
-  tearDown(split("void member();", e));
+  splitCheck("void member();", e);
 });
 
 test("FunctionDeclare", t => {
   let e = setUp(t).expect("declare function", "void foo()");
-  tearDown(split("void foo();", e));
+  splitCheck("void foo();", e);
 });
 
 test("FunctionDefine", t => {
@@ -157,14 +158,14 @@ test("FunctionDefine", t => {
     name: "void foo() ",
     code: " hello "
   });
-  tearDown(split("void foo() { hello }", e));
+  splitCheck("void foo() { hello }", e);
 });
 
 test("declareTypeAfterPreproesorDirective", t => {
   let e = setUp(t)
     .expect("preprocess")
     .expect("declare type", "struct bla");
-  tearDown(split("#define hello asd\nstruct bla;", e));
+  splitCheck("#define hello asd\nstruct bla;", e);
 });
 
 test("declareTypeAfterPreproesorDirectives", t => {
@@ -172,7 +173,7 @@ test("declareTypeAfterPreproesorDirectives", t => {
     .expect("preprocess")
     .repeat(1)
     .expect("declare type", "struct bla");
-  tearDown(split("#define hello asd\n#define hello\\nasdfasd\nstruct bla;", e));
+  splitCheck("#define hello asd\n#define hello\\nasdfasd\nstruct bla;", e);
 });
 
 test("defineTypeAfterDeclareType", t => {
@@ -181,73 +182,63 @@ test("defineTypeAfterDeclareType", t => {
     .expect("format")
     .expect("define type", { name: "struct hey ", code: " joe " })
     .expect("format");
-  tearDown(split("struct jimmy; struct hey { joe } ", e));
+  splitCheck("struct jimmy; struct hey { joe } ", e);
 });
 
 
 test("commenterSingleLineWithSpace", t => {
-  tearDown(
-    split(
-      "  // hello\n",
-      setUp(t)
-        .expect("format", "  ")
-        .expect("comment", "// hello")
-        .expect("format")
-    )
+  splitCheck(
+    "  // hello\n",
+    setUp(t)
+      .expect("format", "  ")
+      .expect("comment", "// hello")
+      .expect("format")
   );
 });
 
 test("commenterSingleLineWithoutNewLine", t => {
-  tearDown(split("// hello", setUp(t).expect("comment")));
+  splitCheck("// hello", setUp(t).expect("comment"));
 });
 
 test("commenterTwoSingleLineWithoutNewLine", t => {
-  tearDown(
-    split(
-      "// hello\n//hello",
-      setUp(t)
-        .expect("comment")
-        .expect("format")
-        .expect("comment")
-    )
+  splitCheck(
+    "// hello\n//hello",
+    setUp(t)
+      .expect("comment")
+      .expect("format")
+      .expect("comment")
   );
 });
 
 test("defineTypeAfterStatement", t => {
-  tearDown(
-    split(
-      "typedef hello string; struct cya { inside }",
-      setUp(t)
-        .expect("code line")
-        .expect("format")
-        .expect("define type", { name: "struct cya ", code: " inside " })
-    )
+  splitCheck(
+    "typedef hello string; struct cya { inside }",
+    setUp(t)
+      .expect("code line")
+      .expect("format")
+      .expect("define type", { name: "struct cya ", code: " inside " })
   );
 });
 
 test("defineNamespaceWithWhite", t => {
-  tearDown(
-    split(
-      " namespace hello { this is it }",
-      setUp(t)
-        .expect("format")
-        .expect("define namespace", {
-          name: "namespace hello ",
-          code: " this is it "
-        })
-    )
+  splitCheck(
+    " namespace hello { this is it }",
+    setUp(t)
+      .expect("format")
+      .expect("define namespace", {
+        name: "namespace hello ",
+        code: " this is it "
+      })
   );
 });
 
 test("preprocessorAfterComment", t => {
-  tearDown(
-    split(
-      "/*yo*/ #define BLA\n",
-      setUp(t)
-        .expect("comment")
-        .expect("format")
-        .expect("preprocess")
-    )
+  splitCheck(
+    "/*yo*/ #define BLA\n",
+    setUp(t)
+      .expect("comment")
+      .expect("format")
+      .expect("preprocess")
   );
 });
 
@@ -313,7 +304,7 @@ namespace hello
 
 #endif  // INCLUDE_GUARD`;
 
-  tearDown(split(source, e));
+  splitCheck(source, e);
 });
 
 test( 'templateAndFormat', (t) => {
@@ -324,12 +315,10 @@ test( 'templateAndFormat', (t) => {
     "template<class A> text text {",
     emitter.expect("template parameters", "template<class A>").expect("format")
   );
-  split(
+  splitCheck(
     "template<class A> ;",
     emitter.expect("template parameters", "template<class A>").expect("format")
   );
-
-  tearDown(emitter);
 });
 
 test( 'templateAndCode', (t) => {
@@ -344,12 +333,10 @@ test( 'templateAndCode', (t) => {
       .expect("code line", "text")
   );
 
-  split(
+  splitCheck(
     "template< class A, class B> text{",
     emitter
       .expect("template parameters", "template<class A, class B>")
       .expect("format")
   );
-
-  tearDown(emitter);
 });

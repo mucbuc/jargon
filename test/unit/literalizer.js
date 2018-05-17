@@ -5,16 +5,16 @@ var assert = require("assert"),
   setUp = base.setUp,
   tearDown = base.tearDown,
   test = base.test,
-  split = base.split;
+  splitCheck = base.splitCheck;
 
 test("stringLiteral", t => {
   let e = setUp(t)
     .expect("literal", "struct hello;");
-  tearDown(split('"struct hello;"', e));
+  splitCheck('"struct hello;"', e);
 });
 
 test("stringLiteralWithQutationMarks", t => {
   let e = setUp(t)
     .expect("literal", 'struct hel/"lo;');
-  tearDown(split('"struct hel/"lo;"', e));
+  splitCheck('"struct hel/"lo;"', e);
 });

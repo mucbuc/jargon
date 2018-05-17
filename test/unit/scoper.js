@@ -11,92 +11,78 @@ var assert = require("assert"),
 assert(typeof Scoper === "function");
 
 test("emptyScope", t => {
-  tearDown(
-    split(
-      "namespace bla {}",
-      setUp(t)
-        .expect("open")
-        .expect("close", "")
-        .expect("end")
-    )
+  splitCheck(
+    "namespace bla {}",
+    setUp(t)
+      .expect("open")
+      .expect("close", "")
+      .expect("end")
   );
 });
 
 test("statementScope", t => {
-  tearDown(
-    split(
-      "namespace bla { hello; }",
-      setUp(t)
-        .expect("open")
-        .expect("close", "hello;")
-        .expect("end")
-    )
+  splitCheck(
+    "namespace bla { hello; }",
+    setUp(t)
+      .expect("open")
+      .expect("close", "hello;")
+      .expect("end")
   );
 });
 
 test("basicScope", t => {
-  tearDown(
-    split(
-      "namespace bla { hello }",
-      setUp(t)
-        .expect("open")
-        .expect("close", "hello")
-        .expect("end")
-    )
+  splitCheck(
+    "namespace bla { hello }",
+    setUp(t)
+      .expect("open")
+      .expect("close", "hello")
+      .expect("end")
   );
 });
 
 test("nestedScopes", t => {
-  tearDown(
-    split(
-      "namespace hello{ namespace world{ namespace {} } }",
-      setUp(t)
-        .expect("open")
-        .expect("close", "namespace world{ namespace {} }")
-        .expect("end")
-    )
+  splitCheck(
+    "namespace hello{ namespace world{ namespace {} } }",
+    setUp(t)
+      .expect("open")
+      .expect("close", "namespace world{ namespace {} }")
+      .expect("end")
   );
 });
 
 test("aggregateScopes", t => {
-  tearDown(
-    split(
-      "namespace outside{ namespace inside1 {} namespace inside2 {} }",
-      setUp(t)
-        .expect("open")
-        .expect("close", "namespace inside1 {} namespace inside2 {}")
-        .expect("end")
-    )
+  splitCheck(
+    "namespace outside{ namespace inside1 {} namespace inside2 {} }",
+    setUp(t)
+      .expect("open")
+      .expect("close", "namespace inside1 {} namespace inside2 {}")
+      .expect("end")
   );
 });
 
 test("alternativeScopeTag", t => {
-  tearDown(
-    split(
-      "template< typename >",
-      setUp(t)
-        .expect("open")
-        .expect("close", "typename")
-        .expect("end"),
-      { open: "<", close: ">" }
-    )
+  splitCheck(
+    "template< typename >",
+    setUp(t)
+      .expect("open")
+      .expect("close", "typename")
+      .expect("end"),
+    { open: "<", close: ">" }
   );
 });
 
 test("alternativeScopeTagNested", t => {
-  tearDown(
-    split(
-      "template< template< typename > >",
-      setUp(t)
-        .expect("open")
-        .expect("close", "template< typename >")
-        .expect("end"),
-      { open: "<", close: ">" }
-    )
+  splitCheck(
+    "template< template< typename > >",
+    setUp(t)
+      .expect("open")
+      .expect("close", "template< typename >")
+      .expect("end"),
+    { open: "<", close: ">" }
   );
 });
 
-function split(code, emitter, rules) {
+function splitCheck(code, emitter, rules) {
   var scoper;
 
   if (typeof rules === "undefined") {
@@ -117,5 +103,5 @@ function split(code, emitter, rules) {
     rules
   );
 
-  return emitter;
+  tearDown(emitter);
 }
