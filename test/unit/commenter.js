@@ -5,31 +5,32 @@ let fluke = require("flukejs"),
   setUp = base.setUp,
   tearDown = base.tearDown,
   test = base.test,
-  split = base.split;
+  split = base.split
+  splitCheck = base.splitCheck;
 
 test("commenterSingleLine", t => {
   let emitter = setUp(t).expect("comment", "// hello");
-  tearDown(split("// hello", emitter));
+  splitCheck("// hello", emitter);
 });
 
 test("commentBlockWithCommentLine", t => {
   let emitter = setUp(t)
     .expect("comment", "/*hello*/")
     .expect("comment", "//b");
-  tearDown(split("/*hello*/a//b", emitter));
+  splitCheck("/*hello*/a//b", emitter);
 });
 
 test("commentBlock", t => {
   let emitter = setUp(t).expect("comment", "/*hello*/");
-  tearDown(split("/*hello*/", emitter));
+  splitCheck("/*hello*/", emitter);
 });
 
 test("commentBlockWithNewLine", t => {
   let emitter = setUp(t).expect("comment", "/*\n*/");
-  tearDown(split("/*\n*/", emitter));
+  splitCheck("/*\n*/", emitter);
 });
 
 test("commentBlockWithContent", t => {
   let emitter = setUp(t).expect("comment", "/*\nhello*/");
-  tearDown(split("/*\nhello*/", emitter));
+  splitCheck("/*\nhello*/", emitter);
 });

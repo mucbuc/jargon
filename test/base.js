@@ -11,6 +11,10 @@ function split(code, emitter) {
   return emitter;
 }
 
+function splitCheck(code, emitter) {
+  tearDown( split(code, emitter) );
+}
+
 function setUp(t) {
   return new SeqExpector(t);
 }
@@ -23,5 +27,6 @@ module.exports = {
   setUp,
   test,
   tearDown,
-  split
+  split,
+  splitCheck
 };
