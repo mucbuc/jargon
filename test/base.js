@@ -23,16 +23,9 @@ function tearDown(fixture) {
   fixture.check();
 }
 
-function test(name, cb) {
-  tapeTest(name, t => {
-    cb(setUp(t));
-  });
-};
-
 module.exports = {
   setUp,
   test : tapeTest,
-  testN : test,
   tearDown,
   split,
   splitCheck

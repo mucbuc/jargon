@@ -2,28 +2,29 @@
 
 let fluke = require("flukejs"),
   base = require("../base"),
-  test = base.testN,
-  splitCheck = base.splitCheck;
+  test = base.test,
+  splitCheck = base.splitCheck
+  setUp = base.setUp;
 
 test("commenterSingleLine", t => {
-  splitCheck("// hello", t.expect("comment", "// hello"));
+  splitCheck("// hello", setUp(t).expect("comment", "// hello"));
 });
 
 test("commentBlockWithCommentLine", t => {
   splitCheck(
     "/*hello*/a//b",
-    t.expect("comment", "/*hello*/").expect("comment", "//b")
+    setUp(t).expect("comment", "/*hello*/").expect("comment", "//b")
   );
 });
 
 test("commentBlock", t => {
-  splitCheck("/*hello*/", t.expect("comment", "/*hello*/"));
+  splitCheck("/*hello*/", setUp(t).expect("comment", "/*hello*/"));
 });
 
 test("commentBlockWithNewLine", t => {
-  splitCheck("/*\n*/", t.expect("comment", "/*\n*/"));
+  splitCheck("/*\n*/", setUp(t).expect("comment", "/*\n*/"));
 });
 
 test("commentBlockWithContent", t => {
-  splitCheck("/*\nhello*/", t.expect("comment", "/*\nhello*/"));
+  splitCheck("/*\nhello*/", setUp(t).expect("comment", "/*\nhello*/"));
 });
