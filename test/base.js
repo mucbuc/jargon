@@ -16,7 +16,7 @@ function setUp(t) {
 }
 
 function tearDown(fixture) {
-  fixture.check(fixture);
+  fixture.check();
 }
 
 module.exports = {
