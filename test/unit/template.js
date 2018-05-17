@@ -4,7 +4,6 @@ var assert = require("assert"),
   fluke = require("flukejs"),
   base = require("../base"),
   setUp = base.setUp,
-  tearDown = base.tearDown,
   test = base.test,
   split = base.split;
 
@@ -44,10 +43,10 @@ test("multipleParameters", t => {
 });
 
 test("singleParameter", t => {
-  tearDown(split(
+  splitCheck(
     "template< class A, class B>;",
     setUp(t).expect("template parameters", "template<class A, class B>")
-  ));
+  );
 });
 
 test("singleParameter", t => {
@@ -79,10 +78,10 @@ test("singleParameter", t => {
 });
 
 test("singleParameter", t => {
-  tearDown(split(
+  splitCheck(
     "template< MACRO(ARG), MACRO() >;",
     setUp(t).expect("template parameters", "template<MACRO(ARG), MACRO()>")
-  ));
+  );
 });
 
 test("singleParameter", t => {
