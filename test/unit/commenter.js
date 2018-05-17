@@ -2,35 +2,28 @@
 
 let fluke = require("flukejs"),
   base = require("../base"),
-  setUp = base.setUp,
-  tearDown = base.tearDown,
-  test = base.test,
-  split = base.split
+  test = base.testN,
   splitCheck = base.splitCheck;
 
 test("commenterSingleLine", t => {
-  let emitter = setUp(t).expect("comment", "// hello");
-  splitCheck("// hello", emitter);
+  splitCheck("// hello", t.expect("comment", "// hello"));
 });
 
 test("commentBlockWithCommentLine", t => {
-  let emitter = setUp(t)
-    .expect("comment", "/*hello*/")
-    .expect("comment", "//b");
-  splitCheck("/*hello*/a//b", emitter);
+  splitCheck(
+    "/*hello*/a//b",
+    t.expect("comment", "/*hello*/").expect("comment", "//b")
+  );
 });
 
 test("commentBlock", t => {
-  let emitter = setUp(t).expect("comment", "/*hello*/");
-  splitCheck("/*hello*/", emitter);
+  splitCheck("/*hello*/", t.expect("comment", "/*hello*/"));
 });
 
 test("commentBlockWithNewLine", t => {
-  let emitter = setUp(t).expect("comment", "/*\n*/");
-  splitCheck("/*\n*/", emitter);
+  splitCheck("/*\n*/", t.expect("comment", "/*\n*/"));
 });
 
 test("commentBlockWithContent", t => {
-  let emitter = setUp(t).expect("comment", "/*\nhello*/");
-  splitCheck("/*\nhello*/", emitter);
+  splitCheck("/*\nhello*/", t.expect("comment", "/*\nhello*/"));
 });

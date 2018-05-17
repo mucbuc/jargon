@@ -6,7 +6,8 @@ var assert = require("assert"),
   setUp = base.setUp,
   tearDown = base.tearDown,
   test = base.test,
-  split = base.split;
+  split = base.split
+  splitCheck = base.splitCheck;
 
 assert(typeof format === "function");
 

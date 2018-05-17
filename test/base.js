@@ -1,7 +1,7 @@
 let splitjs = require("./../src/split"),
   SeqExpector = require("expector").SeqExpector,
   Expector = require("expector").Expector,
-  test = require("tape");
+  tapeTest = require("tape");
 
 function split(code, emitter) {
   splitjs(code, (type, value) => {
@@ -23,9 +23,16 @@ function tearDown(fixture) {
   fixture.check();
 }
 
+function test(name, cb) {
+  tapeTest(name, t => {
+    cb(setUp(t));
+  });
+};
+
 module.exports = {
   setUp,
-  test,
+  test : tapeTest,
+  testN : test,
   tearDown,
   split,
   splitCheck

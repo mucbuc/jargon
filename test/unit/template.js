@@ -5,7 +5,8 @@ var assert = require("assert"),
   base = require("../base"),
   setUp = base.setUp,
   test = base.test,
-  split = base.split;
+  split = base.split
+  splitCheck = base.splitCheck;
 
 test("singleParameter", t => {
   splitCheck(
