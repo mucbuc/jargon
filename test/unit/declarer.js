@@ -36,7 +36,21 @@ test("declareOperator>>(int a)", t => {
   );
 });
 
-test("declareWeirdness", t => {
+test("declareFunctionWeirdnessAsResult", t => {
+  splitCheck(
+    "T & operator>>(T & s, context<U, V> &)",
+    setUp(t).expect("declare function", "T & operator>>(T & s, context<U, V> &)")
+  );
+});
+
+test("declareFunctionlAmpersandSpaceAsResult", t => {
+  splitCheck(
+    "T& operator>>(T & s, context<U, V> &)",
+    setUp(t).expect("declare function", "T& operator>>(T & s, context<U, V> &)")
+  );
+});
+
+test("declareFunctionSpaceAmperSandAsResult", t => {
   splitCheck(
     "T &operator>>(T & s, context<U, V> &)",
     setUp(t).expect("declare function", "T &operator>>(T & s, context<U, V> &)")
