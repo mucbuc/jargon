@@ -8,35 +8,33 @@ var assert = require("assert"),
   splitCheck = base.splitCheck;
 
 test("declareType", t => {
-  let e = setUp(t)
-    .expect("declare type");
+  let e = setUp(t).expect("declare type");
   splitCheck("struct bla;", e);
 });
 
 test("declareFunction", t => {
-  let e = setUp(t)
-    .expect("declare function", "void foo()");
+  let e = setUp(t).expect("declare function", "void foo()");
   splitCheck("void foo();", e);
 });
 
 test("declareConstFunction", t => {
-  let e = setUp(t)
-    .expect("declare function", "void foo() const");
+  let e = setUp(t).expect("declare function", "void foo() const");
   splitCheck("void foo() const;", e);
 });
 
 test.only("declareOperator>", t => {
-  splitCheck("void operator>();", setUp(t).expect("declare function", "void operator>()"));
+  splitCheck(
+    "void operator>();",
+    setUp(t).expect("declare function", "void operator>()")
+  );
 });
 
 test("declareNot1", t => {
-  let e = setUp(t)
-    .expect("code line");
+  let e = setUp(t).expect("code line");
   splitCheck("bla bla;", e);
 });
 
 test("declareNot2", t => {
-  let e = setUp(t)
-    .expect("code line");
+  let e = setUp(t).expect("code line");
   splitCheck("bla += bla();", e);
 });
