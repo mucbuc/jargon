@@ -4,7 +4,9 @@ let split = require("./src/split");
 
 module.exports = (inString, outStream) => {
   return new Promise((resolve, reject) => {
-    split(inString, function(event, obj) {
+    split(inString, tokenHandler);
+
+    function tokenHandler(event, obj) {
       switch (event) {
         case "declare type":
         case "declare function": {
@@ -12,11 +14,15 @@ module.exports = (inString, outStream) => {
           break;
         }
         case "define type":
-          outStream.write(obj.name + "{" + obj.code + "};");
+          outStream.write(obj.name + "{");
+          split(obj.code, tokenHandler);
+          outStream.write("};");
           break;
         case "define namespace":
         case "define function":
-          outStream.write(obj.name + "{" + obj.code + "}");
+          outStream.write(obj.name + "{");
+          split(obj.code, tokenHandler);
+          outStream.write("}");
           break;
         case "code line":
         case "format":
@@ -28,7 +34,11 @@ module.exports = (inString, outStream) => {
           console.log("end");
           resolve();
           break;
+        case "template parameters":
+          outStream.write(obj);
+          break;
       }
-    });
+    }
+
   });
 };

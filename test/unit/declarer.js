@@ -25,6 +25,10 @@ test("declareConstFunction", t => {
   splitCheck("void foo() const;", e);
 });
 
+test.only("declareOperator>", t => {
+  splitCheck("void operator>();", setUp(t).expect("declare function", "void operator>()"));
+});
+
 test("declareNot1", t => {
   let e = setUp(t)
     .expect("code line");
