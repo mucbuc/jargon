@@ -12,8 +12,11 @@
     "url": "git://github.com/mucbuc/jargon"
   },
   "dependencies": {
+    "flukejs": "*",
+    "yargs": "*" 
+  },
+  "devDependencies": {
     "tape": "*",
-    "flukejs": "*", 
     "expector": "*"
   }
 }
