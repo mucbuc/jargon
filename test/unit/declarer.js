@@ -36,10 +36,10 @@ test("declareOperator>>(int a)", t => {
   );
 });
 
-test.only("declareWeirdness", t => {
+test("declareWeirdness", t => {
   splitCheck(
-    "T & operator>>(T & s, context<U, V> &)",
-    setUp(t).expect("declare function", "T & operator>>(T & s, context<U, V> &)")
+    "T &operator>>(T & s, context<U, V> &)",
+    setUp(t).expect("declare function", "T &operator>>(T & s, context<U, V> &)")
   );
 });
 
