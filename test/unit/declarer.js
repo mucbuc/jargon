@@ -36,6 +36,13 @@ test("declareOperator>>(int a)", t => {
   );
 });
 
+test.only("declareWeirdness", t => {
+  splitCheck(
+    "T & operator>>(T & s, context<U, V> &)",
+    setUp(t).expect("declare function", "T & operator>>(T & s, context<U, V> &)")
+  );
+});
+
 test("declareNot1", t => {
   let e = setUp(t).expect("code line");
   splitCheck("bla bla;", e);
