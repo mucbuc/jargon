@@ -8,18 +8,9 @@ module.exports = (inString, outStream) => {
 
     function tokenHandler(event, obj) {
       switch (event) {
-        case "declare type":
-        case "declare function": {
-          outStream.write(obj + ";");
-          break;
-        }
-        case "define type":
-          outStream.write(obj.name + "{");
-          split(obj.code, tokenHandler);
-          outStream.write("};");
-          break;
         case "define namespace":
         case "define function":
+        case "define type":
           outStream.write(obj.name + "{");
           split(obj.code, tokenHandler);
           outStream.write("}");
@@ -28,17 +19,22 @@ module.exports = (inString, outStream) => {
         case "format":
         case "comment":
         case "preprocess":
+        case "template parameters":
+        case "declare type":
+        case "declare function":
           outStream.write(obj);
           break;
         case "end":
-          console.log("end");
           resolve();
           break;
-        case "template parameters":
-          outStream.write(obj);
-          break;
+      }
+
+      switch (event) {
+        case "declare type":
+        case "declare function":
+        case "define type":
+          outStream.write(";");
       }
     }
-
   });
 };

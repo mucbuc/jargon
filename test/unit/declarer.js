@@ -29,6 +29,13 @@ test("declareOperator>", t => {
   );
 });
 
+test("declareOperator>>(int a)", t => {
+  splitCheck(
+    "void operator>>(int a);",
+    setUp(t).expect("declare function", "void operator>>(int a)")
+  );
+});
+
 test("declareNot1", t => {
   let e = setUp(t).expect("code line");
   splitCheck("bla bla;", e);
