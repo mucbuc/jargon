@@ -7,6 +7,9 @@ module.exports = (inString, outStream) => {
     split(inString, tokenHandler);
 
     function tokenHandler(event, obj) {
+      
+      outStream.write(event);
+
       switch (event) {
         case "define namespace":
         case "define function":
@@ -34,6 +37,7 @@ module.exports = (inString, outStream) => {
         case "declare function":
         case "define type":
           outStream.write(";");
+          break;
       }
     }
   });

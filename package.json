@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "flukejs": "*",
-    "yargs": "*" 
+    "yargs": "*"
   },
   "devDependencies": {
     "tape": "*",
