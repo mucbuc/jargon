@@ -69,3 +69,21 @@ test("declareNot2", t => {
   let e = setUp(t).expect("code line");
   splitCheck("bla += bla();", e);
 });
+
+test("multiple code lines", t => {
+  splitCheck("bla bla;blu blu;", 
+    setUp(t)
+    .expect("code line", "bla bla")
+    .expect("code line", "blu blu")
+  );
+});
+
+test("multiple code lines with format", t => {
+  splitCheck("bla bla;\nblu blu;\n", 
+    setUp(t)
+    .expect("code line", "bla bla")
+    .expect("format")
+    .expect("code line", "blu blu")
+    .expect("format")
+  );
+});
