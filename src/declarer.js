@@ -40,9 +40,10 @@ function Declarer(emitter, callback) {
           assert(typeof block !== "undefined");
 
           if (isSpace(block)) {
-            callback("format", block, callback);
+            callback("format", block);
           } else {
-            format("code line", block, callback);
+            callback("code line", block);
+            //format("code line", block, callback);
           }
         }
       },

@@ -87,3 +87,10 @@ test("multiple code lines with format", t => {
     .expect("format")
   );
 });
+
+test("multiple code lines", t => {
+  splitCheck("bla bla\nblu blu;", 
+    setUp(t)
+    .expect("code line", "bla bla\nblu blu")
+  );
+});
