@@ -1,5 +1,4 @@
 /* 
-  involves test types
     - declare type
     - declare function
     - code line
@@ -30,19 +29,14 @@ function Declarer(emitter, callback) {
       request.lhs,
       (type, req) => {
         if (isType(req.lhs)) {
-          callback("declare type", req.lhs );
+          callback("declare type", req.lhs);
         } else if (isFunctionDeclaration(req.lhs)) {
           callback("declare function", req.lhs);
         } else if (req.lhs.length || req.stash.length) {
           const block =
-            req.lhs + (typeof req.stash === "undefined" ? "" : req.stash);
-          assert(typeof block !== "undefined");
-
-          if (isSpace(block)) {
-            callback("format", block);
-          } else {
-            callback("code line", block);
-          }
+              req.lhs + (typeof req.stash === "undefined" ? "" : req.stash),
+              type = isSpace(block) ? "format" : "code line";
+          callback(type, block);
         }
       },
       {
