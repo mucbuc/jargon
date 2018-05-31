@@ -3,13 +3,12 @@
     - declare type
     - declare function
     - code line
-    - format  ???? try to move
+    - format
 */
 
 const assert = require("assert"),
   regexMap = require("./regexmap").regexMap,
-  fluke = require("flukejs"),
-  format = require("./format");
+  fluke = require("flukejs");
 
 function Declarer(emitter, callback) {
   emitter.on("statement", request => {
@@ -31,9 +30,9 @@ function Declarer(emitter, callback) {
       request.lhs,
       (type, req) => {
         if (isType(req.lhs)) {
-          format("declare type", req.lhs, callback);
+          callback("declare type", req.lhs );
         } else if (isFunctionDeclaration(req.lhs)) {
-          format("declare function", req.lhs, callback);
+          callback("declare function", req.lhs);
         } else if (req.lhs.length || req.stash.length) {
           const block =
             req.lhs + (typeof req.stash === "undefined" ? "" : req.stash);
@@ -43,7 +42,6 @@ function Declarer(emitter, callback) {
             callback("format", block);
           } else {
             callback("code line", block);
-            //format("code line", block, callback);
           }
         }
       },
