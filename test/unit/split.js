@@ -214,7 +214,7 @@ test("defineTypeAfterStatement", t => {
   splitCheck(
     "typedef hello string; struct cya { inside }",
     setUp(t)
-      .expect("code line")
+      .expect("code blob")
       .expect("format")
       .expect("define type", { name: "struct cya ", code: " inside " })
   );
@@ -249,7 +249,7 @@ test("readSampleFile", t => {
     .expect("format")
     .expect("declare function")
     .expect("format")
-    .expect("code line")
+    .expect("code blob")
     .expect("format")
     .expect("define type", {
       name: "struct hello\n",
@@ -330,7 +330,7 @@ test( 'templateAndCode', (t) => {
     emitter
       .expect("template parameters", "template<class A, class B>")
       .expect("format")
-      .expect("code line", "text")
+      .expect("code blob", "text")
   );
 
   splitCheck(

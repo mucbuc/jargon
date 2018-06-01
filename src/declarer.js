@@ -1,7 +1,7 @@
 /* 
     - declare type
     - declare function
-    - code line
+    - code blob
     - format
 */
 
@@ -34,7 +34,7 @@ function Declarer(emitter, callback) {
           callback("declare function", req.lhs);
         } else if (req.lhs.length || req.stash.length) {
           const block = req.lhs + req.stash,
-            type = isSpace(block) ? "format" : "code line";
+            type = isSpace(block) ? "format" : "code blob";
           callback(type, block);
         }
       },

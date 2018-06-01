@@ -18,7 +18,7 @@ module.exports = (inString, outStream) => {
           split(obj.code, tokenHandler);
           outStream.write("}");
           break;
-        case "code line":
+        case "code blob":
         case "format":
         case "comment":
         case "preprocess":
@@ -33,7 +33,7 @@ module.exports = (inString, outStream) => {
       }
 
       switch (event) {
-        case "code line":
+        case "code blob":
         case "declare type":
         case "declare function":
         case "define type":

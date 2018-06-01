@@ -61,29 +61,29 @@ test("declareFunctionSpaceAmperSandAsResult", t => {
 });
 
 test("declareNot1", t => {
-  let e = setUp(t).expect("code line");
+  let e = setUp(t).expect("code blob");
   splitCheck("bla bla;", e);
 });
 
 test("declareNot2", t => {
-  let e = setUp(t).expect("code line");
+  let e = setUp(t).expect("code blob");
   splitCheck("bla += bla();", e);
 });
 
 test("multiple code lines", t => {
   splitCheck("bla bla;blu blu;", 
     setUp(t)
-    .expect("code line", "bla bla")
-    .expect("code line", "blu blu")
+    .expect("code blob", "bla bla")
+    .expect("code blob", "blu blu")
   );
 });
 
 test("multiple code lines with format", t => {
   splitCheck("bla bla;\nblu blu;\n", 
     setUp(t)
-    .expect("code line", "bla bla")
+    .expect("code blob", "bla bla")
     .expect("format")
-    .expect("code line", "blu blu")
+    .expect("code blob", "blu blu")
     .expect("format")
   );
 });
@@ -91,6 +91,6 @@ test("multiple code lines with format", t => {
 test("multiple code lines", t => {
   splitCheck("bla bla\nblu blu;", 
     setUp(t)
-    .expect("code line", "bla bla\nblu blu")
+    .expect("code blob", "bla bla\nblu blu")
   );
 });
