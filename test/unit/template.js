@@ -22,14 +22,18 @@ test("singleParameter", t => {
   );
 });
 
+test.skip("singleParameter function definition", t => {
+
+  splitCheck( 'template<class A> void text( A a ) {}', 
+    setUp(t).expect( 'template parameters', 'template<class A>' ) );
+});
+
+test.skip("singleParameter function declaration", t => {
+  splitCheck( 'template<class A> void text( A a );', 
+    setUp(t).expect( 'template parameters', 'template<class A>' ) );
+});
+
 test("singleParameter", t => {
-
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A> void text( A a ) {}', emitter );
-
-  // emitter.expect( 'template parameters', 'template<class A>' );
-  // split( 'template<class A> void text( A a );', emitter );
-
   splitCheck(
     "template<class A>;",
     setUp(t).expect("template parameters", "template<class A>")
@@ -50,14 +54,17 @@ test("singleParameter", t => {
   );
 });
 
-test("singleParameter", t => {
+test.skip("twoParameterFunction declaration", (t) => {
+  split( 'template< class A, class B> void text( A a );', 
+    setUp(t).expect( 'template parameters', 'template<class A, class B>' ) );
+}); 
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B> void text( A a );', emitter );
+test.skip("twoParameterFunction definition", (t) => {
+  split( 'template< class A, class B> void text( A a ) {', 
+    setUp(t).expect( 'template parameters', 'template<class A, class B>' ) );
+}); 
 
-  // emitter.expect( 'template parameters', 'template<class A, class B>' );
-  // split( 'template< class A, class B> void text( A a ) {', emitter );
-
+test("twoParameter", t => {
   splitCheck(
     "template< class A, class B>{",
     setUp(t).expect("template parameters", "template<class A, class B>")

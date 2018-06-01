@@ -8,7 +8,7 @@ module.exports = (inString, outStream) => {
 
     function tokenHandler(event, obj) {
       
-      outStream.write(event + ": ");
+      //outStream.write(event + ": ");
 
       switch (event) {
         case "define namespace":
