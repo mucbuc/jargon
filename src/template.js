@@ -18,14 +18,15 @@ function Template(emitter, callback) {
       scoper = new Scoper(rules);
 
     scoper.process(request, (type, content) => {
+      const result = request.token + request.lhs + content.trim() + rules.close;
       callback(
         "template parameters",
-        request.lhs + rules.open + content.trim() + rules.close
+        result
       );
     });
   });
 
-  return { "open template": "<" };
+  return { "open template": "template\s*<" };
 }
 
 module.exports = Template;

@@ -2,7 +2,9 @@
   "name": "jargon",
   "version": "0.0.0",
   "scripts": {
-    "test": "tape test/*.js test/**/*.js"
+    "test": "tape test/*.js test/**/*.js",
+    "format": "prettier --write *.js **/*.js",
+    "lint": "jshint src/*.js -c conf.json"
   },
   "main": "./src/split.js",
   "repository": {
@@ -10,8 +12,11 @@
     "url": "git://github.com/mucbuc/jargon"
   },
   "dependencies": {
+    "flukejs": "*",
+    "yargs": "*"
+  },
+  "devDependencies": {
     "tape": "*",
-    "flukejs": "*", 
     "expector": "*"
   }
 }

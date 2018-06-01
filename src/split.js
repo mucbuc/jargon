@@ -24,7 +24,7 @@ function split(code, callback) {
   forwardContent("define function");
   forwardContent("define namespace");
 
-  mergeRules(Formatter(emitter, callback)); 
+  mergeRules(Formatter(emitter, callback));
 
   fluke.splitAll(
     code,

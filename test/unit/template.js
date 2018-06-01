@@ -3,90 +3,108 @@
 var assert = require("assert"),
   fluke = require("flukejs"),
   base = require("../base"),
-  setUpU = base.setUpU,
-  tearDown = base.tearDown,
+  setUp = base.setUp,
   test = base.test,
-  split = base.split;
+  split = base.split
+  splitCheck = base.splitCheck;
 
 test("singleParameter", t => {
-  let emitter = setUpU(t);
+  splitCheck(
+    "template<class A>",
+    setUp(t).expect("template parameters", "template<class A>")
+  );
+});
 
-  emitter
-  .expect( 'template parameters', 'template<class A>' );
-  split( 'template<class A>', emitter );
+test("singleParameter", t => {
+  splitCheck(
+    "template<class A>{",
+    setUp(t).expect("template parameters", "template<class A>")
+  );
+});
 
-  emitter.expect( 'template parameters', 'template<class A>' );
-  split( 'template<class A>{', emitter );
+test.skip("singleParameter function definition", t => {
 
-  emitter.expect( 'template parameters', 'template<class A>' );
-  split( 'template<class A>;', emitter );
+  splitCheck( 'template<class A> void text( A a ) {}', 
+    setUp(t).expect( 'template parameters', 'template<class A>' ) );
+});
 
-  emitter.expect( 'template parameters', 'template<class A>' );
-  split( 'template<class A> text text {', emitter );
+test.skip("singleParameter function declaration", t => {
+  splitCheck( 'template<class A> void text( A a );', 
+    setUp(t).expect( 'template parameters', 'template<class A>' ) );
+});
 
-  emitter.expect( 'template parameters', 'template<class A>' );
-  split( 'template<class A> text text;', emitter );
-
-  emitter.expect( 'template parameters', 'template<class A>' );
-  split( 'template<class A> void text( A a ) {', emitter );
-
-  emitter.expect( 'template parameters', 'template<class A>' );
-  split( 'template<class A> void text( A a );', emitter );
-
-  tearDown(emitter);
+test("singleParameter", t => {
+  splitCheck(
+    "template<class A>;",
+    setUp(t).expect("template parameters", "template<class A>")
+  );
 });
 
 test("multipleParameters", t => {
-  let emitter = setUpU(t);
+  splitCheck(
+    "template< class A, class B>",
+    setUp(t).expect("template parameters", "template<class A, class B>")
+  );
+});
 
-  emitter.expect("template parameters", "template<class A, class B>");
-  split("template< class A, class B>", emitter);
+test("singleParameter", t => {
+  splitCheck(
+    "template< class A, class B>;",
+    setUp(t).expect("template parameters", "template<class A, class B>")
+  );
+});
 
-  emitter.expect( 'template parameters', 'template<class A, class B>' );
-  split( 'template< class A, class B>;', emitter );
+test.skip("twoParameterFunction declaration", (t) => {
+  split( 'template< class A, class B> void text( A a );', 
+    setUp(t).expect( 'template parameters', 'template<class A, class B>' ) );
+}); 
 
-  emitter.expect( 'template parameters', 'template<class A, class B>' );
-  split( 'template< class A, class B>{', emitter );
+test.skip("twoParameterFunction definition", (t) => {
+  split( 'template< class A, class B> void text( A a ) {', 
+    setUp(t).expect( 'template parameters', 'template<class A, class B>' ) );
+}); 
 
-  emitter.expect( 'template parameters', 'template<class A, class B>' );
-  split( 'template< class A, class B> text;', emitter );
-
-  emitter.expect( 'template parameters', 'template<class A, class B>' );
-  split( 'template< class A, class B> text{', emitter );
-
-  emitter.expect( 'template parameters', 'template<class A, class B>' );
-  split( 'template< class A, class B> void text( A a );', emitter );
-
-  emitter.expect( 'template parameters', 'template<class A, class B>' );
-  split( 'template< class A, class B> void text( A a ) {', emitter );
-
-  tearDown(emitter);
+test("twoParameter", t => {
+  splitCheck(
+    "template< class A, class B>{",
+    setUp(t).expect("template parameters", "template<class A, class B>")
+  );
 });
 
 test("macroParameters", t => {
-  let emitter = setUpU(t);
-  emitter.expect("template parameters", "template<MACRO(), MACRO>");
-  split("template< MACRO(), MACRO >", emitter);
+  splitCheck(
+    "template< MACRO(), MACRO >",
+    setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
+  );
+});
 
-  emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
-  split( 'template< MACRO(), MACRO >;', emitter );
+test("singleParameter", t => {
+  splitCheck(
+    "template< MACRO(), MACRO >;",
+    setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
+  );
+});
 
-  emitter.expect( 'template parameters', 'template<MACRO(ARG), MACRO()>' );
-  split( 'template< MACRO(ARG), MACRO() >;', emitter );
+test("singleParameter", t => {
+  splitCheck(
+    "template< MACRO(ARG), MACRO() >;",
+    setUp(t).expect("template parameters", "template<MACRO(ARG), MACRO()>")
+  );
+});
 
-  emitter.expect( 'template parameters', 'template<MACRO(), MACRO>' );
-  split( 'template< MACRO(), MACRO >;', emitter );
-
-  tearDown(emitter);
+test("singleParameter", t => {
+  splitCheck(
+    "template< MACRO(), MACRO >;",
+    setUp(t).expect("template parameters", "template<MACRO(), MACRO>")
+  );
 });
 
 test("templateNestedParameters", t => {
-  let emitter = setUpU(t);
-  emitter.expect(
-    "template parameters",
-    "template<template< typename >, template< typename >>"
+  splitCheck(
+    "template< template< typename >, template< typename > >",
+    setUp(t).expect(
+      "template parameters",
+      "template<template< typename >, template< typename >>"
+    )
   );
-  split("template< template< typename >, template< typename > >", emitter);
-
-  tearDown(emitter);
 });

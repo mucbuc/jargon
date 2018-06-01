@@ -2,8 +2,8 @@ const assert = require("assert"),
   regexMap = require("./regexmap").regexMap;
 
 function Preprocessor(emitter, callback) {
+  assert( typeof callback !== "undefined" );
   emitter.on("preprocess", req => {
-
     let result = "",
       code = req.rhs;
     do {
@@ -26,9 +26,7 @@ function Preprocessor(emitter, callback) {
     } while (result[result.length - 2] === "\\");
 
     req.consume(result.length);
-    if (typeof callback !== "undefined") {
-      callback("preprocess", "#" + result);
-    }
+    callback("preprocess", "#" + result);
   });
 
   return { preprocess: "#" };

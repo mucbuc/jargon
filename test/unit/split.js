@@ -9,112 +9,37 @@ var assert = require("assert"),
   setUp = base.setUp,
   tearDown = base.tearDown,
   test = base.test,
-  split = base.split;
+  split = base.split,
+  splitCheck = base.splitCheck;
 
 test("commentBlockPreprocessor", t => {
-  let e = setUp(t);
-
-  e.expect("comment").expect("preprocess");
-
-  split("/**/#endif", e);
-  tearDown(e);
+  let e = setUp(t)
+    .expect("comment")
+    .expect("preprocess");
+  splitCheck("/**/#endif", e);
 });
 
 test("commentBlockFormatPreprocessor", t => {
-  let e = setUp(t);
-
-  e
+  let e = setUp(t)
     .expect("comment")
     .expect("format")
     .expect("preprocess");
 
-  split("/**/ #endif", e);
-  tearDown(e);
+  splitCheck("/**/ #endif", e);
 });
 
 test("readSampleFileTemplate", t => {
-  let e = setUp(t);
-
-  e.expect("template parameters").expect("declare function");
-
-  split(`template<class T>void foo(T);`, e);
-  tearDown(e);
-});
-
-test("readSampleFile", t => {
-  let e = setUp(t);
-
-  e
-    .expect("preprocess")
-    .expect("declare type")
-    .expect("format")
-    .expect("declare function")
-    .expect("format")
-    .expect("code line")
-    .expect("format")
-    .expect("define type", {
-      name: "struct hello\n",
-      code: "\n\tint hello;\n\tvoid bye();\n"
-    })
-    .expect("format")
-    .expect("define function", {
-      name: "void hello() \n",
-      code: "\n\n"
-    })
-    .expect("format")
-    .expect("preprocess")
-    .expect("format")
-    .expect("define namespace", {
-      name: "namespace hello \n",
-      code: "\n\tfdsa;jlsjk\n\t;kjdsafl;lj\n\t;klj\n"
-    })
-    .expect("format")
-    .expect("comment")
-    .expect("format")
-    .expect("preprocess")
-    .expect("comment");
-
-  const source = `#define INCLUDE_GUARD
-class hello;
-void hello();
-int good;
-struct hello
-{
-	int hello;
-	void bye();
-};
-
-void hello() 
-{
-
-}
-
-#pragma lj alsdkf
-
-namespace hello 
-{
-	fdsa;jlsjk
-	;kjdsafl;lj
-	;klj
-}
-
-/*
-
-
-*/
-
-#endif  // INCLUDE_GUARD`;
-
-  split(source, e);
-  tearDown(e);
+  let e = setUp(t)
+    .expect("template parameters")
+    .expect("declare function");
+  splitCheck(`template<class T>void foo(T);`, e);
 });
 
 test("PreprocessFollowedByBlockComment", t => {
   let e = setUp(t);
 
   e.expect("preprocess").expect("comment");
-  split("#define SOB 1 /* hey */", e);
-  tearDown(e);
+  splitCheck("#define SOB 1 /* hey */", e);
 });
 
 test("PreprocessFollowedByLineComment", t => {
@@ -124,31 +49,23 @@ test("PreprocessFollowedByLineComment", t => {
     .expect("preprocess")
     .expect("comment")
     .expect("format");
-  split("#define SOB 1 // hey\n", e);
-  tearDown(e);
+  splitCheck("#define SOB 1 // hey\n", e);
 });
 
 test("PreprocessFollowedByLineCommentWithoutNewLine", t => {
   let e = setUp(t);
 
   e.expect("preprocess").expect("comment");
-  split("#define SOB 1 // hey", e);
-  tearDown(e);
+  splitCheck("#define SOB 1 // hey", e);
 });
 
 test("SingleDeclaration", t => {
-  let e = setUp(t);
-
-  e.expect("declare type", "struct hello");
-
-  split("struct hello;", e);
-  tearDown(e);
+  let e = setUp(t).expect("declare type", "struct hello");
+  splitCheck("struct hello;", e);
 });
 
 test("namespaceTree", t => {
-  let e = setUp(t);
-
-  e.expect("define namespace", {
+  let e = setUp(t).expect("define namespace", {
     name: "namespace outside",
     code: " namespace inside {} "
   });
@@ -162,14 +79,11 @@ test("namespaceTree", t => {
     split(context.code, e);
   });
 
-  split("namespace outside{ namespace inside {} }", e);
-  tearDown(e);
+  splitCheck("namespace outside{ namespace inside {} }", e);
 });
 
 test("namespaceDeclaration", t => {
-  let e = setUp(t);
-
-  e.expect("define namespace", {
+  let e = setUp(t).expect("define namespace", {
     name: "namespace outside",
     code: " struct hello; "
   });
@@ -184,14 +98,11 @@ test("namespaceDeclaration", t => {
       split(context.code, e);
     });
   });
-  split("namespace outside{ struct hello; }", e);
-  tearDown(e);
+  splitCheck("namespace outside{ struct hello; }", e);
 });
 
 test("NestedNamespaces", t => {
-  let e = setUp(t);
-
-  e
+  let e = setUp(t)
     .expect("define namespace", {
       name: "namespace outside ",
       code: " namespace inside {} "
@@ -202,98 +113,230 @@ test("NestedNamespaces", t => {
       e.expect("format");
       split(context.code, e);
     });
-
-  split("namespace outside { namespace inside {} }", e);
-  tearDown(e);
+  splitCheck("namespace outside { namespace inside {} }", e);
 });
 
 test("DeclarationsAndDefinitions", t => {
-  let e = setUp(t);
-
-  e.expect("declare type", "struct hello");
+  let e = setUp(t).expect("declare type", "struct hello");
   split("struct hello;", e);
 
   e.expect("define type", { name: "struct hello", code: "" });
-  split("struct hello{};", e);
-  tearDown(e);
+  splitCheck("struct hello{};", e);
 });
 
 test("NestedTypes", t => {
-  let e = setUp(t);
-
-  e.expect("define type", {
+  let e = setUp(t).expect("define type", {
     name: "struct outside ",
     code: " struct inside {}; "
   });
-  split("struct outside { struct inside {}; };", e);
-  tearDown(e);
+  splitCheck("struct outside { struct inside {}; };", e);
 });
 
 test("TypeWithFormat", t => {
-  let e = setUp(t);
-
-  e
+  let e = setUp(t)
     .expect("define type", { name: "struct inside ", code: "" })
     .expect("format");
 
-  split("struct inside {}; ", e);
-  tearDown(e);
+  splitCheck("struct inside {}; ", e);
 });
 
 test("MemberFunctionDeclare", t => {
-  let e = setUp(t);
-
-  e.expect("define type");
+  let e = setUp(t).expect("define type");
   split("struct text{void member();};", e);
 
   e.expect("declare function", "void member()");
-  split("void member();", e);
-  tearDown(e);
+  splitCheck("void member();", e);
 });
 
 test("FunctionDeclare", t => {
-  let e = setUp(t);
-
-  e.expect("declare function", "void foo()");
-  split("void foo();", e);
-  tearDown(e);
+  let e = setUp(t).expect("declare function", "void foo()");
+  splitCheck("void foo();", e);
 });
 
 test("FunctionDefine", t => {
-  let e = setUp(t);
-
-  e.expect("define function", { name: "void foo() ", code: " hello " });
-  split("void foo() { hello }", e);
-  tearDown(e);
+  let e = setUp(t).expect("define function", {
+    name: "void foo() ",
+    code: " hello "
+  });
+  splitCheck("void foo() { hello }", e);
 });
 
 test("declareTypeAfterPreproesorDirective", t => {
-  let e = setUp(t);
-
-  e.expect("preprocess").expect("declare type", "struct bla");
-  split("#define hello asd\nstruct bla;", e);
-  tearDown(e);
+  let e = setUp(t)
+    .expect("preprocess")
+    .expect("declare type", "struct bla");
+  splitCheck("#define hello asd\nstruct bla;", e);
 });
 
 test("declareTypeAfterPreproesorDirectives", t => {
-  let e = setUp(t);
-
-  e
+  let e = setUp(t)
     .expect("preprocess")
     .repeat(1)
     .expect("declare type", "struct bla");
-  split("#define hello asd\n#define hello\\nasdfasd\nstruct bla;", e);
-  tearDown(e);
+  splitCheck("#define hello asd\n#define hello\\nasdfasd\nstruct bla;", e);
 });
 
 test("defineTypeAfterDeclareType", t => {
-  let e = setUp(t);
-
-  e
+  let e = setUp(t)
     .expect("declare type", "struct jimmy")
     .expect("format")
     .expect("define type", { name: "struct hey ", code: " joe " })
     .expect("format");
-  split("struct jimmy; struct hey { joe } ", e);
-  tearDown(e);
+  splitCheck("struct jimmy; struct hey { joe } ", e);
+});
+
+
+test("commenterSingleLineWithSpace", t => {
+  splitCheck(
+    "  // hello\n",
+    setUp(t)
+      .expect("format", "  ")
+      .expect("comment", "// hello")
+      .expect("format")
+  );
+});
+
+test("commenterSingleLineWithoutNewLine", t => {
+  splitCheck("// hello", setUp(t).expect("comment"));
+});
+
+test("commenterTwoSingleLineWithoutNewLine", t => {
+  splitCheck(
+    "// hello\n//hello",
+    setUp(t)
+      .expect("comment")
+      .expect("format")
+      .expect("comment")
+  );
+});
+
+test("defineTypeAfterStatement", t => {
+  splitCheck(
+    "typedef hello string; struct cya { inside }",
+    setUp(t)
+      .expect("code blob")
+      .expect("format")
+      .expect("define type", { name: "struct cya ", code: " inside " })
+  );
+});
+
+test("defineNamespaceWithWhite", t => {
+  splitCheck(
+    " namespace hello { this is it }",
+    setUp(t)
+      .expect("format")
+      .expect("define namespace", {
+        name: "namespace hello ",
+        code: " this is it "
+      })
+  );
+});
+
+test("preprocessorAfterComment", t => {
+  splitCheck(
+    "/*yo*/ #define BLA\n",
+    setUp(t)
+      .expect("comment")
+      .expect("format")
+      .expect("preprocess")
+  );
+});
+
+test("readSampleFile", t => {
+  let e = setUp(t)
+    .expect("preprocess")
+    .expect("declare type")
+    .expect("format")
+    .expect("declare function")
+    .expect("format")
+    .expect("code blob")
+    .expect("format")
+    .expect("define type", {
+      name: "struct hello\n",
+      code: "\n  int hello;\n  void bye();\n"
+    })
+    .expect("format")
+    .expect("define function", {
+      name: "void hello() \n",
+      code: "\n\n"
+    })
+    .expect("format")
+    .expect("preprocess")
+    .expect("format")
+    .expect("define namespace", {
+      name: "namespace hello \n",
+      code: "\n  fdsa;jlsjk\n  ;kjdsafl;lj\n  ;klj\n"
+    })
+    .expect("format")
+    .expect("comment")
+    .expect("format")
+    .expect("preprocess")
+    .expect("comment");
+
+  const source = `#define INCLUDE_GUARD
+class hello;
+void hello();
+int good;
+struct hello
+{
+  int hello;
+  void bye();
+};
+
+void hello() 
+{
+
+}
+
+#pragma lj alsdkf
+
+namespace hello 
+{
+  fdsa;jlsjk
+  ;kjdsafl;lj
+  ;klj
+}
+
+/*
+
+
+*/
+
+#endif  // INCLUDE_GUARD`;
+
+  splitCheck(source, e);
+});
+
+test( 'templateAndFormat', (t) => {
+
+  let emitter = setUp(t);
+
+  split(
+    "template<class A> text text {",
+    emitter.expect("template parameters", "template<class A>").expect("format")
+  );
+  splitCheck(
+    "template<class A> ;",
+    emitter.expect("template parameters", "template<class A>").expect("format")
+  );
+});
+
+test( 'templateAndCode', (t) => {
+  
+  let emitter = setUp(t);
+
+  split(
+    "template< class A, class B> text;",
+    emitter
+      .expect("template parameters", "template<class A, class B>")
+      .expect("format")
+      .expect("code blob", "text")
+  );
+
+  splitCheck(
+    "template< class A, class B> text{",
+    emitter
+      .expect("template parameters", "template<class A, class B>")
+      .expect("format")
+  );
 });

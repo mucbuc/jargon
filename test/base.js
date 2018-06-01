@@ -1,30 +1,32 @@
 let splitjs = require("./../src/split"),
   SeqExpector = require("expector").SeqExpector,
   Expector = require("expector").Expector,
-  test = require("tape");
+  tapeTest = require("tape");
 
 function split(code, emitter) {
   splitjs(code, (type, value) => {
     emitter.emit(type, value);
   });
+
+  return emitter;
+}
+
+function splitCheck(code, emitter) {
+  tearDown( split(code, emitter) );
 }
 
 function setUp(t) {
   return new SeqExpector(t);
 }
 
-function setUpU(t) {
-  return new Expector(t);
-}
-
 function tearDown(fixture) {
-  fixture.check(fixture);
+  fixture.check();
 }
 
 module.exports = {
   setUp,
-  setUpU,
-  test,
-  tearDown, 
-  split
+  test : tapeTest,
+  tearDown,
+  split,
+  splitCheck
 };
