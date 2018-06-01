@@ -16,7 +16,7 @@
     "yargs": "*"
   },
   "devDependencies": {
-    "tape": "*",
-    "expector": "*"
+    "expector": "0.0.16",
+    "tape": "^4.9.0"
   }
 }
