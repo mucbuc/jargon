@@ -8,7 +8,7 @@ module.exports = (inString, outStream) => {
 
     function tokenHandler(event, obj) {
       
-      outStream.write(event);
+      outStream.write(event + ": ");
 
       switch (event) {
         case "define namespace":
@@ -33,6 +33,7 @@ module.exports = (inString, outStream) => {
       }
 
       switch (event) {
+        case "code line":
         case "declare type":
         case "declare function":
         case "define type":
