@@ -33,9 +33,8 @@ function Declarer(emitter, callback) {
         } else if (isFunctionDeclaration(req.lhs)) {
           callback("declare function", req.lhs);
         } else if (req.lhs.length || req.stash.length) {
-          const block =
-              req.lhs + (typeof req.stash === "undefined" ? "" : req.stash),
-              type = isSpace(block) ? "format" : "code line";
+          const block = req.lhs + req.stash,
+            type = isSpace(block) ? "format" : "code line";
           callback(type, block);
         }
       },
